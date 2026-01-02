@@ -1,0 +1,19 @@
+.navbar-container {
+  display: flex;
+  justify-content: flex-end;
+  margin: 0rem 0rem;
+  padding: 1rem 1rem;
+  background-color: rgb(71, 69, 69);
+}
+
+button {
+  margin-left: 1rem;
+}
+
+button mat-icon {
+  margin: auto;
+}
+
+button:focus {
+  outline: 0.24rem red solid;
+}

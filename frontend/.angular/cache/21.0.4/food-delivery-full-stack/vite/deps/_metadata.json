@@ -1,34 +1,70 @@
 {
-  "hash": "c08075dd",
-  "configHash": "210ec087",
+  "hash": "8accc8cc",
+  "configHash": "c8a17917",
   "lockfileHash": "66f934c9",
-  "browserHash": "005376e0",
+  "browserHash": "0af64f28",
   "optimized": {
     "@angular/core": {
       "src": "../../../../../../../node_modules/@angular/core/fesm2022/core.mjs",
       "file": "@angular_core.js",
-      "fileHash": "c255e68a",
+      "fileHash": "204f4585",
       "needsInterop": false
     },
     "@angular/platform-browser": {
       "src": "../../../../../../../node_modules/@angular/platform-browser/fesm2022/platform-browser.mjs",
       "file": "@angular_platform-browser.js",
-      "fileHash": "4cad636f",
+      "fileHash": "23e68891",
       "needsInterop": false
     },
     "@angular/router": {
       "src": "../../../../../../../node_modules/@angular/router/fesm2022/router.mjs",
       "file": "@angular_router.js",
-      "fileHash": "345c11b6",
+      "fileHash": "888719a8",
+      "needsInterop": false
+    },
+    "@angular/material/button": {
+      "src": "../../../../../../../node_modules/@angular/material/fesm2022/button.mjs",
+      "file": "@angular_material_button.js",
+      "fileHash": "19b551ea",
+      "needsInterop": false
+    },
+    "@angular/cdk/bidi": {
+      "src": "../../../../../../../node_modules/@angular/cdk/fesm2022/bidi.mjs",
+      "file": "@angular_cdk_bidi.js",
+      "fileHash": "0e84eddd",
+      "needsInterop": false
+    },
+    "@angular/material/button-toggle": {
+      "src": "../../../../../../../node_modules/@angular/material/fesm2022/button-toggle.mjs",
+      "file": "@angular_material_button-toggle.js",
+      "fileHash": "71bb1240",
+      "needsInterop": false
+    },
+    "@angular/material/icon": {
+      "src": "../../../../../../../node_modules/@angular/material/fesm2022/icon.mjs",
+      "file": "@angular_material_icon.js",
+      "fileHash": "738a3f29",
       "needsInterop": false
     }
   },
   "chunks": {
-    "chunk-P4V25KBQ": {
-      "file": "chunk-P4V25KBQ.js"
+    "chunk-U4LTP4DR": {
+      "file": "chunk-U4LTP4DR.js"
     },
-    "chunk-3S7DWH3P": {
-      "file": "chunk-3S7DWH3P.js"
+    "chunk-THUTCGBJ": {
+      "file": "chunk-THUTCGBJ.js"
+    },
+    "chunk-3UVUAMYQ": {
+      "file": "chunk-3UVUAMYQ.js"
+    },
+    "chunk-EJTVUJMR": {
+      "file": "chunk-EJTVUJMR.js"
+    },
+    "chunk-II7ABOA4": {
+      "file": "chunk-II7ABOA4.js"
+    },
+    "chunk-OTXJXB7E": {
+      "file": "chunk-OTXJXB7E.js"
     }
   }
 }
