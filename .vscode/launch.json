@@ -3,6 +3,20 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "type": "java",
+      "name": "FoodDeliveryApplication",
+      "request": "launch",
+      "mainClass": "com.fooddelivery.FoodDeliveryApplication",
+      "projectName": "backend"
+    },
+    {
+      "type": "java",
+      "name": "FoodDeliveryApplication",
+      "request": "launch",
+      "mainClass": "FoodDeliveryApplication",
+      "projectName": "food-delivery-full-stack_99ea75ba"
+    },
+    {
       "name": "ng serve",
       "type": "chrome",
       "request": "launch",

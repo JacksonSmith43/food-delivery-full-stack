@@ -1,0 +1,34 @@
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: food-delivery-db
+    environment:
+      POSTGRES_DB: food-delivery
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin123
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - food-delivery-network
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: food-delivery-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@food-delivery.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+    ports:
+      - "8081:80"
+    depends_on:
+      - postgres
+    networks:
+      - food-delivery-network
+
+volumes:
+  postgres_data:
+
+networks:
+  food-delivery-network:
+    driver: bridge
