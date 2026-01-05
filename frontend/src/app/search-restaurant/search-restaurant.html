@@ -1,0 +1,10 @@
+<div class="search-restaurant-container">
+    <form class="mat-form" (ngSubmit)="onSubmit()" [formGroup]="form">
+        <input matInput type="number" placeholder="Enter your PLZ." title="PLZ is your Postcode. For example 23 or 1"
+            min="1" max="23" aria-label="Postcode input." [formControl]="form.controls.plz">
+        <button type="submit" matButton="tonal">Search</button>
+    </form>
+    @if(form.controls.plz.invalid && (form.controls.plz.dirty || form.controls.plz.touched)){
+    <p class="error-message">{{plzErrorMessages}}</p>
+    }
+</div>

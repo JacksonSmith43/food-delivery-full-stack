@@ -1,14 +1,16 @@
 import {
   trustedHTMLFromString
-} from "./chunk-3ITHFFBL.js";
+} from "./chunk-NGX5KMVR.js";
+import "./chunk-THJVFX67.js";
+import "./chunk-C5RGHRRW.js";
 import {
   BidiModule
-} from "./chunk-T7YTMKYE.js";
+} from "./chunk-3UCA2M6W.js";
 import {
   DomSanitizer,
   HttpClient
-} from "./chunk-IISYHKDY.js";
-import "./chunk-VPVWJ6TN.js";
+} from "./chunk-VZZQO3BO.js";
+import "./chunk-DQXNVOHG.js";
 import {
   ChangeDetectionStrategy,
   Component,
@@ -47,7 +49,7 @@ import {
   ɵɵinject,
   ɵɵprojection,
   ɵɵprojectionDef
-} from "./chunk-5GQZHR7Y.js";
+} from "./chunk-57VEBOG3.js";
 
 // node_modules/@angular/material/fesm2022/_icon-registry-chunk.mjs
 function getMatIconNameNotFoundError(iconName) {

@@ -1,0 +1,38 @@
+form {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 13rem;
+}
+
+button {
+  font-size: large;
+
+  margin-left: 1rem;
+  padding: 2rem 2rem;
+}
+
+input {
+  font-size: large;
+  height: 2rem;
+  width: 15rem;
+  border-radius: 2rem 2rem 2rem 2rem;
+  border-style: none;
+  padding: 1rem 1rem;
+}
+
+p {
+  font-size: large;
+  font-weight: bold;
+}
+
+.error-message {
+  color: red;
+  display: flex;
+  justify-content: center;
+}
+
+input:focus,
+button:focus {
+  outline: 0.24rem red solid;
+}

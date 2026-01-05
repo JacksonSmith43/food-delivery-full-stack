@@ -1,70 +1,115 @@
 {
-  "hash": "9f456fa3",
-  "configHash": "44d2704a",
+  "hash": "a8d648a8",
+  "configHash": "26e2b79d",
   "lockfileHash": "66f934c9",
-  "browserHash": "25a6cb2d",
+  "browserHash": "eba93c61",
   "optimized": {
     "@angular/cdk/bidi": {
       "src": "../../../../../../node_modules/@angular/cdk/fesm2022/bidi.mjs",
       "file": "@angular_cdk_bidi.js",
-      "fileHash": "04aa7ed5",
+      "fileHash": "8bc82ef5",
       "needsInterop": false
     },
     "@angular/core": {
       "src": "../../../../../../node_modules/@angular/core/fesm2022/core.mjs",
       "file": "@angular_core.js",
-      "fileHash": "e73f2c71",
+      "fileHash": "b3fec50b",
       "needsInterop": false
     },
     "@angular/material/button": {
       "src": "../../../../../../node_modules/@angular/material/fesm2022/button.mjs",
       "file": "@angular_material_button.js",
-      "fileHash": "414f1ae1",
+      "fileHash": "2a6d2362",
       "needsInterop": false
     },
     "@angular/material/button-toggle": {
       "src": "../../../../../../node_modules/@angular/material/fesm2022/button-toggle.mjs",
       "file": "@angular_material_button-toggle.js",
-      "fileHash": "3a5e6011",
+      "fileHash": "e08f4d11",
       "needsInterop": false
     },
     "@angular/material/icon": {
       "src": "../../../../../../node_modules/@angular/material/fesm2022/icon.mjs",
       "file": "@angular_material_icon.js",
-      "fileHash": "8e8356bc",
+      "fileHash": "a697b976",
       "needsInterop": false
     },
     "@angular/platform-browser": {
       "src": "../../../../../../node_modules/@angular/platform-browser/fesm2022/platform-browser.mjs",
       "file": "@angular_platform-browser.js",
-      "fileHash": "dc43b141",
+      "fileHash": "43f5e1f8",
       "needsInterop": false
     },
     "@angular/router": {
       "src": "../../../../../../node_modules/@angular/router/fesm2022/router.mjs",
       "file": "@angular_router.js",
-      "fileHash": "32917e9f",
+      "fileHash": "15b11545",
+      "needsInterop": false
+    },
+    "@angular/material/input": {
+      "src": "../../../../../../node_modules/@angular/material/fesm2022/input.mjs",
+      "file": "@angular_material_input.js",
+      "fileHash": "0b672296",
+      "needsInterop": false
+    },
+    "@angular/cdk/text-field": {
+      "src": "../../../../../../node_modules/@angular/cdk/fesm2022/text-field.mjs",
+      "file": "@angular_cdk_text-field.js",
+      "fileHash": "d7e39d14",
+      "needsInterop": false
+    },
+    "@angular/forms": {
+      "src": "../../../../../../node_modules/@angular/forms/fesm2022/forms.mjs",
+      "file": "@angular_forms.js",
+      "fileHash": "9bab626d",
+      "needsInterop": false
+    },
+    "@angular/material/form-field": {
+      "src": "../../../../../../node_modules/@angular/material/fesm2022/form-field.mjs",
+      "file": "@angular_material_form-field.js",
+      "fileHash": "f836cf19",
       "needsInterop": false
     }
   },
   "chunks": {
-    "chunk-HMWJXMWB": {
-      "file": "chunk-HMWJXMWB.js"
+    "chunk-ATX5MX2A": {
+      "file": "chunk-ATX5MX2A.js"
     },
-    "chunk-3ITHFFBL": {
-      "file": "chunk-3ITHFFBL.js"
+    "chunk-TCGEXE5M": {
+      "file": "chunk-TCGEXE5M.js"
     },
-    "chunk-T7YTMKYE": {
-      "file": "chunk-T7YTMKYE.js"
+    "chunk-IIJPPTJK": {
+      "file": "chunk-IIJPPTJK.js"
     },
-    "chunk-IISYHKDY": {
-      "file": "chunk-IISYHKDY.js"
+    "chunk-RN77KHFR": {
+      "file": "chunk-RN77KHFR.js"
     },
-    "chunk-VPVWJ6TN": {
-      "file": "chunk-VPVWJ6TN.js"
+    "chunk-AXGW2XDF": {
+      "file": "chunk-AXGW2XDF.js"
     },
-    "chunk-5GQZHR7Y": {
-      "file": "chunk-5GQZHR7Y.js"
+    "chunk-76HOC5BO": {
+      "file": "chunk-76HOC5BO.js"
+    },
+    "chunk-NGX5KMVR": {
+      "file": "chunk-NGX5KMVR.js"
+    },
+    "chunk-THJVFX67": {
+      "file": "chunk-THJVFX67.js"
+    },
+    "chunk-C5RGHRRW": {
+      "file": "chunk-C5RGHRRW.js"
+    },
+    "chunk-3UCA2M6W": {
+      "file": "chunk-3UCA2M6W.js"
+    },
+    "chunk-VZZQO3BO": {
+      "file": "chunk-VZZQO3BO.js"
+    },
+    "chunk-DQXNVOHG": {
+      "file": "chunk-DQXNVOHG.js"
+    },
+    "chunk-57VEBOG3": {
+      "file": "chunk-57VEBOG3.js"
     }
   }
 }
