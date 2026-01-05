@@ -1,14 +1,14 @@
 import {
-  DomSanitizer,
-  HttpClient
-} from "./chunk-U4LTP4DR.js";
-import {
   trustedHTMLFromString
-} from "./chunk-3UVUAMYQ.js";
+} from "./chunk-3ITHFFBL.js";
 import {
   BidiModule
-} from "./chunk-EJTVUJMR.js";
-import "./chunk-II7ABOA4.js";
+} from "./chunk-T7YTMKYE.js";
+import {
+  DomSanitizer,
+  HttpClient
+} from "./chunk-IISYHKDY.js";
+import "./chunk-VPVWJ6TN.js";
 import {
   ChangeDetectionStrategy,
   Component,
@@ -47,9 +47,9 @@ import {
   ɵɵinject,
   ɵɵprojection,
   ɵɵprojectionDef
-} from "./chunk-OTXJXB7E.js";
+} from "./chunk-5GQZHR7Y.js";
 
-// ../node_modules/@angular/material/fesm2022/_icon-registry-chunk.mjs
+// node_modules/@angular/material/fesm2022/_icon-registry-chunk.mjs
 function getMatIconNameNotFoundError(iconName) {
   return Error(`Unable to find icon with the name "${iconName}"`);
 }
@@ -386,7 +386,7 @@ function isSafeUrlWithOptions(value) {
   return !!(value.url && value.options);
 }
 
-// ../node_modules/@angular/material/fesm2022/icon.mjs
+// node_modules/@angular/material/fesm2022/icon.mjs
 var _c0 = ["*"];
 var MAT_ICON_DEFAULT_OPTIONS = new InjectionToken("MAT_ICON_DEFAULT_OPTIONS");
 var MAT_ICON_LOCATION = new InjectionToken("mat-icon-location", {
