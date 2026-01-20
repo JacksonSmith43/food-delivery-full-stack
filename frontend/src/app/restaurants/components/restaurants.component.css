@@ -11,3 +11,8 @@
   width: 14rem;
   outline: 0.025rem solid gray;
 }
+
+img {
+  padding-top: 1rem;
+  width: 12rem;
+}

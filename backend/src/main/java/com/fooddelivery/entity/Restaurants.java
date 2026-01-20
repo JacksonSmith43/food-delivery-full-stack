@@ -15,13 +15,25 @@ public class Restaurants {
     @Column(name = "category")
     private String category;
 
+    @Column(name = "image")
+    private String imageName;
+
     public Restaurants() {
     }
 
-    public Restaurants(Long id, String restaurantName, String category) {
+    public Restaurants(Long id, String restaurantName, String category, String imageName) {
         this.id = id;
         this.restaurantName = restaurantName;
         this.category = category;
+        this.imageName = imageName;
+    }
+
+    public String getImageName() {
+        return imageName;
+    }
+
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
     }
 
     public Long getId() {
@@ -54,6 +66,7 @@ public class Restaurants {
                 "id=" + id +
                 ", restaurantName='" + restaurantName + '\'' +
                 ", category='" + category + '\'' +
+                ", imageName='" + imageName + '\'' +
                 '}';
     }
 }

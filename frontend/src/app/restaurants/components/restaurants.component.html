@@ -2,7 +2,8 @@
     @for(i of restaurants(); track i.id){
 
     <div class="restaurant-container">
-        <!-- <img [src]="i.restaurantName"> -->
+        <!-- With the img, link and script tag one can implicitly make a request to the server. -->
+        <img [src]="'/images/restaurants/' + i.imageName">
         <p>{{i.id}}</p>
         <p>{{i.restaurantName}}</p>
         <p>{{i.category}}</p>
