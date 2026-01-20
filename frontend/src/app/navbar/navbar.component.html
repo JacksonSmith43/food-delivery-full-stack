@@ -1,5 +1,12 @@
 <div class="navbar-container">
 
+    <!-- [routerLink]="'/allRestaurants'"
+        aria-label="Show all restaurant names." routerLinkActive="selected" title="All Restaurants"
+    -->
+    <button matButton="filled" (click)="onGetAllRestaurants()">Show all
+        Restaurants
+    </button>
+
     <button matButton="filled" [routerLink]="'/account'" routerLinkActive="selected" title="Account"
         aria-label="Account button with an icon.">
         <mat-icon>account_box</mat-icon>

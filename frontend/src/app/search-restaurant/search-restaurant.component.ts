@@ -11,8 +11,8 @@ import { MatButtonModule } from '@angular/material/button';
 @Component({
   selector: 'app-search-restaurant',
   imports: [FormsModule, MatButtonModule, ReactiveFormsModule],
-  templateUrl: './search-restaurant.html',
-  styleUrl: './search-restaurant.css',
+  templateUrl: './search-restaurant.component.html',
+  styleUrl: './search-restaurant.component.css',
 })
 export class SearchRestaurant {
   form = new FormGroup({

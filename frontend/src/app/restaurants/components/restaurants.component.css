@@ -1,0 +1,13 @@
+.all-restaurants-container {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 1rem 1rem;
+}
+
+.restaurant-container {
+  text-align: center;
+  margin: 1rem 1rem;
+  padding: 0rem 1rem;
+  width: 14rem;
+  outline: 0.025rem solid gray;
+}

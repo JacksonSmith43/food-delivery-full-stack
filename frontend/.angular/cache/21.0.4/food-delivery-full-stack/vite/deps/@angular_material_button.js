@@ -1,27 +1,22 @@
 import {
+  FocusMonitor,
   MAT_RIPPLE_GLOBAL_OPTIONS,
   MatRippleModule,
+  Platform,
   RippleRenderer,
   _StructuralStylesLoader,
-  defaultRippleAnimationConfig
-} from "./chunk-RN77KHFR.js";
-import {
-  FocusMonitor,
   _animationsDisabled,
-  _getEventTarget
-} from "./chunk-AXGW2XDF.js";
-import {
-  Platform
-} from "./chunk-76HOC5BO.js";
-import "./chunk-NGX5KMVR.js";
-import "./chunk-THJVFX67.js";
+  _getEventTarget,
+  defaultRippleAnimationConfig
+} from "./chunk-77JVV24R.js";
 import {
   _CdkPrivateStyleLoader
-} from "./chunk-C5RGHRRW.js";
+} from "./chunk-3ITHFFBL.js";
 import {
   BidiModule
-} from "./chunk-3UCA2M6W.js";
-import "./chunk-DQXNVOHG.js";
+} from "./chunk-T7YTMKYE.js";
+import "./chunk-TTWLEJ3P.js";
+import "./chunk-ZHJZDBHM.js";
 import {
   ChangeDetectionStrategy,
   Component,
@@ -55,7 +50,7 @@ import {
   ɵɵdomElementStart,
   ɵɵprojection,
   ɵɵprojectionDef
-} from "./chunk-57VEBOG3.js";
+} from "./chunk-5GQZHR7Y.js";
 
 // node_modules/@angular/material/fesm2022/_ripple-loader-chunk.mjs
 var eventListenerOptions = {
