@@ -1,3 +1,13 @@
+<div class="food-category-container">
+    <!-- <p>Category</p> -->
+    @for (i of categories(); track $index) {
+    <div class="categories-container" (click)="onCategoryClick(i)">
+        {{i}}
+    </div>
+    }
+
+</div>
+
 <div class="all-restaurants-container">
     @for(i of restaurants(); track i.id){
 

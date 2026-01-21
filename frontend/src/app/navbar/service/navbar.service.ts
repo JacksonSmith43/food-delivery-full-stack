@@ -18,7 +18,15 @@ export class NavBarService {
         console.log('NavBarService_getAllRestaurants()_next.');
         this.localStorageService.saveToLocalStorage('restaurants', restaurants as any);
         this.restaurantsService.restaurants.set(restaurants);
+
         console.log('NavBarService_getAllRestaurants()_restaurants: ', restaurants);
+
+        const uniqueCategories = this.restaurantsService.getUniqueCategories(restaurants);
+        let splitUniqueCategories = uniqueCategories.map((c) => c.split(', ')).flat();
+
+        this.restaurantsService.categories.set(splitUniqueCategories);
+
+        console.log('NavBarService_getAllRestaurants()_uniqueCategories: ', uniqueCategories);
       },
       error: (error) => console.error('NavBarService_getAllRestaurants()_Error: ', error),
     });
