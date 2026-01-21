@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -8,6 +8,9 @@ import {
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 
+import { RestaurantsService } from '../shared/services/restaurants.service';
+import { NavBarService } from '../navbar/service/navbar.service';
+
 @Component({
   selector: 'app-search-restaurant',
   imports: [FormsModule, MatButtonModule, ReactiveFormsModule],
@@ -15,6 +18,9 @@ import { MatButtonModule } from '@angular/material/button';
   styleUrl: './search-restaurant.component.css',
 })
 export class SearchRestaurant {
+  restaurantsService = inject(RestaurantsService);
+  navbarService = inject(NavBarService);
+
   form = new FormGroup({
     plz: new FormControl('', [
       Validators.required,
@@ -31,8 +37,29 @@ export class SearchRestaurant {
       this.form.controls.plz.reset();
       return;
     }
-
+    this.restaurantsService.plz.set(this.form.value.plz || 'Undefined plz');
     this.form.controls.plz.reset();
+
+    this.showRestaurantsWithCorrespondingEnteredPostcodes();
+  }
+
+  showRestaurantsWithCorrespondingEnteredPostcodes() {
+    console.log('showRestaurantsWithCorrespondingEnteredPostcodes().');
+
+    let enteredPlz = this.restaurantsService.plz();
+    console.log('showRestaurantsWithCorrespondingEnteredPostcodes()_enteredPlz: ', enteredPlz);
+
+    this.restaurantsService.getAllRestaurants().subscribe((restaurants) => {
+      console.log('showRestaurantsWithCorrespondingEnteredPostcodes()_restaurants: ', restaurants);
+
+      let restaurantsWithinPlz = restaurants.filter((r) => r.plz === enteredPlz);
+      console.log(
+        'showRestaurantsWithCorrespondingEnteredPostcodes()_restaurantsWithinPlz: ',
+        restaurantsWithinPlz,
+      );
+
+      this.restaurantsService.restaurants.set(restaurantsWithinPlz);
+    });
   }
 
   get plzErrorMessages() {

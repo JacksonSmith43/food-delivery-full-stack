@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { RestaurantType } from '../model/restaurants-type.module';
 
 @Injectable({ providedIn: 'root' })
-export class LocalStorage {
+export class LocalStorageService {
   getRestaurants(key: 'restaurants') {
     console.log('getRestaurants().');
 

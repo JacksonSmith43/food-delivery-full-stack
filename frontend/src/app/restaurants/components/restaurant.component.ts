@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 
-import { RestaurantsService } from '../service/restaurants.service';
-import { LocalStorage } from '../../shared/services/local-storage.service';
+import { RestaurantsService } from '../../shared/services/restaurants.service';
+import { LocalStorageService } from '../../shared/services/local-storage.service';
 import { RestaurantType } from '../../shared/model/restaurants-type.module';
 
 @Component({
@@ -12,7 +12,7 @@ import { RestaurantType } from '../../shared/model/restaurants-type.module';
 })
 export class Restaurant implements OnInit {
   private restaurantsService = inject(RestaurantsService);
-  localStorageService = inject(LocalStorage);
+  localStorageService = inject(LocalStorageService);
 
   restaurants = this.restaurantsService.restaurants;
 

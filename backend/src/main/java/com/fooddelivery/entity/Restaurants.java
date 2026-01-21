@@ -18,14 +18,26 @@ public class Restaurants {
     @Column(name = "image")
     private String imageName;
 
+    @Column
+    private String plz;
+
+    public String getPlz() {
+        return plz;
+    }
+
+    public void setPlz(String plz) {
+        this.plz = plz;
+    }
+
     public Restaurants() {
     }
 
-    public Restaurants(Long id, String restaurantName, String category, String imageName) {
+    public Restaurants(Long id, String restaurantName, String category, String imageName, String plz) {
         this.id = id;
         this.restaurantName = restaurantName;
         this.category = category;
         this.imageName = imageName;
+        this.plz = plz;
     }
 
     public String getImageName() {
@@ -62,11 +74,7 @@ public class Restaurants {
 
     @Override
     public String toString() {
-        return "Restaurants{" +
-                "id=" + id +
-                ", restaurantName='" + restaurantName + '\'' +
-                ", category='" + category + '\'' +
-                ", imageName='" + imageName + '\'' +
-                '}';
+        return "Restaurants [id=" + id + ", restaurantName=" + restaurantName + ", category=" + category
+                + ", imageName=" + imageName + ", plz=" + plz + "]";
     }
 }

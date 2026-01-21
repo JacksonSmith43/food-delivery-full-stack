@@ -3,4 +3,5 @@ export interface RestaurantType {
   restaurantName: string;
   category: string;
   imageName: string;
+  plz: string;
 }
