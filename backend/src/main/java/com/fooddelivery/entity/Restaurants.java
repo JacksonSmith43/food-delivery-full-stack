@@ -1,5 +1,8 @@
 package com.fooddelivery.entity;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -12,31 +15,44 @@ public class Restaurants {
     @Column(name = "restaurant")
     private String restaurantName;
 
-    @Column(name = "category")
-    private String category;
-
     @Column(name = "image")
     private String imageName;
 
     @Column
     private String plz;
 
+    @ManyToMany
+    @JoinTable(name = "restaurant_categories", joinColumns = @JoinColumn(name = "restaurant_id"), inverseJoinColumns = @JoinColumn(name = "categories_id"))
+    private Set<Categories> categories = new HashSet<>();
+
+    public Restaurants() {
+    }
+
+    public Restaurants(String restaurantName, String imageName, String plz) {
+		this.restaurantName = restaurantName;
+		this.imageName = imageName;
+		this.plz = plz;
+	}
+
+	public Restaurants(String restaurantName, String imageName, String plz, Set<Categories> categories) {
+		this.restaurantName = restaurantName;
+		this.imageName = imageName;
+		this.plz = plz;
+		this.categories = categories;
+	}
+
+	public Restaurants(Long id, String restaurantName, String imageName, String plz) {
+        this.id = id;
+        this.restaurantName = restaurantName;
+        this.imageName = imageName;
+        this.plz = plz;
+    }
+
     public String getPlz() {
         return plz;
     }
 
     public void setPlz(String plz) {
-        this.plz = plz;
-    }
-
-    public Restaurants() {
-    }
-
-    public Restaurants(Long id, String restaurantName, String category, String imageName, String plz) {
-        this.id = id;
-        this.restaurantName = restaurantName;
-        this.category = category;
-        this.imageName = imageName;
         this.plz = plz;
     }
 
@@ -64,17 +80,17 @@ public class Restaurants {
         this.restaurantName = restaurantName;
     }
 
-    public String getCategory() {
-        return category;
+    public Set<Categories> getCategories() {
+        return categories;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setCategories(Set<Categories> categories) {
+        this.categories = categories;
     }
 
     @Override
     public String toString() {
-        return "Restaurants [id=" + id + ", restaurantName=" + restaurantName + ", category=" + category
-                + ", imageName=" + imageName + ", plz=" + plz + "]";
+        return "Restaurants [id=" + id + ", restaurantName=" + restaurantName +
+                ", imageName=" + imageName + ", plz=" + plz + "]";
     }
 }

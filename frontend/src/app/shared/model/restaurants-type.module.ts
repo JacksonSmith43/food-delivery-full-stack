@@ -4,4 +4,5 @@ export interface RestaurantType {
   category: string;
   imageName: string;
   plz: string;
+  categoryImage: string;
 }

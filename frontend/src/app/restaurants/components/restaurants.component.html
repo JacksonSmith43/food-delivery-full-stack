@@ -1,9 +1,13 @@
 <div class="food-category-container">
     <!-- <p>Category</p> -->
     @for (i of categories(); track $index) {
-    <div class="categories-container" (click)="onCategoryClick(i)">
+        @for(j of restaurants(); track j.id){
+        <div class="categories-container" (click)="onCategoryClick(i)">
+        <img [src]="'/images/categories/' + j.categoryImage">
         {{i}}
+        {{j.categoryImage}}
     </div>
+    }
     }
 
 </div>

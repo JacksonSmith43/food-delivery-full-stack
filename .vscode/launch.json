@@ -2,6 +2,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "FoodDeliveryApplication",
+            "request": "launch",
+            "mainClass": "FoodDeliveryApplication",
+            "projectName": "food-delivery-full-stack_99ea75ba"
+        },
+        {
+            "type": "java",
             "name": "Spring Boot-FoodDeliveryApplication<backend>",
             "request": "launch",
             "cwd": "${workspaceFolder}",
