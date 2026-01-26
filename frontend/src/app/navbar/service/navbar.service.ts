@@ -22,9 +22,8 @@ export class NavBarService {
         console.log('NavBarService_getAllRestaurants()_restaurants: ', restaurants);
 
         const uniqueCategories = this.restaurantsService.getUniqueCategories(restaurants);
-        let splitUniqueCategories = uniqueCategories.map((c) => c.split(', ')).flat();
 
-        this.restaurantsService.categories.set(splitUniqueCategories);
+        this.restaurantsService.categories.set(uniqueCategories);
 
         console.log('NavBarService_getAllRestaurants()_uniqueCategories: ', uniqueCategories);
       },

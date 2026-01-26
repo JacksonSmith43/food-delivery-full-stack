@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 
 import { RestaurantsService } from '../../shared/services/restaurants.service';
 import { LocalStorageService } from '../../shared/services/local-storage.service';
-import { RestaurantType } from '../../shared/model/restaurants-type.module';
+import { CategoryType, RestaurantType } from '../../shared/model/restaurants-type.module';
 import { NavBarService } from '../../navbar/service/navbar.service';
 
 @Component({
@@ -33,7 +33,7 @@ export class Restaurant implements OnInit {
     }
   }
 
-  onCategoryClick(category: string) {
+  onCategoryClick(category: CategoryType) {
     console.log('onCategoryClick().');
 
     this.restaurantsService.getAllRestaurants().subscribe((restaurants) => {

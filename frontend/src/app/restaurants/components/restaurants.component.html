@@ -1,13 +1,11 @@
 <div class="food-category-container">
     <!-- <p>Category</p> -->
-    @for (i of categories(); track $index) {
-        @for(j of restaurants(); track j.id){
-        <div class="categories-container" (click)="onCategoryClick(i)">
-        <img [src]="'/images/categories/' + j.categoryImage">
-        {{i}}
-        {{j.categoryImage}}
+    @for (i of categories(); track i.id) {
+    <div class="categories-container" (click)="onCategoryClick(i)">
+        <img [src]="'/images/categories/' + i.categorieImage">
+        {{i.categorie}}
     </div>
-    }
+
     }
 
 </div>
@@ -18,10 +16,7 @@
     <div class="restaurant-container">
         <!-- With the img, link and script tag one can implicitly make a request to the server. -->
         <img [src]="'/images/restaurants/' + i.imageName">
-        <p>{{i.id}}</p>
         <p>{{i.restaurantName}}</p>
-        <p>{{i.category}}</p>
-        <p>{{i.plz}}</p>
     </div>
     }
 </div>

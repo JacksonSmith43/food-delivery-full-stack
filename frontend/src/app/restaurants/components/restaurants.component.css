@@ -1,14 +1,22 @@
 .food-category-container {
   display: flex;
+  flex-wrap: wrap;
+
   text-align: center;
   justify-content: space-around;
 }
 
-.categories-container {
-  margin-top: 1rem;
-  padding: 1rem 1rem;
+.food-category-container img {
   width: 8rem;
   height: 8rem;
+}
+
+.categories-container {
+  margin: 1.5rem 0.5rem;
+
+  padding: 1rem 0.5rem;
+  width: 9rem;
+  height: 10rem;
   outline: 0.025rem solid gray;
 }
 

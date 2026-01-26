@@ -80,7 +80,7 @@ public class RestaurantInitialiser {
             }
 
             if (italian != null) {
-                pizzaToGo.getCategories().add(pizza);
+                pizzaToGo.getCategories().add(italian);
             }
 
             restaurantRepository.save(fantasticFeast);
