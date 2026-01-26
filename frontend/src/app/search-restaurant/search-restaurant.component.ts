@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -21,12 +21,11 @@ export class SearchRestaurant {
   restaurantsService = inject(RestaurantsService);
   navbarService = inject(NavBarService);
 
+  plzExists = signal<boolean>(false);
+  successfullSubmission = signal<boolean>(false);
+
   form = new FormGroup({
-    plz: new FormControl('', [
-      Validators.required,
-      Validators.minLength(1),
-      Validators.maxLength(23),
-    ]),
+    plz: new FormControl('', [Validators.required, Validators.min(1), Validators.max(23)]),
   });
 
   onSubmit() {
@@ -34,11 +33,13 @@ export class SearchRestaurant {
 
     if (this.form.controls.plz.invalid) {
       console.log('SearchRestaurant_onSubmit()_invalid.');
+      this.successfullSubmission.set(false);
       this.form.controls.plz.reset();
       return;
     }
+
+    this.successfullSubmission.set(true);
     this.restaurantsService.plz.set(this.form.value.plz || 'Undefined plz');
-    this.form.controls.plz.reset();
 
     this.showRestaurantsWithCorrespondingEnteredPostcodes();
   }
@@ -57,6 +58,19 @@ export class SearchRestaurant {
         'showRestaurantsWithCorrespondingEnteredPostcodes()_restaurantsWithinPlz: ',
         restaurantsWithinPlz,
       );
+
+      // Checks if the PLZ exists after filtering the API results.
+      if (restaurantsWithinPlz.length > 0) {
+        this.plzExists.set(true);
+        this.form.controls.plz.reset();
+      } else {
+        this.plzExists.set(false);
+
+        setTimeout(() => {
+          this.form.controls.plz.reset();
+          this.plzExists.set(true);
+        }, 1000);
+      }
 
       this.restaurantsService.restaurants.set(restaurantsWithinPlz);
     });

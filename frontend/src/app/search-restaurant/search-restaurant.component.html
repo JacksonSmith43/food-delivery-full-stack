@@ -4,6 +4,9 @@
             min="1" max="23" aria-label="Postcode input." [formControl]="form.controls.plz">
         <button type="submit" matButton="tonal">Search</button>
     </form>
+    @if(!plzExists() && successfullSubmission() ){
+    <p class="error-message">Postcode does not exist.</p>
+    }
     @if(form.controls.plz.invalid && (form.controls.plz.dirty || form.controls.plz.touched)){
     <p class="error-message">{{plzErrorMessages}}</p>
     }
