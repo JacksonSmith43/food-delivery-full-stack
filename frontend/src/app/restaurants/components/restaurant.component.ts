@@ -1,4 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
+import { RouterLink } from '@angular/router';
 
 import { RestaurantsService } from '../../shared/services/restaurants.service';
 import { LocalStorageService } from '../../shared/services/local-storage.service';
@@ -7,7 +8,8 @@ import { NavBarService } from '../../navbar/service/navbar.service';
 
 @Component({
   selector: 'app-restaurants',
-  imports: [],
+  standalone: true,
+  imports: [RouterLink],
   templateUrl: './restaurants.component.html',
   styleUrl: './restaurants.component.css',
 })

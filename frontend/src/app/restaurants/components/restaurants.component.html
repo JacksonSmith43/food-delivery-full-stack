@@ -13,7 +13,7 @@
 <div class="all-restaurants-container">
     @for(i of restaurants(); track i.id){
 
-    <div class="restaurant-container">
+    <div class="restaurant-container" [routerLink]="['/restaurant/'+ i.restaurantName]">
         <!-- With the img, link and script tag one can implicitly make a request to the server. -->
         <img [src]="'/images/restaurants/' + i.imageName">
         <p>{{i.restaurantName}}</p>

@@ -3,7 +3,8 @@
     <!-- [routerLink]="'/allRestaurants'"
         aria-label="Show all restaurant names." routerLinkActive="selected" title="All Restaurants"
     -->
-    <button matButton="filled" (click)="onGetAllRestaurants()">Show all
+    <button matButton="filled" (click)="onGetAllRestaurants()" [routerLink]="'/allRestaurants'"
+        routerLinkActive="selected">Show all
         Restaurants
     </button>
 
