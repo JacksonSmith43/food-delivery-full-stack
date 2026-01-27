@@ -34,6 +34,13 @@ public class MenuItem {
         this.imageName = imageName;
     }
 
+    public MenuItem(String name, String description, Double price, String imageName) {
+        this.name = name;
+        this.description = description;
+        this.price = price;
+        this.imageName = imageName;
+    }
+
     public Long getId() {
         return id;
     }
