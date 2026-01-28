@@ -1,21 +1,29 @@
 package com.fooddelivery.initialiser;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import com.fooddelivery.entity.MenuItem;
+import com.fooddelivery.entity.Restaurants;
 import com.fooddelivery.repository.MenuItemRepository;
+import com.fooddelivery.repository.RestaurantRepository;
 
 import jakarta.annotation.PostConstruct;
 
 @Component
+@Order(3)
 public class MenuInitialiser {
         @Autowired
         private MenuItemRepository menuItemRepository;
 
+        @Autowired
+        RestaurantRepository restaurantRepository;
+
         @PostConstruct
         public void init() {
                 if (menuItemRepository.count() == 0) {
+                        // Creates MenuItems.
                         // Vegan.
                         MenuItem chiliCheezeBurgerMenü = new MenuItem("Chili Cheeze Burger Menü",
                                         "Chili Cheeze + Farm Fries",
@@ -90,6 +98,61 @@ public class MenuInitialiser {
                                         "Grünes Thai Curry mit Fisolen, Bambussprossen, Kokosmilch dazu Reis", 13.80,
                                         "geangKhiaoWan.png");
 
+                        // Get restaurants from the database.
+                        Restaurants fantasticFeast = restaurantRepository
+                                        .findByRestaurantName("Fantastic Feast and Where to Eat Them").orElse(null);
+                        Restaurants lastResort = restaurantRepository.findByRestaurantName("Last Resort Diner")
+                                        .orElse(null);
+                        Restaurants getFat = restaurantRepository.findByRestaurantName("Get Fat Soon").orElse(null);
+                        Restaurants fryingNemo = restaurantRepository.findByRestaurantName("Frying Nemo").orElse(null);
+                        Restaurants pizzaToGo = restaurantRepository.findByRestaurantName("Pizza To Go").orElse(null);
+                        Restaurants thaiTanic = restaurantRepository.findByRestaurantName("ThaiTanic Kitchen")
+                                        .orElse(null);
+                        Restaurants pitaPan = restaurantRepository.findByRestaurantName("Pita Pan").orElse(null);
+                        Restaurants jackGriller = restaurantRepository.findByRestaurantName("Jack The Griller")
+                                        .orElse(null);
+                        Restaurants fatFace = restaurantRepository.findByRestaurantName("Fat Face").orElse(null);
+                        Restaurants lordWings = restaurantRepository.findByRestaurantName("Lord Of The Wings")
+                                        .orElse(null);
+                        Restaurants misoHungry = restaurantRepository.findByRestaurantName("Miso Hungry").orElse(null);
+
+                        // Assigns restaurants to menu items.
+                        chiliCheezeBurgerMenü.setRestaurant(misoHungry);
+                        swingBurgerMenü.setRestaurant(misoHungry);
+                        sixerNuggets.setRestaurant(misoHungry);
+                        avocadoChicknPlanty.setRestaurant(misoHungry);
+
+                        salamiPizza.setRestaurant(pizzaToGo);
+                        funghiPizza.setRestaurant(pizzaToGo);
+                        alTonnoPizza.setRestaurant(pizzaToGo);
+
+                        butterChicken.setRestaurant(fantasticFeast);
+                        chickenTikkaMasalaPikant.setRestaurant(getFat);
+                        linsensuppeVegan.setRestaurant(fatFace);
+                        vegetarischesBiryaniVegan.setRestaurant(fatFace);
+
+                        pastaAlfredo.setRestaurant(pizzaToGo);
+                        pastaCarbonara.setRestaurant(pizzaToGo);
+                        pinsaVegana.setRestaurant(pizzaToGo);
+
+                        nudelnMitKnusprigemHuhn.setRestaurant(fantasticFeast);
+                        nudelnMitGemüse.setRestaurant(getFat);
+                        reisMitKnusprigerEnteCola.setRestaurant(fatFace);
+                        avocadosalat.setRestaurant(fatFace);
+
+                        doubleCheeseburgerMenü.setRestaurant(getFat);
+                        doubleBaconJam.setRestaurant(lastResort);
+                        // TODO: Add new menus.
+                        doubleCheeseburgerMenü.setRestaurant(getFat);
+                        doubleCheeseburgerMenü.setRestaurant(fatFace);
+                        doubleCheeseburgerMenü.setRestaurant(lordWings);
+                        halloumiBurger.setRestaurant(jackGriller);
+
+                        phadThaiNationalgericht.setRestaurant(fryingNemo);
+                        somTam.setRestaurant(thaiTanic);
+                        geangKhiaoWan.setRestaurant(pitaPan);
+
+                        // Saves menu items to the database.
                         menuItemRepository.save(chiliCheezeBurgerMenü);
                         menuItemRepository.save(swingBurgerMenü);
                         menuItemRepository.save(sixerNuggets);

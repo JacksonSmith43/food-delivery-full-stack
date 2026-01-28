@@ -1,6 +1,7 @@
 package com.fooddelivery.initialiser;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import com.fooddelivery.entity.Categories;
@@ -11,11 +12,12 @@ import com.fooddelivery.repository.RestaurantRepository;
 import jakarta.annotation.PostConstruct;
 
 @Component
+@Order(2)
 public class RestaurantInitialiser {
     @Autowired
     private RestaurantRepository restaurantRepository;
     @Autowired
-    CategoriesRepository categoriesRepository;
+    private CategoriesRepository categoriesRepository;
 
     @PostConstruct
     public void init() {
@@ -25,7 +27,7 @@ public class RestaurantInitialiser {
             Restaurants lastResort = new Restaurants("Last Resort Diner", "last-resort-diner.png", "10");
             Restaurants getFat = new Restaurants("Get Fat Soon", "get-fat-soon.png", "23");
             Restaurants fryingNemo = new Restaurants("Frying Nemo", "frying-nemo.png", "20");
-            Restaurants pizzaToGo = new Restaurants("Pizza To Go ", "pizza-to-go.png", "12");
+            Restaurants pizzaToGo = new Restaurants("Pizza To Go", "pizza-to-go.png", "12");
             Restaurants thaiTanic = new Restaurants("ThaiTanic Kitchen", "thaitanic-kitchen.png", "14");
             Restaurants pitaPan = new Restaurants("Pita Pan", "pita-pan.png", "11");
             Restaurants jackGriller = new Restaurants("Jack The Griller", "jack-the-griller.png", "22");

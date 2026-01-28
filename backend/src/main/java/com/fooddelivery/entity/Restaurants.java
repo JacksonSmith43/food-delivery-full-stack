@@ -1,6 +1,8 @@
 package com.fooddelivery.entity;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.*;
@@ -25,27 +27,35 @@ public class Restaurants {
     @JoinTable(name = "restaurant_categories", joinColumns = @JoinColumn(name = "restaurant_id"), inverseJoinColumns = @JoinColumn(name = "categories_id"))
     private Set<Categories> categories = new HashSet<>();
 
+    // mappedBy means that the "restaurant" field in MenuItem owns the relationship.
+    @OneToMany(mappedBy = "restaurant")
+    private List<MenuItem> menuItems = new ArrayList<>();
+
     public Restaurants() {
     }
 
     public Restaurants(String restaurantName, String imageName, String plz) {
-		this.restaurantName = restaurantName;
-		this.imageName = imageName;
-		this.plz = plz;
-	}
+        this.restaurantName = restaurantName;
+        this.imageName = imageName;
+        this.plz = plz;
+    }
 
-	public Restaurants(String restaurantName, String imageName, String plz, Set<Categories> categories) {
-		this.restaurantName = restaurantName;
-		this.imageName = imageName;
-		this.plz = plz;
-		this.categories = categories;
-	}
+    public Restaurants(String restaurantName, String imageName, String plz, Set<Categories> categories) {
+        this.restaurantName = restaurantName;
+        this.imageName = imageName;
+        this.plz = plz;
+        this.categories = categories;
+    }
 
-	public Restaurants(Long id, String restaurantName, String imageName, String plz) {
+    public Restaurants(Long id, String restaurantName, String imageName, String plz) {
         this.id = id;
         this.restaurantName = restaurantName;
         this.imageName = imageName;
         this.plz = plz;
+    }
+
+    public Restaurants(String restaurantName) {
+        this.restaurantName = restaurantName;
     }
 
     public String getPlz() {
@@ -86,6 +96,14 @@ public class Restaurants {
 
     public void setCategories(Set<Categories> categories) {
         this.categories = categories;
+    }
+
+    public List<MenuItem> getMenuItems() {
+        return menuItems;
+    }
+
+    public void setMenuItems(List<MenuItem> menuItems) {
+        this.menuItems = menuItems;
     }
 
     @Override

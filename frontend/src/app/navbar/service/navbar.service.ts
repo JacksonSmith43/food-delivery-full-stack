@@ -19,6 +19,10 @@ export class NavBarService {
         this.localStorageService.saveToLocalStorage('restaurants', restaurants as any);
         this.restaurantsService.restaurants.set(restaurants);
 
+        let menuItems = restaurants.flatMap((m) => m.menuItems);
+        console.log('onMenuClick()_menuItems: ', menuItems);
+         this.restaurantsService.menuItems.set(menuItems);
+
         console.log('NavBarService_getAllRestaurants()_restaurants: ', restaurants);
 
         const uniqueCategories = this.restaurantsService.getUniqueCategories(restaurants);

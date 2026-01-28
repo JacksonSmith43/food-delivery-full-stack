@@ -10,13 +10,13 @@ public class MenuItem {
     private Long id;
 
     @Column(name = "food_name")
-    private String name;
+    private String foodName;
 
     private String description;
     private Double price;
 
     @Column(name = "food_image")
-    private String imageName;
+    private String foodImage;
 
     @ManyToOne
     @JoinColumn(name = "restaurant_id")
@@ -26,19 +26,19 @@ public class MenuItem {
 
     }
 
-    public MenuItem(Long id, String name, String description, Double price, String imageName) {
+    public MenuItem(Long id, String foodName, String description, Double price, String foodImage) {
         this.id = id;
-        this.name = name;
+        this.foodName = foodName;
         this.description = description;
         this.price = price;
-        this.imageName = imageName;
+        this.foodImage = foodImage;
     }
 
-    public MenuItem(String name, String description, Double price, String imageName) {
-        this.name = name;
+    public MenuItem(String foodName, String description, Double price, String foodImage) {
+        this.foodName = foodName;
         this.description = description;
         this.price = price;
-        this.imageName = imageName;
+        this.foodImage = foodImage;
     }
 
     public Long getId() {
@@ -49,12 +49,12 @@ public class MenuItem {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getFoodName() {
+        return foodName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFoodName(String foodName) {
+        this.foodName = foodName;
     }
 
     public String getDescription() {
@@ -74,16 +74,24 @@ public class MenuItem {
     }
 
     public String getImageName() {
-        return imageName;
+        return foodImage;
     }
 
-    public void setImageName(String imageName) {
-        this.imageName = imageName;
+    public void setImageName(String foodImage) {
+        this.foodImage = foodImage;
+    }
+
+    public Restaurants getRestaurant() {
+        return restaurant;
+    }
+
+    public void setRestaurant(Restaurants restaurant) {
+        this.restaurant = restaurant;
     }
 
     @Override
     public String toString() {
-        return "MenuItem [id=" + id + ", name=" + name + ", description=" + description + ", price=" + price
-                + ", imageName=" + imageName + "]";
+        return "MenuItem [id=" + id + ", foodName=" + foodName + ", description=" + description + ", price=" + price
+                + ", foodImage=" + foodImage + "]";
     }
 }

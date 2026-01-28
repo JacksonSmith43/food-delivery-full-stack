@@ -20,3 +20,9 @@
     </div>
     }
 </div>
+
+<div class="menu-item-container">
+    @for(m of menuItems(); track m.id){
+    <p>{{m.foodName}}</p>
+    }
+</div>

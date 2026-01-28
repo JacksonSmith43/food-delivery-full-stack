@@ -20,6 +20,7 @@ export class Restaurant implements OnInit {
 
   restaurants = this.restaurantsService.restaurants;
   categories = this.restaurantsService.categories;
+  menuItems = this.restaurantsService.menuItems;
 
   ngOnInit(): void {
     console.log('Restaurant_ngOnInit().');
@@ -43,4 +44,13 @@ export class Restaurant implements OnInit {
       this.restaurantsService.restaurants.set(filtered);
     });
   }
+
+  // onMenuClick() {
+  //   console.log('onMenuClick().');
+  //   this.restaurantsService.getAllRestaurants().subscribe((restaurants) => {
+  //     let menuItems = restaurants.flatMap((m) => m.menuItems);
+  //     console.log('onMenuClick()_menuItems: ', menuItems);
+  //     this.restaurantsService.menuItems.set(menuItems);
+  //   });
+  // }
 }

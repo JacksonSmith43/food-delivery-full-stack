@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 
-import { CategoryType, RestaurantType } from '../model/restaurants-type.module';
+import { CategoryType, MenuItemsType, RestaurantType } from '../model/restaurants-type.module';
 import { LocalStorageService } from './local-storage.service';
 
 @Injectable({
@@ -14,6 +14,7 @@ export class RestaurantsService {
   restaurants = signal<RestaurantType[]>([]);
   plz = signal<string>('');
   categories = signal<CategoryType[]>([]);
+  menuItems = signal<MenuItemsType[]>([]);
 
   getAllRestaurants() {
     console.log('RestaurantsService_getAllRestaurants().');
