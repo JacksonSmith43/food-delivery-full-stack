@@ -1,0 +1,24 @@
+.restaurants-detail-container {
+  display: grid;
+  justify-content: center;
+  outline: 0.025rem solid red;
+}
+
+.menu-item-container {
+  display: flex;
+  flex-wrap: wrap;
+
+  outline: 0.025rem solid blue;
+  height: auto;
+  width: auto;
+}
+
+.menu-item {
+  margin: 1rem 1rem;
+  width: auto;
+  height: auto;
+}
+
+img {
+  height: 8rem;
+}

@@ -1,7 +1,6 @@
 package com.fooddelivery.initialiser;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import com.fooddelivery.entity.Categories;
@@ -10,7 +9,6 @@ import com.fooddelivery.repository.CategoriesRepository;
 import jakarta.annotation.PostConstruct;
 
 @Component
-@Order(1)
 public class CategoriesInitialiser {
 
     @Autowired
@@ -18,6 +16,8 @@ public class CategoriesInitialiser {
 
     @PostConstruct
     public void init() {
+        System.out.println("CategoriesInitialiser: @PostConstruct called!");
+        System.out.println("CategoriesInitialiser: Categories count = " + categoriesRepository.count());
         if (categoriesRepository.count() == 0) { // It should only be filled, if the database is empty.
             Categories pizza = new Categories("Pizza", "pizza.png");
             Categories burger = new Categories("Burger", "burger.png");

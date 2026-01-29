@@ -77,11 +77,11 @@ public class MenuItem {
         this.price = price;
     }
 
-    public String getImageName() {
+    public String getFoodImage() {
         return foodImage;
     }
 
-    public void setImageName(String foodImage) {
+    public void setFoodImage(String foodImage) {
         this.foodImage = foodImage;
     }
 

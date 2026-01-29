@@ -1,7 +1,7 @@
 package com.fooddelivery.initialiser;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.annotation.Order;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
 
 import com.fooddelivery.entity.Categories;
@@ -12,7 +12,7 @@ import com.fooddelivery.repository.RestaurantRepository;
 import jakarta.annotation.PostConstruct;
 
 @Component
-@Order(2)
+@DependsOn("categoriesInitialiser")
 public class RestaurantInitialiser {
     @Autowired
     private RestaurantRepository restaurantRepository;
@@ -21,6 +21,8 @@ public class RestaurantInitialiser {
 
     @PostConstruct
     public void init() {
+        System.out.println("RestaurantInitialiser: @PostConstruct called!");
+        System.out.println("RestaurantInitialiser: Restaurant count = " + restaurantRepository.count());
         if (restaurantRepository.count() == 0) {
             Restaurants fantasticFeast = new Restaurants("Fantastic Feast and Where to Eat Them",
                     "fantastic-feast-and-where-to-eat-them.png", "23");

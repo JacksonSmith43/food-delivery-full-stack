@@ -65,6 +65,10 @@ export class RestaurantsService {
     console.log('filterByRestaurantMenuItems().');
 
     this.restaurants.set([selectedRestaurant]);
+    console.log(
+      'filterByRestaurantMenuItems()_selectedRestaurant: ',
+      selectedRestaurant.restaurantName,
+    );
 
     let menuItems = this.restaurants().flatMap((r) => r.menuItems);
     this.menuItems.set(menuItems);

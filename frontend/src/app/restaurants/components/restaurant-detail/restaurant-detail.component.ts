@@ -13,4 +13,13 @@ export class RestaurantDetailComponent {
   restaurantService = inject(RestaurantsService);
 
   menuItems = this.restaurantService.menuItems;
+  restaurant = this.restaurantService.restaurants;
+
+  getCurrentRestaurant(): string[] {
+    return this.restaurant().map((r) => r.restaurantName);
+  }
+
+  getCurrentRestaurantImage(): string[] {
+    return this.restaurant().map((r) => r.imageName);
+  }
 }
