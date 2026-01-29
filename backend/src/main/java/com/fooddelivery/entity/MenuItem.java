@@ -1,5 +1,7 @@
 package com.fooddelivery.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -20,6 +22,8 @@ public class MenuItem {
 
     @ManyToOne
     @JoinColumn(name = "restaurant_id")
+    // If MenuItem is described, then the restaurant reference will be ignored.
+    @JsonBackReference
     private Restaurants restaurant;
 
     public MenuItem() {

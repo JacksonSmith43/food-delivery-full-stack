@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.*;
 
 @Entity
@@ -29,6 +31,10 @@ public class Restaurants {
 
     // mappedBy means that the "restaurant" field in MenuItem owns the relationship.
     @OneToMany(mappedBy = "restaurant")
+    // This annotation helps to manage the bidirectional relationship during JSON
+    // serialisation. So Restaurants is the parent and MenuItem is the child and
+    // Restaurant will be sent with all its details including the list of MenuItems.
+    @JsonManagedReference
     private List<MenuItem> menuItems = new ArrayList<>();
 
     public Restaurants() {
