@@ -1,3 +1,9 @@
 <div class="restaurants-detail-container">
-    <p>Hola.</p>
+    <div class="menu-item-container">
+        @for(m of menuItems(); track m.id){
+        <div class="menu-item">
+            <p>{{m.foodName}}</p>
+        </div>
+        }
+    </div>
 </div>

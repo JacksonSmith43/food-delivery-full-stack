@@ -45,12 +45,9 @@ export class Restaurant implements OnInit {
     });
   }
 
-  // onMenuClick() {
-  //   console.log('onMenuClick().');
-  //   this.restaurantsService.getAllRestaurants().subscribe((restaurants) => {
-  //     let menuItems = restaurants.flatMap((m) => m.menuItems);
-  //     console.log('onMenuClick()_menuItems: ', menuItems);
-  //     this.restaurantsService.menuItems.set(menuItems);
-  //   });
-  // }
+  onRestaurantClick(selectedRestaurant: RestaurantType) {
+    console.log('onMenuClick().');
+
+    this.restaurantsService.filterByRestaurantMenuItems(selectedRestaurant);
+  }
 }

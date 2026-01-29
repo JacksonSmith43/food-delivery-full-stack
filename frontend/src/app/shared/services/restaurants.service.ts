@@ -60,4 +60,13 @@ export class RestaurantsService {
       r.categories.some((c) => c.categorie === selectedCategory.categorie),
     );
   }
+
+  filterByRestaurantMenuItems(selectedRestaurant: RestaurantType) {
+    console.log('filterByRestaurantMenuItems().');
+
+    this.restaurants.set([selectedRestaurant]);
+
+    let menuItems = this.restaurants().flatMap((r) => r.menuItems);
+    this.menuItems.set(menuItems);
+  }
 }
