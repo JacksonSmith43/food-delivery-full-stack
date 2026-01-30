@@ -2,11 +2,12 @@ import { Component, inject, OnInit } from '@angular/core';
 
 import { RestaurantsService } from '../../../shared/services/restaurants.service';
 import { LocalStorageService } from '../../../shared/services/local-storage.service';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-restaurant-detail',
   standalone: true,
-  imports: [],
+  imports: [MatIcon],
   templateUrl: './restaurant-detail.component.html',
   styleUrl: './restaurant-detail.component.css',
 })
@@ -50,5 +51,13 @@ export class RestaurantDetailComponent implements OnInit {
     console.log('getCurrentCategory()_category_typeof: ', typeof category);
 
     return category;
+  }
+
+  onAddToCart() {
+    console.log('onAddToCart().');
+  }
+
+  onRemoveFromCart() {
+    console.log('onRemoveFromCart().');
   }
 }

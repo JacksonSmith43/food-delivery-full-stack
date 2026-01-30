@@ -11,12 +11,24 @@
 
     <div class="menu-item-container">
         @for(m of menuItems(); track m.id){
-        <div class="menu-item" >
-            <div>
-                <p>{{m.foodName}}</p>
-                <p>Price: {{m.price}} Euro</p>
+        <div class="menu-item">
+
+            <div class="menu-item-menu">
+                <div class="menu-item-details">
+                    <p>{{m.foodName}}</p>
+                    <p>Price: {{m.price}} Euro</p>
+                </div>
+                <div class="menu-item-image">
+                    <img [src]="'/images/menus/' + m.foodImage">
+                </div>
             </div>
-            <img [src]="'/images/menus/' + m.foodImage">
+            <div class="mat-icon">
+                <mat-icon aria-hidden="false" aria-label="Remove item from cart." fontIcon="remove"
+                    (click)="onRemoveFromCart()"></mat-icon>
+                <mat-icon aria-hidden="false" aria-label="Add item to cart." fontIcon="add"
+                    (click)="onAddToCart()"></mat-icon>
+            </div>
+
         </div>
         }
     </div>

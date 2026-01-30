@@ -17,21 +17,23 @@
 
 .menu-item {
   display: flex;
+  flex-direction: column;
   margin: 1rem 1rem;
-  padding: 1rem 1rem;
+  padding: 2rem 1rem;
   width: auto;
   height: auto;
+
   border-radius: 2rem;
   outline: 0.025rem solid gray;
 }
 
-.menu-item img {
-  margin-left: 2rem;
+.menu-item-menu {
+  display: flex;
+  padding-bottom: 1rem;
 }
 
-img {
-  height: 8rem;
-  border-radius: 1rem;
+.menu-item img {
+  margin-left: 2rem;
 }
 
 .restaurant-details img {
@@ -43,4 +45,23 @@ img {
   display: flex;
   border-bottom: 0.025rem solid gray;
   margin-bottom: 3rem;
+}
+
+.mat-icon {
+  display: flex;
+
+  margin-top: 0.5rem;
+  margin: auto auto;
+
+  width: 8rem;
+  gap: 0.5rem;
+}
+
+img {
+  height: 8rem;
+  border-radius: 1rem;
+}
+
+.menu-item:hover {
+  background-color: #681b33;
 }
