@@ -2,7 +2,7 @@
   display: grid;
   justify-content: center;
   margin-top: 1rem;
-  padding: 1rem 1rem;
+  padding: 1rem 2rem;
   outline: 0.025rem solid red;
 }
 
@@ -16,13 +16,22 @@
 }
 
 .menu-item {
+  display: flex;
   margin: 1rem 1rem;
+  padding: 1rem 1rem;
   width: auto;
   height: auto;
+  border-radius: 2rem;
+  outline: 0.025rem solid gray;
+}
+
+.menu-item img {
+  margin-left: 2rem;
 }
 
 img {
   height: 8rem;
+  border-radius: 1rem;
 }
 
 .restaurant-details img {

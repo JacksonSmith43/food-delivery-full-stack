@@ -11,9 +11,12 @@
 
     <div class="menu-item-container">
         @for(m of menuItems(); track m.id){
-        <div class="menu-item">
+        <div class="menu-item" >
+            <div>
+                <p>{{m.foodName}}</p>
+                <p>Price: {{m.price}} Euro</p>
+            </div>
             <img [src]="'/images/menus/' + m.foodImage">
-            <p>{{m.foodName}}</p>
         </div>
         }
     </div>
