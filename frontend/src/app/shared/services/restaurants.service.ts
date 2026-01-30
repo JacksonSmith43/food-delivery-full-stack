@@ -71,6 +71,10 @@ export class RestaurantsService {
     );
 
     let menuItems = this.restaurants().flatMap((r) => r.menuItems);
+
+    this.localStorageService.saveToLocalStorage('chosenRestaurant', [selectedRestaurant]);
+    this.localStorageService.saveToLocalStorage('menuItemsofChosenRestaurant', menuItems);
+
     this.menuItems.set(menuItems);
   }
 }

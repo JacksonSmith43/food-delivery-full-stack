@@ -1,7 +1,12 @@
 <div class="restaurants-detail-container">
     <div class="restaurant-details">
-        <h2>{{getCurrentRestaurant()}}</h2>
-        <img [src]="'/images/restaurants/' + getCurrentRestaurantImage()">
+        <div class="restaurant-details-image">
+            <img [src]="'/images/restaurants/' + getCurrentRestaurantImage()">
+        </div>
+        <div class="restaurant-details-information">
+            <p>{{getCurrentCategory()}}</p>
+            <h2>{{getCurrentRestaurant()}}</h2>
+        </div>
     </div>
 
     <div class="menu-item-container">

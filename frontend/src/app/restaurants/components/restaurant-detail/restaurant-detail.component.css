@@ -1,6 +1,8 @@
 .restaurants-detail-container {
   display: grid;
   justify-content: center;
+  margin-top: 1rem;
+  padding: 1rem 1rem;
   outline: 0.025rem solid red;
 }
 
@@ -21,4 +23,15 @@
 
 img {
   height: 8rem;
+}
+
+.restaurant-details img {
+  margin-right: 1rem;
+  margin-bottom: 1rem;
+}
+
+.restaurant-details {
+  display: flex;
+  border-bottom: 0.025rem solid gray;
+  margin-bottom: 3rem;
 }
