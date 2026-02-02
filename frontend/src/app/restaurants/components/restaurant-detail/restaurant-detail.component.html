@@ -24,9 +24,10 @@
             </div>
             <div class="mat-icon">
                 <mat-icon aria-hidden="false" aria-label="Remove item from cart." fontIcon="remove"
-                    (click)="onRemoveFromCart()"></mat-icon>
+                    (click)="onRemoveFromCart(m.id)"></mat-icon>
+                <p>{{getItemQuantity(m.id)}}</p>
                 <mat-icon aria-hidden="false" aria-label="Add item to cart." fontIcon="add"
-                    (click)="onAddToCart()"></mat-icon>
+                    (click)="onAddToCart(m.id)"></mat-icon>
             </div>
 
         </div>

@@ -62,6 +62,11 @@ img {
   border-radius: 1rem;
 }
 
+p {
+  margin: auto;
+  margin-right: 1rem;
+}
+
 .menu-item:hover {
   background-color: #681b33;
 }
