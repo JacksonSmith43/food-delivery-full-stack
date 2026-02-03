@@ -1,0 +1,47 @@
+.cart-container {
+  display: grid;
+  justify-content: center;
+
+  outline: 0.025rem solid red;
+}
+
+.menu-items {
+  display: flex;
+  margin-top: 1rem;
+  outline: 0.025rem solid blue;
+}
+
+.mat-icon {
+  display: flex;
+
+  margin-top: 0.5rem;
+  margin: auto auto;
+  padding-right: 1rem;
+  width: 8rem;
+}
+
+.summary {
+  justify-content: flex-end;
+
+  margin: 1rem auto;
+  margin-left: 60rem;
+  padding: 1rem 1rem;
+
+  outline: 0.025rem solid green;
+}
+
+.summary p {
+  display: flex;
+  justify-content: space-between;
+  /* align-items: center; */
+  margin: 1rem auto;
+}
+
+img {
+  width: 8rem;
+}
+
+p {
+  display: flex;
+  margin: auto 2rem;
+}

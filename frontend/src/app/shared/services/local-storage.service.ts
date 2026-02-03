@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+
 import { MenuItemsType, RestaurantType } from '../model/restaurants-type.module';
 
 @Injectable({ providedIn: 'root' })

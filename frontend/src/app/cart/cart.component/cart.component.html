@@ -1,0 +1,27 @@
+<div class="cart-container">
+    <h2>Your Cart</h2>
+
+    @for(cart of cart()?.cartItems; track cart.id){
+    <div class="menu-items">
+        <img [src]="'/images/menus/' + cart.menuItem.foodImage">
+        <p>{{cart.menuItem.foodName}} </p>
+        <p>{{cart.menuItem.price}} Euro</p>
+
+        <div class="mat-icon">
+            <mat-icon aria-hidden="false" aria-label="Remove item from cart." fontIcon="remove"
+                (click)="onRemoveFromCart(cart.menuItem.id)"></mat-icon>
+            <p>{{cart.quantity}}</p>
+
+            <mat-icon aria-hidden="false" aria-label="Add item to cart." fontIcon="add"
+                (click)="onAddToCart(cart.menuItem.id)"></mat-icon>
+        </div>
+    </div>
+    }
+
+    <div class="summary">
+        <p style="font-weight: bold;">Cart Total</p>
+        <p>Quantity: {{cartSummary().totalQuantity}}</p>
+        <p>Total Cost: {{cartSummary().totalCost}} Euro</p>
+
+    </div>
+</div>
