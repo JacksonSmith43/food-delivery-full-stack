@@ -6,9 +6,15 @@
 }
 
 .menu-items {
-  display: flex;
+  display: grid;
+  grid-template-columns: 8rem 0.50fr auto auto;
   margin-top: 1rem;
   outline: 0.025rem solid blue;
+}
+
+.food-name {
+  justify-content: start;
+  margin-left: 8rem;
 }
 
 .mat-icon {
@@ -33,7 +39,6 @@
 .summary p {
   display: flex;
   justify-content: space-between;
-  /* align-items: center; */
   margin: 1rem auto;
 }
 
@@ -43,5 +48,12 @@ img {
 
 p {
   display: flex;
+  justify-content: center;
   margin: auto 2rem;
+}
+
+h2 {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
 }

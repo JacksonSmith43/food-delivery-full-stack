@@ -1,10 +1,12 @@
 <div class="cart-container">
     <h2>Your Cart</h2>
+    @if(cartLength() > 0 ){
 
     @for(cart of cart()?.cartItems; track cart.id){
     <div class="menu-items">
         <img [src]="'/images/menus/' + cart.menuItem.foodImage">
-        <p>{{cart.menuItem.foodName}} </p>
+
+        <p class="food-name">{{cart.menuItem.foodName}} </p>
         <p>{{cart.menuItem.price}} Euro</p>
 
         <div class="mat-icon">
@@ -24,4 +26,9 @@
         <p>Total Cost: {{cartSummary().totalCost}} Euro</p>
 
     </div>
+
+    }@else {
+    <p style="font-weight: bold; font-size: 1rem;">No items have been added to the cart.</p>
+    }
+
 </div>

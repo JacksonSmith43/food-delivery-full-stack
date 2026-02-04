@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, computed, inject, OnInit } from '@angular/core';
 
 import { CartService } from '../../shared/services/cart.service';
 import { MatIcon } from '@angular/material/icon';
@@ -14,6 +14,7 @@ export class CartComponent implements OnInit {
 
   cart = this.cartService.cart;
   cartSummary = this.cartService.cartSummary;
+  cartLength = computed(() => this.cart()?.cartItems?.length || 0);
 
   ngOnInit(): void {
     console.log('CartComponent_ngOnInit().');
