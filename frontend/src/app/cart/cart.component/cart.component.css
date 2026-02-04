@@ -1,15 +1,13 @@
 .cart-container {
   display: grid;
   justify-content: center;
-
-  outline: 0.025rem solid red;
 }
 
 .menu-items {
   display: grid;
-  grid-template-columns: 8rem 0.50fr auto auto;
+  grid-template-columns: 8rem 0.5fr auto auto;
   margin-top: 1rem;
-  outline: 0.025rem solid blue;
+  outline: 0.025rem solid gray;
 }
 
 .food-name {
@@ -33,7 +31,7 @@
   margin-left: 60rem;
   padding: 1rem 1rem;
 
-  outline: 0.025rem solid green;
+  outline: 0.025rem solid gray;
 }
 
 .summary p {

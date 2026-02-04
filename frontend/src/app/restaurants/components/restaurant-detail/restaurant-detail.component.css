@@ -3,14 +3,12 @@
   justify-content: center;
   margin-top: 1rem;
   padding: 1rem 2rem;
-  outline: 0.025rem solid red;
 }
 
 .menu-item-container {
   display: flex;
   flex-wrap: wrap;
 
-  outline: 0.025rem solid blue;
   height: auto;
   width: auto;
 }
