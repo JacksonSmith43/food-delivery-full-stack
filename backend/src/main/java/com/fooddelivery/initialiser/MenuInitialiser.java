@@ -61,7 +61,7 @@ public class MenuInitialiser {
                                         "chickenTikkaMasalaPikant.webp");
                         MenuItem linsensuppeVegan = new MenuItem("Linsensuppe (Vegan)",
                                         "Eine wärmende Mahlzeit für kalte Tage. Die Linsensuppe von Großmutters Rezept ist eine kräftige und gesunde Suppe mit viel Gemüse und würzigem Speck.",
-                                        4.50, "linsensuppeVegan.webp");
+                                        4.50, "linsensuppeVegan.png");
                         MenuItem vegetarischesBiryaniVegan = new MenuItem("Vegetarisches Biryani (Vegan)",
                                         "Basmatireis mit gemischten Gemüsesorten", 13.90,
                                         "vegetarischesBiryaniVegan.webp");
