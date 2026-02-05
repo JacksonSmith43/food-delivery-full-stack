@@ -13,7 +13,7 @@ import { NavBarService } from '../../navbar/service/navbar.service';
   templateUrl: './restaurants.component.html',
   styleUrl: './restaurants.component.css',
 })
-export class Restaurant implements OnInit {
+export class RestaurantComponent implements OnInit {
   private restaurantsService = inject(RestaurantsService);
   localStorageService = inject(LocalStorageService);
   navbarService = inject(NavBarService);

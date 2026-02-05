@@ -10,10 +10,11 @@ import { MatButtonModule } from '@angular/material/button';
 
 import { RestaurantsService } from '../shared/services/restaurants.service';
 import { NavBarService } from '../navbar/service/navbar.service';
+import { RestaurantComponent } from '../restaurants/components/restaurant.component';
 
 @Component({
   selector: 'app-search-restaurant',
-  imports: [FormsModule, MatButtonModule, ReactiveFormsModule],
+  imports: [FormsModule, MatButtonModule, ReactiveFormsModule, RestaurantComponent],
   templateUrl: './search-restaurant.component.html',
   styleUrl: './search-restaurant.component.css',
 })
