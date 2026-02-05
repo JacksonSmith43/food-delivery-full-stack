@@ -38,3 +38,17 @@ img {
   padding-top: 1rem;
   width: 12rem;
 }
+
+/* Smartphones (from 576px). */
+@media only screen and (max-width: 576px) {
+  .all-restaurants-container {
+    justify-content: center;
+  }
+}
+
+/* Tablets im Querformat (from 768px). */
+@media only screen and (min-width: 768px) {
+  .all-restaurants-container {
+    justify-content: center;
+  }
+}

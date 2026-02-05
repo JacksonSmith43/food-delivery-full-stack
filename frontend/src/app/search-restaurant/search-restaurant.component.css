@@ -2,7 +2,7 @@ form {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 13rem;
+  margin-top: 1rem;
 }
 
 button {
@@ -35,4 +35,15 @@ p {
 input:focus,
 button:focus {
   outline: 0.24rem red solid;
+}
+
+@media only screen and (max-width: 576px) {
+  input {
+    font-size: medium;
+    width: 10rem;
+  }
+
+  button {
+    font-size: medium;
+  }
 }

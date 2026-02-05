@@ -2,6 +2,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding-bottom: 1rem;
   background-color: rgb(44, 43, 43);
 }
 
@@ -25,4 +26,45 @@ button mat-icon {
 button:focus,
 img:focus {
   outline: 0.24rem red solid;
+}
+
+/* Smartphones (from 576px). */
+@media only screen and (max-width: 576px) {
+  .navbar-container {
+    display: grid;
+    justify-content: center;
+    margin: auto auto;
+    padding-bottom: 1rem;
+  }
+
+  .icon {
+    margin: auto auto;
+  }
+
+  .nav-buttons {
+    display: grid;
+    gap: 1rem;
+  }
+}
+
+/* Small (Tablets, large Smartphones). */
+@media only screen and (min-width: 576px) {
+  button {
+    margin-top: 1rem;
+  }
+}
+
+/* Tablets im Querformat (from 768px). */
+@media only screen and (min-width: 768px) {
+  .navbar-container {
+    align-items: center;
+  }
+
+  .icon {
+    padding-top: 1rem;
+  }
+
+  button:last-child {
+    margin-bottom: 0rem;
+  }
 }
