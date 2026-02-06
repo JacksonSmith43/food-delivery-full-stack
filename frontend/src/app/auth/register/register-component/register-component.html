@@ -1,10 +1,35 @@
 <div class="registration-container">
-    <form>
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit(emailInput.value, passwordInput.value)" ()>
         <label for="email">Email address</label>
-        <input id="email" type="email" placeholder="joradan@gmail.com">
+        <input id="email" type="email" placeholder="joradan@gmail.com" required
+            [formControl]="registerForm.controls.email" #emailInput>
+
+        @if(registerForm.controls.email.invalid && (registerForm.controls.email.dirty ||
+        registerForm.controls.email.touched)){
+        @if(registerForm.controls.email.hasError("required")){
+        <p class="error-message">{{emailIsInvalid}}</p>
+        }
+        @if(registerForm.controls.email.hasError("email")){
+        <p class="error-message">{{emailIsInvalid}}</p>
+        }
+        }
 
         <label for="password">Password</label>
-        <input id="password" type="password" placeholder="h3Q=j$egxH">
+        <input id="password" type="password" placeholder="h3Q=j$egxH" minlength="6" maxlength="30" required
+            [formControl]="registerForm.controls.password" #passwordInput>
+
+        @if(registerForm.controls.password.invalid && (registerForm.controls.password.dirty ||
+        registerForm.controls.password.touched)){
+        @if(registerForm.controls.password.hasError("required")){
+        <p class="error-message">{{passwordIsInvalid}}</p>
+        }
+        @if(registerForm.controls.password.hasError("minlength")){
+        <p class="error-message">{{passwordIsInvalid}}</p>
+        }
+        @if(registerForm.controls.password.hasError("maxlength")){
+        <p class="error-message">{{passwordIsInvalid}}</p>
+        }
+        }
 
         <button matButton="filled" type="submit">Register</button>
     </form>

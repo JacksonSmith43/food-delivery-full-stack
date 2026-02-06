@@ -29,6 +29,13 @@ button {
   margin-top: 1rem;
 }
 
+.error-message {
+  font-weight: 500;
+  font-size: medium;
+  text-align: center;
+  color: red;
+}
+
 label:first-child {
   margin-top: 5rem;
 }
