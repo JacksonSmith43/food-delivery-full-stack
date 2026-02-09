@@ -41,7 +41,7 @@ export class RegisterComponent {
   onRegister(registerForm: UserType) {
     console.log('onRegister().');
 
-    this.authService.registerUser(registerForm).subscribe({
+    this.authService.registerUser(registerForm.email, registerForm.password).subscribe({
       next: (user) => {
         console.log('onRegister()_next_user: ', user);
       },

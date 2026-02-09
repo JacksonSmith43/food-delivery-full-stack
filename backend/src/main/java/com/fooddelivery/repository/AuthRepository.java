@@ -8,4 +8,6 @@ import com.fooddelivery.entity.Auth;
 @Repository
 public interface AuthRepository extends JpaRepository<Auth, Long> {
     Auth getByEmail(String email);
+
+    Auth getByPassword(String password);
 }
