@@ -12,6 +12,6 @@ export class AuthService {
   registerUser(registerForm: UserType) {
     console.log('registerUser().');
 
-    return this.http.post<UserType>('/api/registration', registerForm);
+    return this.http.post<UserType>('/api/auth/registration/', registerForm);
   }
 }
