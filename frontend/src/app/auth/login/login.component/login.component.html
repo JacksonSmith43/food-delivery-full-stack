@@ -1,0 +1,36 @@
+<div class="login-container">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit(emailInput.value, passwordInput.value)" ()>
+        <label for="email">Email address</label>
+        <input id="email" type="email" placeholder="joradan@gmail.com" required [formControl]="loginForm.controls.email"
+            #emailInput>
+
+        @if(loginForm.controls.email.invalid && (loginForm.controls.email.dirty ||
+        loginForm.controls.email.touched)){
+        @if(loginForm.controls.email.hasError("required")){
+        <p class="error-message">{{emailIsInvalid}}</p>
+        }
+        @if(loginForm.controls.email.hasError("email")){
+        <p class="error-message">{{emailIsInvalid}}</p>
+        }
+        }
+
+        <label for="password">Password</label>
+        <input id="password" type="password" placeholder="h3Q=j$egxH" minlength="6" maxlength="30" required
+            [formControl]="loginForm.controls.password" #passwordInput>
+
+        @if(loginForm.controls.password.invalid && (loginForm.controls.password.dirty ||
+        loginForm.controls.password.touched)){
+        @if(loginForm.controls.password.hasError("required")){
+        <p class="error-message">{{passwordIsInvalid}}</p>
+        }
+        @if(loginForm.controls.password.hasError("minlength")){
+        <p class="error-message">{{passwordIsInvalid}}</p>
+        }
+        @if(loginForm.controls.password.hasError("maxlength")){
+        <p class="error-message">{{passwordIsInvalid}}</p>
+        }
+        }
+
+        <button matButton="filled" type="submit">Login</button>
+    </form>
+</div>

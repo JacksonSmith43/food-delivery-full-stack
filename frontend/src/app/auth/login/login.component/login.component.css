@@ -1,0 +1,41 @@
+.login-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+form {
+  display: grid;
+}
+
+label {
+  font-weight: 500;
+  font-size: medium;
+  margin-top: 1rem;
+}
+
+input {
+  font-size: large;
+  font-weight: 500;
+  width: 14rem;
+  margin-top: 1rem;
+  padding: 0.5rem;
+
+  border-radius: 1rem;
+  border: 0.025rem solid rgb(165, 161, 161);
+}
+
+button {
+  margin-top: 1rem;
+}
+
+.error-message {
+  font-weight: 500;
+  font-size: medium;
+  text-align: center;
+  color: red;
+}
+
+label:first-child {
+  margin-top: 5rem;
+}

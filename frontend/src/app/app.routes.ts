@@ -5,9 +5,10 @@ import { RestaurantComponent } from './restaurants/components/restaurant.compone
 import { CartComponent } from './cart/cart.component/cart.component';
 import { SearchRestaurant } from './search-restaurant/search-restaurant.component';
 import { RegisterComponent } from './auth/register/register-component/register-component';
+import { LoginComponent } from './auth/login/login.component/login.component';
 
 export const routes: Routes = [
-  // { path: '' LoginComponent},
+  { path: 'login', component: LoginComponent },
   // { path: '/login' LoginComponent}
   { path: '', component: SearchRestaurant },
 

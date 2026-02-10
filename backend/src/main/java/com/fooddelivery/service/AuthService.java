@@ -28,6 +28,6 @@ public class AuthService {
         } catch (Exception e) {
             System.err.println("AuthService_registration()_Error: " + e.getMessage());
         }
-
     }
+
 }

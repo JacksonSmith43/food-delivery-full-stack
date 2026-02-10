@@ -9,7 +9,11 @@ export class AuthService {
 
   registerUser(email: string, password: string) {
     console.log('registerUser().');
-
     return this.http.post(`/api/auth/registration/${email}`, password, { responseType: 'text' });
+  }
+
+  loginUser(email: string, password: string) {
+    console.log('AuthService_loginUser().');
+    return this.http.post(`/api/auth/login/${email}`, password, { responseType: 'text' });
   }
 }
