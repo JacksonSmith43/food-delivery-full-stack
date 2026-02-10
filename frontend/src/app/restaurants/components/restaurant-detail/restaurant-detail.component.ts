@@ -1,9 +1,10 @@
 import { Component, inject, OnInit } from '@angular/core';
+import { MatIcon } from '@angular/material/icon';
 
 import { RestaurantsService } from '../../../shared/services/restaurants.service';
 import { LocalStorageService } from '../../../shared/services/local-storage.service';
 import { CartService } from '../../../shared/services/cart.service';
-import { MatIcon } from '@angular/material/icon';
+import { AuthService } from '../../../auth/service/auth.service';
 
 @Component({
   selector: 'app-restaurant-detail',
@@ -16,6 +17,7 @@ export class RestaurantDetailComponent implements OnInit {
   restaurantService = inject(RestaurantsService);
   localStorageService = inject(LocalStorageService);
   cartService = inject(CartService);
+  authService = inject(AuthService);
 
   menuItems = this.restaurantService.menuItems;
   restaurant = this.restaurantService.restaurants;
@@ -24,6 +26,12 @@ export class RestaurantDetailComponent implements OnInit {
 
   ngOnInit(): void {
     console.log('RestaurantDetailComponent_ngOnInit().');
+
+    let userCredentials = this.localStorageService.getUserCredentials();
+
+    if (userCredentials) {
+      this.authService.currentUser.set(userCredentials);
+    }
 
     let menuItems = this.localStorageService.getMenuItems('menuItemsofChosenRestaurant');
     let restaurant = this.localStorageService.getCurrentRestaurant('chosenRestaurant');

@@ -1,8 +1,9 @@
 import { Component, computed, inject, OnInit } from '@angular/core';
+import { MatIcon } from '@angular/material/icon';
 
 import { CartService } from '../../shared/services/cart.service';
-import { MatIcon } from '@angular/material/icon';
 import { AuthService } from '../../auth/service/auth.service';
+import { LocalStorageService } from '../../shared/services/local-storage.service';
 
 @Component({
   selector: 'app-cart.component',
@@ -13,6 +14,7 @@ import { AuthService } from '../../auth/service/auth.service';
 export class CartComponent implements OnInit {
   cartService = inject(CartService);
   authService = inject(AuthService);
+  locaStorage = inject(LocalStorageService);
 
   cart = this.cartService.cart;
   cartSummary = this.cartService.cartSummary;
@@ -21,6 +23,12 @@ export class CartComponent implements OnInit {
   ngOnInit(): void {
     console.log('CartComponent_ngOnInit().');
     this.cartService.refreshCart();
+
+    let userCredentials = this.locaStorage.getUserCredentials();
+
+    if (userCredentials) {
+      this.authService.currentUser.set(userCredentials);
+    }
   }
 
   getCart() {

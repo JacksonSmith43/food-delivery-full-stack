@@ -5,6 +5,7 @@ import { RestaurantsService } from '../../shared/services/restaurants.service';
 import { LocalStorageService } from '../../shared/services/local-storage.service';
 import { CategoryType, RestaurantType } from '../../shared/model/restaurants-type.module';
 import { NavBarService } from '../../navbar/service/navbar.service';
+import { AuthService } from '../../auth/service/auth.service';
 
 @Component({
   selector: 'app-restaurants',
@@ -17,6 +18,7 @@ export class RestaurantComponent implements OnInit {
   private restaurantsService = inject(RestaurantsService);
   localStorageService = inject(LocalStorageService);
   navbarService = inject(NavBarService);
+  authService = inject(AuthService);
 
   restaurants = this.restaurantsService.restaurants;
   categories = this.restaurantsService.categories;
@@ -25,6 +27,12 @@ export class RestaurantComponent implements OnInit {
   ngOnInit(): void {
     console.log('Restaurant_ngOnInit().');
     console.log('Restaurant_ngOnInit()_this.restaurants().', this.restaurants());
+
+    let userCredentials = this.localStorageService.getUserCredentials();
+
+    if (userCredentials) {
+      this.authService.currentUser.set(userCredentials);
+    }
 
     let restaurants: RestaurantType[] = this.localStorageService.getRestaurants('restaurants');
 

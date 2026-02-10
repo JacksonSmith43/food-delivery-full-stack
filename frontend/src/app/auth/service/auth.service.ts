@@ -19,6 +19,8 @@ export class AuthService {
   loginUser(email: string, password: string) {
     console.log('AuthService_loginUser().');
     this.currentUser.set({ email, password });
+    sessionStorage.setItem('userCredentials', JSON.stringify(this.currentUser()));
+
     return this.http.post(`/api/auth/login/${email}`, password, { responseType: 'text' });
   }
 }
