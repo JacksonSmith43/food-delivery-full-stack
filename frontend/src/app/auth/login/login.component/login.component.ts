@@ -4,6 +4,7 @@ import { MatButton } from '@angular/material/button';
 
 import { AuthService } from '../../service/auth.service';
 import { UserType } from '../../model/user-type';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login.component',
@@ -13,6 +14,7 @@ import { UserType } from '../../model/user-type';
 })
 export class LoginComponent {
   authService = inject(AuthService);
+  router = inject(Router);
 
   loginForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -44,6 +46,7 @@ export class LoginComponent {
     this.authService.loginUser(registerForm.email, registerForm.password).subscribe({
       next: (user) => {
         console.log('onLogin()_next_user: ', user);
+        this.router.navigateByUrl('account');
       },
       error: (e) => {
         console.error('onLogin()_error: ', e);

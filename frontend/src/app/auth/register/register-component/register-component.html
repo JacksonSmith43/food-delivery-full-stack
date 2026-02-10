@@ -1,5 +1,6 @@
 <div class="registration-container">
     <form [formGroup]="registerForm" (ngSubmit)="onSubmit(emailInput.value, passwordInput.value)" ()>
+        <h2>Registration</h2>
         <label for="email">Email address</label>
         <input id="email" type="email" placeholder="joradan@gmail.com" required
             [formControl]="registerForm.controls.email" #emailInput>

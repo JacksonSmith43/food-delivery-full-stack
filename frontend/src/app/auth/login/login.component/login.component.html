@@ -1,5 +1,6 @@
 <div class="login-container">
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit(emailInput.value, passwordInput.value)" ()>
+        <h2>Login</h2>
         <label for="email">Email address</label>
         <input id="email" type="email" placeholder="joradan@gmail.com" required [formControl]="loginForm.controls.email"
             #emailInput>
@@ -32,5 +33,6 @@
         }
 
         <button matButton="filled" type="submit">Login</button>
+        <p class="success-message">{{authService.successMessage()}}</p>
     </form>
 </div>

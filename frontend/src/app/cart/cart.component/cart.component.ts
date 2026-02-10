@@ -2,6 +2,7 @@ import { Component, computed, inject, OnInit } from '@angular/core';
 
 import { CartService } from '../../shared/services/cart.service';
 import { MatIcon } from '@angular/material/icon';
+import { AuthService } from '../../auth/service/auth.service';
 
 @Component({
   selector: 'app-cart.component',
@@ -11,6 +12,7 @@ import { MatIcon } from '@angular/material/icon';
 })
 export class CartComponent implements OnInit {
   cartService = inject(CartService);
+  authService = inject(AuthService);
 
   cart = this.cartService.cart;
   cartSummary = this.cartService.cartSummary;

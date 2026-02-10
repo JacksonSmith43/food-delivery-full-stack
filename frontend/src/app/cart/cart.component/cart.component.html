@@ -1,4 +1,8 @@
 <div class="cart-container">
+
+    @if(authService.currentUser() !== undefined){
+
+
     <h2>Your Cart</h2>
     @if(cartLength() > 0 ){
 
@@ -30,5 +34,7 @@
     }@else {
     <p style="font-weight: bold; font-size: 1rem;">No items have been added to the cart.</p>
     }
-
+    }@else {
+    <h2 class="login-warning">Login to see your cart.</h2>
+    }
 </div>

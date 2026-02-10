@@ -36,6 +36,11 @@ button {
   color: red;
 }
 
+
+.success-message{
+  color: green;
+}
+
 label:first-child {
   margin-top: 5rem;
 }

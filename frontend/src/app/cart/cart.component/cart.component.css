@@ -40,6 +40,10 @@
   margin: 1rem auto;
 }
 
+.login-warning {
+  margin-top: 4rem;
+}
+
 img {
   width: 8rem;
 }
