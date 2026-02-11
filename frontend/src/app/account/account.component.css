@@ -1,0 +1,19 @@
+.account-container {
+  display: grid;
+  text-align: center;
+  justify-content: center;
+
+  gap: 1rem;
+}
+
+.login-warning {
+  margin-top: 4rem;
+}
+
+button:focus {
+  outline: 0.25rem solid red;
+}
+
+button:hover {
+  background-color: gray;
+}

@@ -6,7 +6,7 @@ import { AuthService } from '../../service/auth.service';
 import { UserType } from '../../model/user-type';
 
 @Component({
-  selector: 'app-register-component',
+  selector: 'app-register',
   imports: [MatButton, ReactiveFormsModule],
   templateUrl: './register-component.html',
   styleUrl: './register-component.css',

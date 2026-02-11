@@ -7,7 +7,7 @@ import { UserType } from '../../model/user-type';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-login.component',
+  selector: 'app-login',
   imports: [ReactiveFormsModule, MatButton],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',

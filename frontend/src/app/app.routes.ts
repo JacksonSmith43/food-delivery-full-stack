@@ -6,7 +6,8 @@ import { CartComponent } from './cart/cart.component/cart.component';
 import { SearchRestaurant } from './search-restaurant/search-restaurant.component';
 import { RegisterComponent } from './auth/register/register-component/register-component';
 import { LoginComponent } from './auth/login/login.component/login.component';
-import { AccountComponent } from './account/account.component/account.component';
+import { AccountComponent } from './account/account.component';
+import { ProfileComponent } from './account/profile/profile.component/profile.component';
 
 export const routes: Routes = [
   { path: 'register', component: RegisterComponent },
@@ -18,5 +19,6 @@ export const routes: Routes = [
   { path: 'allRestaurants', component: RestaurantComponent },
   { path: 'restaurant/:restaurantName', component: RestaurantDetailComponent },
   { path: 'account', component: AccountComponent },
+  { path: 'profile', component: ProfileComponent },
   { path: 'cart', component: CartComponent },
 ];

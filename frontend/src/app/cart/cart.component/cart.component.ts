@@ -6,7 +6,7 @@ import { AuthService } from '../../auth/service/auth.service';
 import { LocalStorageService } from '../../shared/services/local-storage.service';
 
 @Component({
-  selector: 'app-cart.component',
+  selector: 'app-cart',
   imports: [MatIcon],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.css',
