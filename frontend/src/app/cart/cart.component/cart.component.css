@@ -59,3 +59,65 @@ h2 {
   justify-content: center;
   margin-bottom: 1rem;
 }
+
+/* Smartphones (from 576px). */
+@media only screen and (max-width: 576px) {
+  .cart-container {
+    justify-content: center;
+  }
+
+  .food-name {
+    margin-left: -2.5rem;
+  }
+
+  .menu-items {
+    justify-content: center;
+    padding: 0;
+  }
+
+  .summary {
+    margin: 1rem auto;
+  }
+
+  .mat-icon {
+    margin: auto auto;
+    padding: 0;
+
+    width: 6rem;
+  }
+
+  .mat-icon p {
+    margin: 0rem 0.7rem 0rem 0rem;
+  }
+
+  img {
+    width: 5rem;
+  }
+}
+
+/* Tablets & larger Smartphones (from 576px). */
+@media only screen and (max-width: 768px) and (min-width: 576px) {
+  .menu-items {
+    justify-content: center;
+    grid-template-columns: 1rem 0.3fr auto auto;
+    padding: 0;
+    margin: 0;
+  }
+
+  .summary {
+    margin: 1rem auto;
+    align-items: center;
+  }
+}
+
+/* Tablets im Querformat (from 768px). */
+@media only screen and (max-width: 992px) and (min-width: 768px) {
+  .menu-items {
+    grid-template-columns: 3rem 0.5fr auto auto;
+  }
+
+  .summary {
+    margin: 1rem auto;
+    align-items: center;
+  }
+}
