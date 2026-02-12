@@ -1,0 +1,44 @@
+.profile-container {
+  text-align: center;
+  justify-content: center;
+}
+
+.credentials {
+  display: grid;
+  padding: 1rem 1rem;
+  margin: auto 2rem;
+  /* text-align: start; */
+
+  outline: 0.15rem solid gray;
+  border-radius: 1rem;
+}
+
+.credentials button {
+  margin: auto;
+  all: unset; /* So that the button does not look like a button. */
+
+  font-size: large;
+  font-weight: 500;
+}
+
+#password {
+  border: 0; /* So that all of the individual stars (*) won´t be hightlighted when hovering over it. */
+}
+
+label {
+  color: gray;
+  font-size: large;
+  font-weight: 500;
+}
+
+.credentials:last-child {
+  margin-top: 1rem;
+}
+
+.credentials:hover {
+  background-color: rgb(99, 98, 98);
+}
+
+.credentials:focus {
+  outline: 0.25rem solid red;
+}
