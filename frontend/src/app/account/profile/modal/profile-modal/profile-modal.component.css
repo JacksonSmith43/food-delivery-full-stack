@@ -1,0 +1,43 @@
+.profile-modal-container {
+  margin: 2rem 2rem;
+  padding: 2rem 2rem;
+  outline: 0.25rem solid red;
+}
+
+.email-view {
+  display: grid;
+}
+
+.password-view {
+  display: grid;
+}
+
+#old-password {
+  margin-bottom: 1rem;
+}
+
+label,
+input,
+button {
+  font-size: large;
+}
+
+input {
+  border-radius: 2rem;
+  border: 0.025rem solid rgb(165, 161, 161);
+  padding: 0.5rem 1rem;
+  margin-top: 1rem;
+}
+
+button {
+  margin: 1rem auto;
+}
+
+input:focus,
+button:focus {
+  outline: 0.25rem solid red;
+}
+
+input:hover {
+  outline: 0.25rem solid rgb(160, 152, 152);
+}

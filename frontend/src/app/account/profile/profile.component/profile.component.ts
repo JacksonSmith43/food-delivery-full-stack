@@ -1,11 +1,11 @@
 import { Component, computed, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormsModule } from '@angular/forms';
 
 import { ProfileModalComponent } from '../modal/profile-modal/profile-modal.component';
 import { AuthService } from '../../../auth/service/auth.service';
 import { LocalStorageService } from '../../../shared/services/local-storage.service';
-import { FormsModule } from '@angular/forms';
-import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
   selector: 'app-profile',
@@ -25,7 +25,7 @@ export class ProfileComponent {
 
   openDialog(): void {
     const dialogRef = this.dialog.open(ProfileModalComponent, {
-      width: '250px',
+      width: '80%',
       data: { email: this.email, password: this.password },
     });
 

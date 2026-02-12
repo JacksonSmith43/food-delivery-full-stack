@@ -1,1 +1,22 @@
-<p>profile-modal works!</p>
+<div class="profile-modal-container">
+    <form>
+        <div class="email-view">
+            <label for="email">Email-Address</label>
+            <input id="email" placeholder="michael@gmail.com">
+            <button matButton="elevated">Updat email address</button>
+        </div>
+    </form>
+
+    <form>
+        <div class="password-view">
+            <label for="old-password">Old Password</label>
+            <input id="old-password" type="password" placeholder="dHsleFo(9)?"
+                title="Has to contain at least 6 characters until maximum 30.">
+
+            <label for="new-password">New Password</label>
+            <input id="new-password" type="password" placeholder="!KlfhUr=8&rG"
+                title="Has to contain at least 6 characters until maximum 30.">
+            <button matButton="elevated">Update password</button>
+        </div>
+    </form>
+</div>
