@@ -16,6 +16,21 @@
   margin-bottom: 1rem;
 }
 
+.error-message,
+.success-message {
+  font-size: medium;
+  font-weight: 500;
+  text-align: center;
+}
+
+.error-message {
+  color: red;
+}
+
+.success-message {
+  color: green;
+}
+
 label,
 input,
 button {

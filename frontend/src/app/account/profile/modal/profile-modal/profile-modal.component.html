@@ -1,10 +1,19 @@
 <div class="profile-modal-container">
     @if(selectedFormField() === "email"){
-    <form (click)="onChangeEmail()">
+    <form [formGroup]="emailForm" (ngSubmit)="onChangeEmail()">
         <div class="email-view">
             <label for="email">Email-Address</label>
-            <input id="email" placeholder="michael@gmail.com">
-            <button matButton="elevated">Updat email address</button>
+            <input id="email" type="email" placeholder="michael@gmail.com" [formControl]="emailForm.controls.email">
+            <button type="submit" matButton="elevated" [disabled]="emailForm.invalid">Change email address</button>
+
+            @if( this.emailForm.controls.email.invalid && (this.emailForm.controls.email.touched ||
+            this.emailForm.controls.email.dirty)){
+            @if(this.emailForm.controls.email.hasError("required") || this.emailForm.controls.email.hasError("email")){
+            <p class="error-message">{{emailIsInvalid}}</p>
+            }
+            }@else {
+            <p class="success-message">{{successMessage()}}</p>
+            }
         </div>
     </form>
 
@@ -18,7 +27,7 @@
             <label for="new-password">New Password</label>
             <input id="new-password" type="password" placeholder="!KlfhUr=8&rG"
                 title="Has to contain at least 6 characters until maximum 30.">
-            <button matButton="elevated">Update password</button>
+            <button matButton="elevated">Change password</button>
         </div>
     </form>
     }
