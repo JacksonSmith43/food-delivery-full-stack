@@ -2,7 +2,7 @@
     @if(authService.currentUser() !== undefined){
     <h2>Profile</h2>
 
-    <div class="email-container credentials" (click)="openDialog()" tabindex="0"
+    <div class="email-container credentials" (click)="openDialog('email')" tabindex="0"
         title="Click to change your email address.">
         <label for="email">Email address</label>
         <button id="email" mat-raised-button aria-label="Email address.">
@@ -10,7 +10,7 @@
         </button>
     </div>
 
-    <div class="password-container credentials" (click)="openDialog()" tabindex="0"
+    <div class="password-container credentials" (click)="openDialog('password')" tabindex="0"
         title="Click to change your password.">
         <label for="password">Password</label>
         <div class="password-button-container">

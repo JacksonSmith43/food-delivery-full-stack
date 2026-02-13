@@ -1,9 +1,10 @@
-import { Component, Inject } from '@angular/core';
+import { Component, inject, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatAnchor } from '@angular/material/button';
 
 import { UserType } from '../../../../auth/model/user-type';
 import { ProfileComponent } from '../../profile.component/profile.component';
+import { AccountService } from '../../../service/account.service';
 
 @Component({
   selector: 'app-profile-modal',
@@ -13,6 +14,9 @@ import { ProfileComponent } from '../../profile.component/profile.component';
   styleUrl: './profile-modal.component.css',
 })
 export class ProfileModalComponent {
+  accountService = inject(AccountService);
+  selectedFormField = this.accountService.selectedFormField;
+
   constructor(
     // dialogRef references the opened modal. Allows it so that the modal can be closed and that data can be returned.
     public dialogRef: MatDialogRef<ProfileComponent>,
@@ -24,6 +28,17 @@ export class ProfileModalComponent {
 
   // Closes the modal without returning anything.
   onNoClick(): void {
+    console.log('onNoClick().');
     this.dialogRef.close();
+  }
+
+  onChangeEmail() {
+    console.log('onChangeEmail().');
+    this.selectedFormField.set('email');
+  }
+
+  onChangePassword() {
+    console.log('onChangePassword().');
+    this.selectedFormField.set('password');
   }
 }

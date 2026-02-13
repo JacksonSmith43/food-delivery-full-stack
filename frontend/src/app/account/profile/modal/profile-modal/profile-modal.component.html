@@ -1,5 +1,6 @@
 <div class="profile-modal-container">
-    <form>
+    @if(selectedFormField() === "email"){
+    <form (click)="onChangeEmail()">
         <div class="email-view">
             <label for="email">Email-Address</label>
             <input id="email" placeholder="michael@gmail.com">
@@ -7,6 +8,7 @@
         </div>
     </form>
 
+    }@else if(selectedFormField() === "password"){
     <form>
         <div class="password-view">
             <label for="old-password">Old Password</label>
@@ -19,4 +21,5 @@
             <button matButton="elevated">Update password</button>
         </div>
     </form>
+    }
 </div>
