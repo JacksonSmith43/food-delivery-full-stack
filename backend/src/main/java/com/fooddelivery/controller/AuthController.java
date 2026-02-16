@@ -68,4 +68,29 @@ public class AuthController {
 
     }
 
+    @PostMapping("emailChange/{currentEmail}")
+    public ResponseEntity<String> changeEmail(@PathVariable String currentEmail, @RequestBody String newEmail) {
+        System.out.println("AuthController_changeEmail().");
+        try {
+
+            if (newEmail.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Email is empty.");
+            }
+
+            boolean validEmail = authService.changeEmail(currentEmail, newEmail);
+
+            if (validEmail) {
+                return ResponseEntity.status(HttpStatus.OK).body("Email change successful.");
+
+            } else {
+                return ResponseEntity.status(HttpStatus.CONFLICT).body("This email address already exists.");
+            }
+
+        } catch (Exception e) {
+            System.err.println("AuthController_changeEmail()_Error: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("AuthController_changeEmail() failed: " + e.getMessage());
+        }
+    }
+
 }

@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
+
 import { UserType } from '../model/user-type';
 
 @Injectable({

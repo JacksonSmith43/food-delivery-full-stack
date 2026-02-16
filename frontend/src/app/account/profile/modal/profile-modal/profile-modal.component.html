@@ -12,7 +12,11 @@
             <p class="error-message">{{emailIsInvalid}}</p>
             }
             }@else {
+            @if(isValidChange()){
             <p class="success-message">{{successMessage()}}</p>
+            }
+            <p class="error-message">{{errorMessage()}}</p>
+
             }
         </div>
     </form>

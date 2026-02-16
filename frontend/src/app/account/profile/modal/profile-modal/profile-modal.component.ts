@@ -6,6 +6,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { UserType } from '../../../../auth/model/user-type';
 import { ProfileComponent } from '../../profile.component/profile.component';
 import { AccountService } from '../../../service/account.service';
+import { AuthService } from '../../../../auth/service/auth.service';
 
 @Component({
   selector: 'app-profile-modal',
@@ -16,8 +17,11 @@ import { AccountService } from '../../../service/account.service';
 })
 export class ProfileModalComponent {
   accountService = inject(AccountService);
+  authService = inject(AuthService);
 
   successMessage = signal<string>('');
+  errorMessage = signal<string>('');
+  isValidChange = signal<boolean>(false);
 
   selectedFormField = this.accountService.selectedFormField;
 
@@ -43,17 +47,44 @@ export class ProfileModalComponent {
   onChangeEmail() {
     console.log('onChangeEmail().');
 
-    if (this.emailForm.valid) {
-      let email = this.emailForm.value.email;
-      this.selectedFormField.set('email');
-      this.successMessage.set('Your Email address has successfully been changed.');
+    try {
+      if (this.emailForm.valid) {
+        let newEmail = this.emailForm.value.email;
+        this.selectedFormField.set('email');
 
-      setTimeout(() => {
-        this.dialogRef.close(email);
-        this.successMessage.set('');
-      }, 2000);
+        let currentEmail = this.authService.currentUser()?.email;
 
-      console.log('onChangeEmail()_email: ', email);
+        this.accountService.changeEmailAddress(currentEmail!, newEmail!).subscribe({
+          next: (response) => {
+            console.log('changeEmailAddress()_Response: ', response);
+            this.successMessage.set('Your Email address has successfully been changed.');
+            this.isValidChange.set(true);
+
+            const currentUserData = this.authService.currentUser();
+            if (currentUserData) {
+              this.authService.currentUser.set({ ...currentUserData, email: newEmail! });
+              sessionStorage.setItem(
+                'userCredentials',
+                JSON.stringify(this.authService.currentUser()),
+              );
+            }
+          },
+          error: (e) => {
+            console.error('changeEmailAddress()_Error: ', e);
+            this.errorMessage.set('An error occurred. Please try again.');
+          },
+        });
+
+        setTimeout(() => {
+          this.dialogRef.close(newEmail);
+          this.successMessage.set('');
+          this.errorMessage.set('');
+        }, 2000);
+
+        console.log('onChangeEmail()_newEmail: ', newEmail);
+      }
+    } catch (error) {
+      console.error('onChangeEmail()_Error: ', error);
     }
   }
 

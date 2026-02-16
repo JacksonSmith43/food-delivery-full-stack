@@ -22,6 +22,10 @@ public class Auth {
         this.password = password;
     }
 
+    public Auth(String email) {
+        this.email = email;
+    }
+
     public Auth(Long id, String email, String password) {
         this.id = id;
         this.email = email;

@@ -30,4 +30,38 @@ public class AuthService {
         }
     }
 
+    public boolean changeEmail(String currentEmail, String newEmail) {
+        System.out.println("AuthService_changeEmail().");
+
+        try {
+            // Gets the current user.
+            Auth currentUser = authRepository.getByEmail(currentEmail);
+
+            if (currentUser == null) {
+                System.out.println("AuthService_changeEmail()_currentEmail does not exist.");
+                return false;
+            }
+
+            Auth newUser = authRepository.getByEmail(newEmail);
+
+            // Checks whether the new email has been used by another user. The user is
+            // allowed to reuse the current email. Another user is not allowed to do that.
+            if (newUser != null && !newUser.getId().equals(currentUser.getId())) {
+                System.out.println("AuthService_changeEmail()_This new email address already exists.");
+                return false;
+            }
+
+            // Change the email address, even if it stays the same.
+            currentUser.setEmail(newEmail);
+            authRepository.save(currentUser);
+
+            System.out.println("AuthService()_changeEmail(): Email address changed successfully.");
+            return true;
+
+        } catch (Exception e) {
+            System.err.println("AuthService_changeEmail()_Error: " + e.getMessage());
+            return false;
+        }
+    }
+
 }
