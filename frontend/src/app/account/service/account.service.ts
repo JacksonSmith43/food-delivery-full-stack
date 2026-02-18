@@ -11,6 +11,15 @@ export class AccountService {
 
   changeEmailAddress(currentEmail: string, newEmail: string) {
     console.log('changeEmailAddress().');
-    return this.http.post(`/api/auth/emailChange/${currentEmail}`, newEmail, { responseType: 'text' });
+    return this.http.post(`/api/auth/emailChange/${currentEmail}`, newEmail, {
+      responseType: 'text',
+    });
+  }
+
+  changePassword(currentPassword: string, newPassword: string) {
+    console.log('changePassword().');
+    return this.http.post(`/api/auth/passwordChange/${currentPassword}`, newPassword, {
+      responseType: 'text',
+    });
   }
 }

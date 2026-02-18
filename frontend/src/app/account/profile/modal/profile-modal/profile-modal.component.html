@@ -22,16 +22,52 @@
     </form>
 
     }@else if(selectedFormField() === "password"){
-    <form>
+    <form [formGroup]="passwordForm" (ngSubmit)="onChangePassword()">
         <div class="password-view">
             <label for="old-password">Old Password</label>
-            <input id="old-password" type="password" placeholder="dHsleFo(9)?"
-                title="Has to contain at least 6 characters until maximum 30.">
+            <input id="old-password" type="password" placeholder="dHsleFo(9)?" minlength="6" maxlength="30"
+                title="Has to contain at least 6 characters until maximum 30."
+                [formControl]="passwordForm.controls.currentPassword">
+
+            @if((this.passwordForm.controls.currentPassword.invalid &&
+            (this.passwordForm.controls.currentPassword.touched || this.passwordForm.controls.currentPassword.dirty)) ){
+            @if(this.passwordForm.controls.currentPassword.hasError("required") ||
+            this.passwordForm.controls.currentPassword.hasError("minlength") ||
+            this.passwordForm.controls.currentPassword.hasError("maxlength") ||
+            this.passwordForm.controls.currentPassword.hasError("differentCurrentPassword")
+            ){
+            <p class="error-message">{{currentPasswordIsInvalid}}</p>
+
+            }
+            }
 
             <label for="new-password">New Password</label>
-            <input id="new-password" type="password" placeholder="!KlfhUr=8&rG"
-                title="Has to contain at least 6 characters until maximum 30.">
-            <button matButton="elevated">Change password</button>
+            <input id="new-password" type="password" placeholder="!KlfhUr=8&rG" minlength="6" maxlength="30"
+                title="Has to contain at least 6 characters until maximum 30."
+                [formControl]="passwordForm.controls.newPassword">
+
+            @if( (this.passwordForm.controls.newPassword.invalid && (this.passwordForm.controls.newPassword.touched ||
+            this.passwordForm.controls.newPassword.dirty))){
+            @if(this.passwordForm.controls.newPassword.hasError("required") ||
+            this.passwordForm.controls.newPassword.hasError("minlength") ||
+            this.passwordForm.controls.newPassword.hasError("maxlength") ||
+            this.passwordForm.controls.newPassword.hasError("sameAsCurrentPassword")
+            ){
+            <p class="error-message">{{newPasswordIsInvalid}}</p>
+            }
+
+            }
+            <button matButton="elevated" [disabled]="passwordForm.invalid">Change password</button>
+
+
+            @if(isValidChange()){
+            <p class="success-message">{{successMessage()}}</p>
+            }@else{
+
+            <p class="error-message">{{errorMessage()}}</p>
+            }
+
+
         </div>
     </form>
     }
