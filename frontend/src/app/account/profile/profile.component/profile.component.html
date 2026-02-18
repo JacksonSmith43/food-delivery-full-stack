@@ -2,16 +2,16 @@
     @if(authService.currentUser() !== undefined){
     <h2>Profile</h2>
 
-    <div class="email-container credentials" (click)="openDialog('email')" tabindex="0"
-        title="Click to change your email address.">
+    <div class="email-container credentials" (keydown.enter)="openDialog('email')" (click)="openDialog('email')"
+        tabindex="0" title="Click to change your email address.">
         <label for="email">Email address</label>
         <button id="email" mat-raised-button aria-label="Email address.">
             {{this.authService.currentUser()?.email}}
         </button>
     </div>
 
-    <div class="password-container credentials" (click)="openDialog('password')" tabindex="0"
-        title="Click to change your password.">
+    <div class="password-container credentials" (keydown.enter)="openDialog('password')"
+        (click)="openDialog('password')" tabindex="0" title="Click to change your password.">
         <label for="password">Password</label>
         <div class="password-button-container">
             @for(i of getPasswordLength(); track $index){
