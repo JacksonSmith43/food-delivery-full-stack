@@ -33,6 +33,12 @@
         }
 
         <button matButton="filled" type="submit">Login</button>
+
+        @if(authService.currentUser() === undefined){
+        <p class="error-message">{{authService.errorMessage()}}</p>
+
+        }@else {
         <p class="success-message">{{authService.successMessage()}}</p>
+        }
     </form>
 </div>

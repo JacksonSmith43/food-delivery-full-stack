@@ -10,6 +10,7 @@ export class AuthService {
   http = inject(HttpClient);
 
   successMessage = signal<string>('');
+  errorMessage = signal<string>('');
   currentUser = signal<UserType | undefined>(undefined);
 
   registerUser(email: string, password: string) {

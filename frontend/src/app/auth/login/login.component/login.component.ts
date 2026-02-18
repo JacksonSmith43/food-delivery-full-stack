@@ -50,6 +50,8 @@ export class LoginComponent {
       },
       error: (e) => {
         console.error('onLogin()_error: ', e);
+        this.authService.currentUser.set(undefined);
+        this.authService.errorMessage.set(e.error);
       },
     });
   }

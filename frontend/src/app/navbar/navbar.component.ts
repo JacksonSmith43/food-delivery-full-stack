@@ -32,6 +32,7 @@ export class Navbar {
     this.authService.currentUser.set(undefined);
     sessionStorage.removeItem('userCredentials');
     this.successMessage.set('Logout successful.');
+    this.authService.errorMessage.set('');
 
     setTimeout(() => {
       this.successMessage.set('');
