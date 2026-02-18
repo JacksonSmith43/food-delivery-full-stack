@@ -64,4 +64,23 @@ public class AuthService {
         }
     }
 
+    public boolean changePassword(String passwordCurrent, String newPassword) {
+        System.out.println("AuthService_changePassword().");
+
+        try {
+            Auth currentUser = authRepository.getByPassword(passwordCurrent);
+
+            currentUser.setPassword(newPassword);
+            authRepository.save(currentUser);
+
+            System.out.println("AuthService_changePassword()_The new password replaced the old one. New Password: "
+                    + currentUser.getPassword());
+            return true;
+
+        } catch (Exception e) {
+            System.err.println("AuthService_changePassword()_Error: " + e.getMessage());
+            return false;
+        }
+    }
+
 }

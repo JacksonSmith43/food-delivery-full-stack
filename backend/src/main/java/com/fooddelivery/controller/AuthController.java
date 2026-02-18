@@ -93,4 +93,39 @@ public class AuthController {
         }
     }
 
+    @PostMapping("passwordChange/{currentPassword}")
+    public ResponseEntity<String> changePassword(@PathVariable String currentPassword,
+            @RequestBody String newPassword) {
+        System.out.println("AuthController_changePassword().");
+
+        try {
+            List<Auth> passwordCurrent = authRepository.findByPassword(currentPassword);
+            List<Auth> passwordNew = authRepository.findByPassword(newPassword);
+
+            if (passwordCurrent.isEmpty()) {
+                System.out.println("AuthController_changePassword()_Current password could not be found.");
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Current password could not be found.");
+            }
+
+            if (!passwordNew.isEmpty()) {
+                System.out.println("AuthController_changePassword()_New password already exists.");
+                return ResponseEntity.status(HttpStatus.CONFLICT).body("New password already exists.");
+            }
+
+            boolean validPassword = authService.changePassword(currentPassword, newPassword);
+
+            if (validPassword) {
+                return ResponseEntity.status(HttpStatus.OK).body("The password has successfully been changed.");
+
+            } else {
+                return ResponseEntity.status(HttpStatus.CONFLICT).body("This password already exists or is invalid.");
+            }
+
+        } catch (Exception e) {
+            System.err.println("AuthController_changePassword()_Error: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("AuthController_changePassword() failed: " + e.getMessage());
+        }
+    }
+
 }
