@@ -25,7 +25,13 @@ public class AuthController {
             if (email.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.CONFLICT).body("Email is empty.");
             }
-            authService.registration(email, password);
+
+            boolean registrationSuccessful = authService.registration(email, password);
+
+            if (!registrationSuccessful) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).body("Email address already exists.");
+            }
+
             return ResponseEntity.status(HttpStatus.CREATED).body("Registration successful: " + email);
 
         } catch (Exception e) {

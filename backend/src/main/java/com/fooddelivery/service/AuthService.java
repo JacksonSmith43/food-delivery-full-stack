@@ -13,7 +13,7 @@ public class AuthService {
     @Autowired
     private AuthRepository authRepository;
 
-    public void registration(String email, String password) {
+    public boolean registration(String email, String password) {
         System.out.println("AuthService()_registration().");
 
         try {
@@ -21,16 +21,19 @@ public class AuthService {
             System.out.println("AuthService()_registration(): existingUser: " + existingUser);
 
             if (existingUser != null) {
-                System.out.println("AuthService()_registration(): Email already exists in database.");
-                return;
+                System.out.println("AuthService()_registration(): Email already exists in the database.");
+                return false;
             }
 
             Auth auth = new Auth(email, password);
             authRepository.save(auth);
             System.out.println("AuthService()_registration(): Registration successful.");
 
+            return true;
+
         } catch (Exception e) {
             System.err.println("AuthService_registration()_Error: " + e.getMessage());
+            return false;
         }
     }
 

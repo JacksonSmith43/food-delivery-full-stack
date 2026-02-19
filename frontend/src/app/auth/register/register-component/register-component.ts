@@ -13,6 +13,7 @@ import { UserType } from '../../model/user-type';
 })
 export class RegisterComponent {
   authService = inject(AuthService);
+  errorMessage = this.authService.errorMessage;
 
   registerForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -44,9 +45,11 @@ export class RegisterComponent {
     this.authService.registerUser(registerForm.email, registerForm.password).subscribe({
       next: (user) => {
         console.log('onRegister()_next_user: ', user);
+        this.errorMessage.set('');
       },
       error: (e) => {
         console.error('onRegister()_error: ', e);
+        this.errorMessage.set(e.error);
       },
     });
   }
