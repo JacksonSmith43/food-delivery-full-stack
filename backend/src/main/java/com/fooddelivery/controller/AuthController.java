@@ -1,15 +1,12 @@
 package com.fooddelivery.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import com.fooddelivery.entity.Auth;
-import com.fooddelivery.repository.AuthRepository;
+import com.fooddelivery.dto.PasswordChangeRequest;
 import com.fooddelivery.service.AuthService;
 
 @Controller
@@ -19,8 +16,6 @@ import com.fooddelivery.service.AuthService;
 public class AuthController {
     @Autowired
     private AuthService authService;
-    @Autowired
-    private AuthRepository authRepository;
 
     @PostMapping("registration/{email}")
     public ResponseEntity<String> registration(@PathVariable String email, @RequestBody String password) {
@@ -45,18 +40,16 @@ public class AuthController {
         System.out.println("AuthController_login().");
         try {
 
-            List<Auth> emailExists = authRepository.findByEmail(email);
-            List<Auth> passwordExists = authRepository.findByPassword(password);
-
-            if (emailExists.isEmpty()) {
+            if (!authService.emailExists(email)) {
                 System.out.println("AuthController_login(): Email not found: " + email);
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Incorrect Email.");
             }
 
-            if (passwordExists.isEmpty()) {
+            if (!authService.isValidCurrentPassword(email, password)) {
                 System.out.println("AuthController_login(): Password not found for email: " + email);
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Incorrect Password.");
             }
+
             System.out.println("AuthController_login(): Login successful for email: " + email);
             return ResponseEntity.status(HttpStatus.OK).body("Login successful: " + email);
 
@@ -83,7 +76,8 @@ public class AuthController {
                 return ResponseEntity.status(HttpStatus.OK).body("Email change successful.");
 
             } else {
-                return ResponseEntity.status(HttpStatus.CONFLICT).body("This email address already exists.");
+                return ResponseEntity.status(HttpStatus.CONFLICT)
+                        .body("This new email address already exists or the current one does not.");
             }
 
         } catch (Exception e) {
@@ -93,26 +87,27 @@ public class AuthController {
         }
     }
 
-    @PostMapping("passwordChange/{currentPassword}")
-    public ResponseEntity<String> changePassword(@PathVariable String currentPassword,
-            @RequestBody String newPassword) {
+    @PostMapping("passwordChange/")
+    public ResponseEntity<String> changePassword(@RequestBody PasswordChangeRequest request) {
         System.out.println("AuthController_changePassword().");
 
-        try {
-            List<Auth> passwordCurrent = authRepository.findByPassword(currentPassword);
-            List<Auth> passwordNew = authRepository.findByPassword(newPassword);
+        String email = request.getEmail();
+        String currentPassword = request.getCurrentPassword();
+        String newPassword = request.getNewPassword();
 
-            if (passwordCurrent.isEmpty()) {
+        try {
+
+            if (!authService.isValidCurrentPassword(email, currentPassword)) {
                 System.out.println("AuthController_changePassword()_Current password could not be found.");
                 return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Current password could not be found.");
             }
 
-            if (!passwordNew.isEmpty()) {
+            if (authService.isSameAsCurrentPassword(email, newPassword)) {
                 System.out.println("AuthController_changePassword()_New password already exists.");
                 return ResponseEntity.status(HttpStatus.CONFLICT).body("New password already exists.");
             }
 
-            boolean validPassword = authService.changePassword(currentPassword, newPassword);
+            boolean validPassword = authService.changePassword(email, currentPassword, newPassword);
 
             if (validPassword) {
                 return ResponseEntity.status(HttpStatus.OK).body("The password has successfully been changed.");

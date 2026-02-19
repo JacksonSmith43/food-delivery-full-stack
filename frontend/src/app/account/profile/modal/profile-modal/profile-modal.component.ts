@@ -147,10 +147,20 @@ export class ProfileModalComponent {
         this.selectedFormField.set('password');
 
         let currentPassword = this.authService.currentUser()?.password;
+        let email = this.authService.currentUser()?.email;
 
-        this.accountService.changePassword(currentPassword!, newPassword!).subscribe({
+        this.accountService.changePassword(currentPassword!, newPassword!, email!).subscribe({
           next: (response) => {
             console.log('onChangePassword()_Response: ', response);
+
+            if (response === null) {
+              console.log(
+                'onChangePassword()_Response is null. This means that the current password is incorrect.',
+              );
+              this.errorMessage.set(response);
+              return;
+            }
+
             this.successMessage.set('Your password has successfully been changed.');
             this.isValidChange.set(true);
 
@@ -165,7 +175,7 @@ export class ProfileModalComponent {
           },
           error: (e) => {
             console.error('onChangePassword()_Error: ', e);
-            this.errorMessage.set('An error occurred. Please try again.');
+            this.errorMessage.set('An error occurred. Please try again. Error: ' + e.message);
           },
         });
 

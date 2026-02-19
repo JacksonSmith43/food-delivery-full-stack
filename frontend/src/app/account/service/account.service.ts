@@ -16,10 +16,16 @@ export class AccountService {
     });
   }
 
-  changePassword(currentPassword: string, newPassword: string) {
+  changePassword(currentPassword: string, newPassword: string, email: string) {
     console.log('changePassword().');
-    return this.http.post(`/api/auth/passwordChange/${currentPassword}`, newPassword, {
-      responseType: 'text',
-    });
+
+    const body = {
+      email,
+      currentPassword,
+      newPassword,
+    };
+
+    return this.http.post<string>(`/api/auth/passwordChange/`, body, {
+      responseType: 'text' as 'json',});
   }
 }

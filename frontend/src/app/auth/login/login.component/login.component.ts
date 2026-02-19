@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 
@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   authService = inject(AuthService);
   router = inject(Router);
 
@@ -24,6 +24,11 @@ export class LoginComponent {
       Validators.maxLength(30),
     ]),
   });
+
+  ngOnInit(): void {
+    console.log('LoginComponent_ngOnInit().');
+    this.authService.errorMessage.set('');
+  }
 
   onSubmit(emailInput: string, passwordInput: string) {
     console.log('onSubmit().');
