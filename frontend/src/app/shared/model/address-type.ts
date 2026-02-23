@@ -1,6 +1,8 @@
 export interface AddressType {
   id: number;
   streetName: string;
-  postCode: number;
+  postalCode: number;
+  city: string;
   country: string;
+  isDefault: boolean;
 }

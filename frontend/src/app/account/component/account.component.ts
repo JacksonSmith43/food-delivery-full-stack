@@ -1,8 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 
-import { AuthService } from '../auth/service/auth.service';
-import { LocalStorageService } from '../shared/services/local-storage.service';
+import { AuthService } from '../../auth/service/auth.service'; 
+import { LocalStorageService } from '../../shared/services/local-storage.service'; 
 import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
@@ -21,7 +21,7 @@ export class AccountComponent implements OnInit {
     let userCredentials = this.locaStorage.getUserCredentials();
 
     if (userCredentials) {
-      this.authService.currentUser.set(userCredentials);
+      this.authService.authUser.set(userCredentials);
     }
   }
 }

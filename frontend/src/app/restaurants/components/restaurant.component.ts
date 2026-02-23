@@ -31,7 +31,7 @@ export class RestaurantComponent implements OnInit {
     let userCredentials = this.localStorageService.getUserCredentials();
 
     if (userCredentials) {
-      this.authService.currentUser.set(userCredentials);
+      this.authService.authUser.set(userCredentials);
     }
 
     let restaurants: RestaurantType[] = this.localStorageService.getRestaurants('restaurants');

@@ -3,7 +3,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { MatButton } from '@angular/material/button';
 
 import { AuthService } from '../../service/auth.service';
-import { UserType } from '../../model/user-type';
+import { AuthType } from '../../model/auth-user-type';
 
 @Component({
   selector: 'app-register',
@@ -34,12 +34,12 @@ export class RegisterComponent {
       return;
     }
 
-    this.onRegister(this.registerForm.value as UserType);
+    this.onRegister(this.registerForm.value as AuthType);
 
     this.registerForm.reset();
   }
 
-  onRegister(registerForm: UserType) {
+  onRegister(registerForm: AuthType) {
     console.log('onRegister().');
 
     this.authService.registerUser(registerForm.email, registerForm.password).subscribe({

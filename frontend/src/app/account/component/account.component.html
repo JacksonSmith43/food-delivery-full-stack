@@ -1,5 +1,5 @@
 <div class="account-container">
-    @if(authService.currentUser() !== undefined){
+    @if(authService.authUser() !== undefined){
     <h2>Account</h2>
     <button matButton="tonal" [routerLink]="'/profile'" routerLinkActive="selected">My profile</button>
     <button matButton="tonal" [routerLink]="'/orders'" routerLinkActive="selected">Orders</button>

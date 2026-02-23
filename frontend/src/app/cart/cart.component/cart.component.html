@@ -1,6 +1,6 @@
 <div class="cart-container">
 
-    @if(authService.currentUser() !== undefined){
+    @if(authService.authUser() !== undefined){
 
     <h2>Your Cart</h2>
     @if(cartLength() > 0 ){

@@ -11,7 +11,7 @@
         </button>
 
 
-        @if(authService.currentUser() !== undefined){
+        @if(authService.authUser() !== undefined){
         <button matButton="filled" [routerLink]="'/cart'" routerLinkActive="selected" title="Basket"
             aria-label="Basket button with an icon.">
             <mat-icon>shopping_cart</mat-icon>

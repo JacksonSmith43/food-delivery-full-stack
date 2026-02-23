@@ -29,7 +29,7 @@ export class Navbar {
   onLogout() {
     console.log('onLogout().');
 
-    this.authService.currentUser.set(undefined);
+    this.authService.authUser.set(undefined);
     sessionStorage.removeItem('userCredentials');
     this.successMessage.set('Logout successful.');
     this.authService.errorMessage.set('');

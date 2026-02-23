@@ -3,10 +3,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 
-import { ProfileModalComponent } from '../modal/profile-modal/profile-modal.component';
-import { AuthService } from '../../../auth/service/auth.service';
-import { LocalStorageService } from '../../../shared/services/local-storage.service';
-import { AccountService } from '../../service/account.service';
+import { ProfileModalComponent } from '../profile-modal/profile-modal.component';
+import { AuthService } from '../../../../auth/service/auth.service';
+import { LocalStorageService } from '../../../../shared/services/local-storage.service';
+import { AccountService } from '../../../service/account.service';
 
 @Component({
   selector: 'app-profile',
@@ -20,14 +20,16 @@ export class ProfileComponent {
   locaStorage = inject(LocalStorageService);
 
   accountService = inject(AccountService);
+
   selectedFormField = this.accountService.selectedFormField;
+  currentUserProfile = this.accountService.currentUserProfile;
 
   email: string = '';
   password: string = '';
 
   passwordLength = computed(() => {
-    let currentUserPassword = this.authService.currentUser()?.password;
-    return currentUserPassword ? currentUserPassword.length : 0;
+    let authUserPassword = this.authService.authUser()?.password;
+    return authUserPassword ? authUserPassword.length : 0;
   });
 
   constructor(public dialog: MatDialog) {} // MatDialog opens dialogs/modals.
@@ -38,11 +40,11 @@ export class ProfileComponent {
     let userCredentials = this.locaStorage.getUserCredentials();
 
     if (userCredentials) {
-      this.authService.currentUser.set(userCredentials);
+      this.authService.authUser.set(userCredentials);
     }
   }
 
-  openDialog(formField: 'email' | 'password'): void {
+  openDialog(formField: 'email' | 'password' | 'address' | 'phoneNumber'): void {
     console.log('openDialog().');
 
     this.accountService.selectedFormField.set(formField);

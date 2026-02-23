@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 
-import { UserType } from '../model/user-type';
+import { AuthType } from '../model/auth-user-type';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +11,7 @@ export class AuthService {
 
   successMessage = signal<string>('');
   errorMessage = signal<string>('');
-  currentUser = signal<UserType | undefined>(undefined);
+  authUser = signal<AuthType | undefined>(undefined);
 
   registerUser(email: string, password: string) {
     console.log('registerUser().');
@@ -20,8 +20,8 @@ export class AuthService {
 
   loginUser(email: string, password: string) {
     console.log('AuthService_loginUser().');
-    this.currentUser.set({ email, password });
-    sessionStorage.setItem('userCredentials', JSON.stringify(this.currentUser()));
+    this.authUser.set({ email, password  });
+    sessionStorage.setItem('userCredentials', JSON.stringify(this.authUser()));
 
     return this.http.post(`/api/auth/login/${email}`, password, { responseType: 'text' });
   }

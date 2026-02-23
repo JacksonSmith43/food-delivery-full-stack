@@ -9,8 +9,8 @@ import {
   Validators,
 } from '@angular/forms';
 
-import { UserType } from '../../../../auth/model/user-type';
-import { ProfileComponent } from '../../profile.component/profile.component';
+import { AuthType } from '../../../../auth/model/auth-user-type';
+import { ProfileComponent } from '../profile/profile.component';
 import { AccountService } from '../../../service/account.service';
 import { AuthService } from '../../../../auth/service/auth.service';
 
@@ -43,7 +43,7 @@ export class ProfileModalComponent {
 
     newPassword: new FormControl('', [
       ...this.getPasswordValidators(),
-      this.differentFromCurrentPassword.bind(this), // bind(this) is required so that currentUser can be accessed in the custom validator. Otherwise, 'this' would be undefined in the custom validator.
+      this.differentFromCurrentPassword.bind(this), // bind(this) is required so that authUser can be accessed in the custom validator. Otherwise, 'this' would be undefined in the custom validator.
     ] as ValidatorFn[]),
   });
 
@@ -56,7 +56,7 @@ export class ProfileModalComponent {
     console.log('differentFromCurrentPassword().');
 
     const newPassword = control.value;
-    const currentPassword = this.authService.currentUser()?.password;
+    const currentPassword = this.authService.authUser()?.password;
 
     if (newPassword && currentPassword && newPassword === currentPassword) {
       return { sameAsCurrentPassword: true };
@@ -69,7 +69,7 @@ export class ProfileModalComponent {
     console.log('currentPasswordChecker().');
 
     const currentPasswordInput = control.value;
-    const currentPassword = this.authService.currentUser()?.password;
+    const currentPassword = this.authService.authUser()?.password;
 
     // If this statement is true then the user has entered an incorrect current password. The error 'differentCurrentPassword' is added to the form control, which can be used in the template to display an error message.
     if (currentPasswordInput !== currentPassword) {
@@ -85,7 +85,7 @@ export class ProfileModalComponent {
     // MAT_DIALOG_DATA receives the data (email, password) that it receives from ProfileComponent.
     // data: UserType is the data that is received.
     // This is the same as: data = inject<UserType>(MAT_DIALOG_DATA);
-    @Inject(MAT_DIALOG_DATA) public data: UserType,
+    @Inject(MAT_DIALOG_DATA) public data: AuthType,
   ) {}
 
   // Closes the modal without returning anything.
@@ -102,7 +102,7 @@ export class ProfileModalComponent {
         let newEmail = this.emailForm.value.email;
         this.selectedFormField.set('email');
 
-        let currentEmail = this.authService.currentUser()?.email;
+        let currentEmail = this.authService.authUser()?.email;
 
         this.accountService.changeEmailAddress(currentEmail!, newEmail!).subscribe({
           next: (response) => {
@@ -110,12 +110,12 @@ export class ProfileModalComponent {
             this.successMessage.set('Your Email address has successfully been changed.');
             this.isValidChange.set(true);
 
-            const currentUserData = this.authService.currentUser();
-            if (currentUserData) {
-              this.authService.currentUser.set({ ...currentUserData, email: newEmail! });
+            const authUserData = this.authService.authUser();
+            if (authUserData) {
+              this.authService.authUser.set({ ...authUserData, email: newEmail! });
               sessionStorage.setItem(
                 'userCredentials',
-                JSON.stringify(this.authService.currentUser()),
+                JSON.stringify(this.authService.authUser()),
               );
             }
           },
@@ -146,8 +146,8 @@ export class ProfileModalComponent {
         let newPassword = this.passwordForm.value.newPassword;
         this.selectedFormField.set('password');
 
-        let currentPassword = this.authService.currentUser()?.password;
-        let email = this.authService.currentUser()?.email;
+        let currentPassword = this.authService.authUser()?.password;
+        let email = this.authService.authUser()?.email;
 
         this.accountService.changePassword(currentPassword!, newPassword!, email!).subscribe({
           next: (response) => {
@@ -164,12 +164,12 @@ export class ProfileModalComponent {
             this.successMessage.set('Your password has successfully been changed.');
             this.isValidChange.set(true);
 
-            const currentUserData = this.authService.currentUser();
-            if (currentUserData) {
-              this.authService.currentUser.set({ ...currentUserData, password: newPassword! });
+            const authUserData = this.authService.authUser();
+            if (authUserData) {
+              this.authService.authUser.set({ ...authUserData, password: newPassword! });
               sessionStorage.setItem(
                 'userCredentials',
-                JSON.stringify(this.authService.currentUser()),
+                JSON.stringify(this.authService.authUser()),
               );
             }
           },

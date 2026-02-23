@@ -3,7 +3,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { MatButton } from '@angular/material/button';
 
 import { AuthService } from '../../service/auth.service';
-import { UserType } from '../../model/user-type';
+import { AuthType } from '../../model/auth-user-type';
 import { Router } from '@angular/router';
 
 @Component({
@@ -40,12 +40,12 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    this.onLogin(this.loginForm.value as UserType);
+    this.onLogin(this.loginForm.value as AuthType);
 
     this.loginForm.reset();
   }
 
-  onLogin(registerForm: UserType) {
+  onLogin(registerForm: AuthType) {
     console.log('onRegister().');
 
     this.authService.loginUser(registerForm.email, registerForm.password).subscribe({
@@ -55,7 +55,7 @@ export class LoginComponent implements OnInit {
       },
       error: (e) => {
         console.error('onLogin()_error: ', e);
-        this.authService.currentUser.set(undefined);
+        this.authService.authUser.set(undefined);
         this.authService.errorMessage.set(e.error);
       },
     });

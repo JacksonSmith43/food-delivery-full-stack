@@ -30,7 +30,7 @@ export class RestaurantDetailComponent implements OnInit {
     let userCredentials = this.localStorageService.getUserCredentials();
 
     if (userCredentials) {
-      this.authService.currentUser.set(userCredentials);
+      this.authService.authUser.set(userCredentials);
     }
 
     let menuItems = this.localStorageService.getMenuItems('menuItemsofChosenRestaurant');

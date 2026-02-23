@@ -28,7 +28,7 @@ export class CartComponent implements OnInit {
     let userCredentials = this.locaStorage.getUserCredentials();
 
     if (userCredentials) {
-      this.authService.currentUser.set(userCredentials);
+      this.authService.authUser.set(userCredentials);
     }
   }
 

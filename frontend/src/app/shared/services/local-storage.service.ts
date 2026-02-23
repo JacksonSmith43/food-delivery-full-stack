@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 
 import { MenuItemsType, RestaurantType } from '../model/restaurants-type.module';
-import { UserType } from '../../auth/model/user-type';
+import { AuthType } from '../../auth/model/auth-user-type';
 import { AuthService } from '../../auth/service/auth.service';
 
 @Injectable({ providedIn: 'root' })
@@ -73,13 +73,13 @@ export class LocalStorageService {
     }
   }
 
-  getUserCredentials(): UserType {
+  getUserCredentials(): AuthType {
     console.log('getUserCredentials().');
     
     let userCredentials = sessionStorage.getItem('userCredentials');
     console.log('getUserCredentials()_userCredentials', userCredentials);
 
-    let userCredentialsParse: UserType = userCredentials ? JSON.parse(userCredentials) : null;
+    let userCredentialsParse: AuthType = userCredentials ? JSON.parse(userCredentials) : null;
     console.log('getUserCredentials()_userCredentialsParse', userCredentialsParse);
 
     return userCredentialsParse;

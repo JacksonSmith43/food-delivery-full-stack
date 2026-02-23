@@ -1,13 +1,18 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 
+import { UserProfileType } from '../profile/modal/user-profile-type';
+
 @Injectable({
   providedIn: 'root',
 })
 export class AccountService {
   http = inject(HttpClient);
 
-  selectedFormField = signal<'email' | 'password' | undefined>(undefined);
+  selectedFormField = signal<'email' | 'password' | 'address' | 'phoneNumber' | undefined>(
+    undefined,
+  );
+  currentUserProfile = signal<UserProfileType | null>(null);
 
   changeEmailAddress(currentEmail: string, newEmail: string) {
     console.log('changeEmailAddress().');
@@ -26,6 +31,7 @@ export class AccountService {
     };
 
     return this.http.post<string>(`/api/auth/passwordChange/`, body, {
-      responseType: 'text' as 'json',});
+      responseType: 'text' as 'json',
+    });
   }
 }

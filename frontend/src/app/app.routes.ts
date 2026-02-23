@@ -6,9 +6,9 @@ import { CartComponent } from './cart/cart.component/cart.component';
 import { SearchRestaurant } from './search-restaurant/search-restaurant.component';
 import { RegisterComponent } from './auth/register/register-component/register-component';
 import { LoginComponent } from './auth/login/login.component/login.component';
-import { AccountComponent } from './account/account.component';
-import { ProfileComponent } from './account/profile/profile.component/profile.component';
-import { OrdersComponent } from './account/orders/orders.component/orders.component';
+import { AccountComponent } from './account/component/account.component';
+import { ProfileComponent } from './account/profile/component/profile/profile.component';
+import { OrdersComponent } from './account/orders/component/orders.component';
 
 export const routes: Routes = [
   { path: 'register', component: RegisterComponent },

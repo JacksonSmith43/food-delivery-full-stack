@@ -15,7 +15,7 @@ export class CartService {
   cartSummary = signal<CartSummaryType>({ totalQuantity: 0, totalCost: 0, itemCount: 0 });
   checkoutCartSignal = signal<CheckoutType>({
     id: 0,
-    address: { id: 0, streetName: '', postCode: 0, country: '' },
+    address: { id: 0, streetName: '', postalCode: 0, city: '', country: '', isDefault: true },
     phoneNumber: 0,
     cartSummary: { totalQuantity: 0, totalCost: 0, itemCount: 0 },
   });
