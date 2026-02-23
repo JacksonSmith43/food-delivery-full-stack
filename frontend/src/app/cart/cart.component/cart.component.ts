@@ -1,5 +1,6 @@
 import { Component, computed, inject, OnInit } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
+import { MatAnchor } from '@angular/material/button';
 
 import { CartService } from '../../shared/services/cart.service';
 import { AuthService } from '../../auth/service/auth.service';
@@ -7,7 +8,7 @@ import { LocalStorageService } from '../../shared/services/local-storage.service
 
 @Component({
   selector: 'app-cart',
-  imports: [MatIcon],
+  imports: [MatIcon, MatAnchor],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.css',
 })
@@ -66,6 +67,19 @@ export class CartComponent implements OnInit {
       },
       error: (error) =>
         console.error('CartComponent_onRemoveFromCart()_Error removing item from cart:', error),
+    });
+  }
+
+  onCheckout() {
+    console.log('onCheckout().');
+
+    this.cartService.checkoutCart().subscribe({
+      next: (userData) => {
+        console.log('onCheckout()_userData: ', userData);
+      },
+      error: (e) => {
+        console.error('onCheckout()_Error: ', e);
+      },
     });
   }
 }

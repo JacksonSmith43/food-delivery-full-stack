@@ -40,12 +40,21 @@
   margin: 1rem auto;
 }
 
+.buy-button {
+  float: right;
+  margin-right: 3rem;
+}
+
 .login-warning {
   margin-top: 4rem;
 }
 
 img {
   width: 8rem;
+}
+
+button:focus {
+  outline: 0.24rem red solid;
 }
 
 p {

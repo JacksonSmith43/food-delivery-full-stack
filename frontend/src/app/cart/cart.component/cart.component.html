@@ -2,7 +2,6 @@
 
     @if(authService.currentUser() !== undefined){
 
-
     <h2>Your Cart</h2>
     @if(cartLength() > 0 ){
 
@@ -28,7 +27,10 @@
         <p style="font-weight: bold;">Cart Total</p>
         <p>Quantity: {{cartSummary().totalQuantity}}</p>
         <p>Total Cost: {{cartSummary().totalCost}} Euro</p>
+    </div>
 
+    <div>
+        <button matButton="filled" class="buy-button" (click)="onCheckout()">Checkout</button>
     </div>
 
     }@else {
