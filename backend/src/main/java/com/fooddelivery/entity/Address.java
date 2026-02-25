@@ -1,0 +1,98 @@
+package com.fooddelivery.entity;
+
+import jakarta.persistence.*;
+
+@Entity
+public class Address {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String label;
+    private String streeName;
+    private String postalCode;
+    private String city;
+    private String country;
+    private boolean isDefault;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id") // Foreign key. This references user. 
+    private User user;
+
+    public Address() {
+
+    }
+
+    public Address(Long id, String label, String streeName, String postalCode, String city, String country,
+            boolean isDefault) {
+        this.id = id;
+        this.label = label;
+        this.streeName = streeName;
+        this.postalCode = postalCode;
+        this.city = city;
+        this.country = country;
+        this.isDefault = isDefault;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
+    public String getStreeName() {
+        return streeName;
+    }
+
+    public void setStreeName(String streeName) {
+        this.streeName = streeName;
+    }
+
+    public String getPostalCode() {
+        return postalCode;
+    }
+
+    public void setPostalCode(String postalCode) {
+        this.postalCode = postalCode;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public boolean isDefault() {
+        return isDefault;
+    }
+
+    public void setDefault(boolean isDefault) {
+        this.isDefault = isDefault;
+    }
+
+    @Override
+    public String toString() {
+        return "Address [id=" + id + ", label=" + label + ", streeName=" + streeName + ", postalCode=" + postalCode
+                + ", city=" + city + ", country=" + country + ", isDefault=" + isDefault + "]";
+    }
+}
