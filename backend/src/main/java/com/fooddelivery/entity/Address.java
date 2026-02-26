@@ -9,7 +9,7 @@ public class Address {
     private Long id;
 
     private String label;
-    private String streeName;
+    private String streetName;
     private String postalCode;
     private String city;
     private String country;
@@ -23,11 +23,11 @@ public class Address {
 
     }
 
-    public Address(Long id, String label, String streeName, String postalCode, String city, String country,
+    public Address(Long id, String label, String streetName, String postalCode, String city, String country,
             boolean isDefault) {
         this.id = id;
         this.label = label;
-        this.streeName = streeName;
+        this.streetName = streetName;
         this.postalCode = postalCode;
         this.city = city;
         this.country = country;
@@ -50,12 +50,12 @@ public class Address {
         this.label = label;
     }
 
-    public String getStreeName() {
-        return streeName;
+    public String getStreetName() {
+        return streetName;
     }
 
-    public void setStreeName(String streeName) {
-        this.streeName = streeName;
+    public void setStreetName(String streetName) {
+        this.streetName = streetName;
     }
 
     public String getPostalCode() {
@@ -92,7 +92,7 @@ public class Address {
 
     @Override
     public String toString() {
-        return "Address [id=" + id + ", label=" + label + ", streeName=" + streeName + ", postalCode=" + postalCode
+        return "Address [id=" + id + ", label=" + label + ", streetName=" + streetName + ", postalCode=" + postalCode
                 + ", city=" + city + ", country=" + country + ", isDefault=" + isDefault + "]";
     }
 }
