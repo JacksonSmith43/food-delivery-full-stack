@@ -12,7 +12,7 @@ public class Categories {
     @Column(name = "categorie")
     private String categorie;
 
-    @Column(name = "categorieImage")
+    @Column(name = "categorie_image")
     private String categorieImage;
 
     public Categories() {

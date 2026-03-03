@@ -1,7 +1,6 @@
 package com.fooddelivery.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import jakarta.persistence.*;
 
 @Entity

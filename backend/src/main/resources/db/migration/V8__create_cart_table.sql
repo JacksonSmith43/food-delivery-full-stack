@@ -1,0 +1,4 @@
+CREATE TABLE carts(
+    id BIGSERIAL PRIMARY KEY,
+    session_id VARCHAR(255) UNIQUE
+)
