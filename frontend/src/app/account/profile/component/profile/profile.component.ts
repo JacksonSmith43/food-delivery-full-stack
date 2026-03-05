@@ -7,6 +7,7 @@ import { ProfileModalComponent } from '../profile-modal/profile-modal.component'
 import { AuthService } from '../../../../auth/service/auth.service';
 import { LocalStorageService } from '../../../../shared/services/local-storage.service';
 import { AccountService } from '../../../service/account.service';
+import { UserProfileType } from '../../modal/user-profile-type';
 
 @Component({
   selector: 'app-profile',
@@ -41,6 +42,19 @@ export class ProfileComponent {
 
     if (userCredentials) {
       this.authService.authUser.set(userCredentials);
+
+      this.accountService.getUserProfile(userCredentials.email).subscribe({
+        next: (user) => {
+          console.log('AccountComponent_ngOnInit()_user: ', user);
+
+          let userProfile: UserProfileType = JSON.parse(user) as UserProfileType;
+          console.log('AccountComponent_ngOnInit()_userProfile: ', userProfile);
+
+          // let address = userProfile.address;
+          // console.log('AccountComponent_ngOnInit()_address: ', address);
+          this.currentUserProfile.set(userProfile);
+        },
+      });
     }
   }
 

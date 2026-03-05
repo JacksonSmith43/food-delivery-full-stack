@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
+import { Observable } from 'rxjs';
 
 import { UserProfileType } from '../profile/modal/user-profile-type';
 
@@ -33,5 +34,9 @@ export class AccountService {
     return this.http.post<string>(`/api/auth/passwordChange/`, body, {
       responseType: 'text' as 'json',
     });
+  }
+
+  getUserProfile(email: string): Observable<string> {
+    return this.http.get(`/api/user/account/profile/${email}`, { responseType: 'text' });
   }
 }

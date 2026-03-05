@@ -1,9 +1,8 @@
-import { AuthType } from '../../../auth/model/auth-user-type';
 import { AddressType } from '../../../shared/model/address-type';
 
 export interface UserProfileType {
-  authUser: AuthType;
+  email: string;
   phoneNumber: number;
-  addresses: AddressType[];
+  address: AddressType[];
   defaultAddressId: number;
 }
