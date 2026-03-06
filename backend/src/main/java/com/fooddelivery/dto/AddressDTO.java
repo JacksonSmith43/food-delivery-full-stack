@@ -7,21 +7,18 @@ public class AddressDTO {
     Integer postalCode;
     String city;
     String country;
-    boolean isDefault;
 
     public AddressDTO() {
 
     }
 
-    public AddressDTO(Long id, String label, String streetName, Integer postalCode, String city, String country,
-            boolean isDefault) {
+    public AddressDTO(Long id, String label, String streetName, Integer postalCode, String city, String country) {
         this.id = id;
         this.label = label;
         this.streetName = streetName;
         this.postalCode = postalCode;
         this.city = city;
         this.country = country;
-        this.isDefault = isDefault;
     }
 
     public Long getId() {
@@ -72,17 +69,9 @@ public class AddressDTO {
         this.country = country;
     }
 
-    public boolean isDefault() {
-        return isDefault;
-    }
-
-    public void setDefault(boolean isDefault) {
-        this.isDefault = isDefault;
-    }
-
     @Override
     public String toString() {
         return "AddressDTO [id=" + id + ", label=" + label + ", streetName=" + streetName + ", postalCode=" + postalCode
-                + ", city=" + city + ", country=" + country + ", isDefault=" + isDefault + "]";
+                + ", city=" + city + ", country=" + country + "]";
     }
 }

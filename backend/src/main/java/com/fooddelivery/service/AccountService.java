@@ -52,8 +52,7 @@ public class AccountService {
                 address.getStreetName(),
                 parsePostalCode(address.getPostalCode()),
                 address.getCity(),
-                address.getCountry(),
-                address.isDefault());
+                address.getCountry());
     }
 
     private Integer parsePostalCode(String postalCode) {

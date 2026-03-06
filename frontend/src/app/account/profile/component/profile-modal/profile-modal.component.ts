@@ -1,83 +1,50 @@
 import { Component, inject, Inject, signal } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatAnchor } from '@angular/material/button';
-import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  ValidatorFn,
-  Validators,
-} from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatSelectModule } from '@angular/material/select';
 
 import { AuthType } from '../../../../auth/model/auth-user-type';
 import { ProfileComponent } from '../profile/profile.component';
 import { AccountService } from '../../../service/account.service';
 import { AuthService } from '../../../../auth/service/auth.service';
+import { ValidatorsService } from '../../../../shared/services/validators.service';
+import { AddressType } from '../../../../shared/model/address-type';
 
 @Component({
   selector: 'app-profile-modal',
   standalone: true,
-  imports: [MatAnchor, ReactiveFormsModule],
+  imports: [MatAnchor, ReactiveFormsModule, MatSelectModule],
   templateUrl: './profile-modal.component.html',
   styleUrl: './profile-modal.component.css',
 })
 export class ProfileModalComponent {
   accountService = inject(AccountService);
   authService = inject(AuthService);
+  validatorsService = inject(ValidatorsService);
 
   successMessage = signal<string>('');
   errorMessage = signal<string>('');
   isValidChange = signal<boolean>(false);
 
+  readonly addressLabels: string[] = ['Home', 'Granny', 'Friend', 'Work'];
+
   selectedFormField = this.accountService.selectedFormField;
 
-  emailForm = new FormGroup({
-    email: new FormControl('', [Validators.email, Validators.required]),
-  });
+  passwordForm = this.validatorsService.passwordForm;
+  emailForm = this.validatorsService.emailForm;
+  addressForm = this.validatorsService.addressForm;
 
-  passwordForm = new FormGroup({
-    currentPassword: new FormControl('', [
-      ...this.getPasswordValidators(),
-      this.currentPasswordChecker.bind(this),
-    ] as ValidatorFn[]),
+  currentPassword = this.validatorsService.passwordForm.controls.currentPassword;
+  newPassword = this.validatorsService.passwordForm.controls.newPassword;
+  email = this.validatorsService.emailForm.controls.email;
 
-    newPassword: new FormControl('', [
-      ...this.getPasswordValidators(),
-      this.differentFromCurrentPassword.bind(this), // bind(this) is required so that authUser can be accessed in the custom validator. Otherwise, 'this' would be undefined in the custom validator.
-    ] as ValidatorFn[]),
-  });
-
-  public getPasswordValidators(): ValidatorFn[] {
-    return [Validators.required, Validators.minLength(6), Validators.maxLength(30)];
-  }
-
-  // Custom Validator.
-  differentFromCurrentPassword(control: FormControl): { [key: string]: boolean } | null {
-    console.log('differentFromCurrentPassword().');
-
-    const newPassword = control.value;
-    const currentPassword = this.authService.authUser()?.password;
-
-    if (newPassword && currentPassword && newPassword === currentPassword) {
-      return { sameAsCurrentPassword: true };
-    }
-
-    return null;
-  }
-
-  currentPasswordChecker(control: FormControl): { [key: string]: boolean } | null {
-    console.log('currentPasswordChecker().');
-
-    const currentPasswordInput = control.value;
-    const currentPassword = this.authService.authUser()?.password;
-
-    // If this statement is true then the user has entered an incorrect current password. The error 'differentCurrentPassword' is added to the form control, which can be used in the template to display an error message.
-    if (currentPasswordInput !== currentPassword) {
-      return { differentCurrentPassword: true };
-    }
-
-    return null;
-  }
+  streetName = this.validatorsService.addressForm.controls.streetName;
+  postalCode = this.validatorsService.addressForm.controls.postalCode;
+  city = this.validatorsService.addressForm.controls.city;
+  country = this.validatorsService.addressForm.controls.country;
+  addressLabel = this.validatorsService.addressForm.controls.label;
+  label = this.validatorsService.addressForm.controls.label;
 
   constructor(
     // dialogRef references the opened modal. Allows it so that the modal can be closed and that data can be returned.
@@ -94,12 +61,12 @@ export class ProfileModalComponent {
     this.dialogRef.close();
   }
 
-  onChangeEmail() {
+  onChangeEmail(): void {
     console.log('onChangeEmail().');
 
     try {
-      if (this.emailForm.valid) {
-        let newEmail = this.emailForm.value.email;
+      if (this.validatorsService.emailForm.valid) {
+        let newEmail = this.validatorsService.emailForm.value.email;
         this.selectedFormField.set('email');
 
         let currentEmail = this.authService.authUser()?.email;
@@ -138,12 +105,12 @@ export class ProfileModalComponent {
     }
   }
 
-  onChangePassword() {
+  onChangePassword(): void {
     console.log('onChangePassword().');
 
     try {
-      if (this.passwordForm.valid) {
-        let newPassword = this.passwordForm.value.newPassword;
+      if (this.validatorsService.passwordForm.valid) {
+        let newPassword = this.validatorsService.passwordForm.value.newPassword;
         this.selectedFormField.set('password');
 
         let currentPassword = this.authService.authUser()?.password;
@@ -192,47 +159,60 @@ export class ProfileModalComponent {
     }
   }
 
-  get emailIsInvalid() {
-    console.log('emailIsInvalid().');
+  onChangeAddress(): void {
+    console.log('onChangeAddress().');
 
-    if (this.emailForm.controls.email.hasError('required')) {
-      return 'An input is required.';
-    } else if (this.emailForm.controls.email.hasError('email')) {
-      return 'It has to be a valid email address.';
-    } else {
-      return '';
+    try {
+      let streetName = this.validatorsService.addressForm.value.streetName;
+      let label = this.validatorsService.addressForm.value.label;
+      let postalCode = this.validatorsService.addressForm.value.postalCode;
+      let city = this.validatorsService.addressForm.value.city;
+      let country = this.validatorsService.addressForm.value.country;
+
+      console.log('onChangeAddress()_streetName: ', streetName);
+      console.log('onChangeAddress()_label: ', label);
+
+      if (streetName && label && postalCode && city && country) {
+        let address: AddressType = {
+          label,
+          streetName,
+          postalCode,
+          city,
+          country,
+        };
+
+        this.accountService.changeAddress(address).subscribe({
+          next: (address) => {
+            console.log('onChangeAddress()_address: ', address);
+            this.successMessage.set('Your address has successfully been changed.');
+          },
+          error: (error) => {
+            console.error('onChangeAddress()_subscribe_Error: ', error);
+            this.errorMessage.set(error.message);
+          },
+        });
+
+        setTimeout(() => {
+          this.dialogRef.close(streetName);
+          this.successMessage.set('');
+          this.errorMessage.set('');
+        }, 2000);
+      } else {
+        console.log('onChangeAddress()_Invalid Input: Address input or address label is missing.');
+        this.errorMessage.set('Please provide all address fields.');
+        return;
+      }
+    } catch (error) {
+      console.error('onChangeAddress()_Error: ', error);
     }
   }
 
-  get currentPasswordIsInvalid() {
-    console.log('currentPasswordIsInvalid().');
+  getAddressLabel(): string[] {
+    // console.log('getAddressLabel().');
 
-    if (this.passwordForm.controls.currentPassword.hasError('required')) {
-      return 'An input is required.';
-    } else if (this.passwordForm.controls.currentPassword.hasError('minlength')) {
-      return 'Has to contain at least 6 characters.';
-    } else if (this.passwordForm.controls.currentPassword.hasError('maxlength')) {
-      return 'Is allowed to contain maximum 30 characters.';
-    } else if (this.passwordForm.controls.currentPassword.hasError('differentCurrentPassword')) {
-      return 'Current password is incorrect.';
-    } else {
-      return '';
+    for (let a = 0; this.addressLabels.length; a++) {
+      return this.addressLabels;
     }
-  }
-
-  get newPasswordIsInvalid() {
-    console.log('newPasswordIsInvalid().');
-
-    if (this.passwordForm.controls.newPassword.hasError('required')) {
-      return 'An input is required.';
-    } else if (this.passwordForm.controls.newPassword.hasError('minlength')) {
-      return 'Has to contain at least 6 characters.';
-    } else if (this.passwordForm.controls.newPassword.hasError('maxlength')) {
-      return 'Is allowed to contain maximum 30 characters.';
-    } else if (this.passwordForm.controls.newPassword.hasError('sameAsCurrentPassword')) {
-      return 'Has to be different than the previous password.';
-    } else {
-      return '';
-    }
+    return [];
   }
 }

@@ -3,6 +3,7 @@ import { inject, Injectable, signal } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { UserProfileType } from '../profile/modal/user-profile-type';
+import { AddressType } from '../../shared/model/address-type';
 
 @Injectable({
   providedIn: 'root',
@@ -38,5 +39,11 @@ export class AccountService {
 
   getUserProfile(email: string): Observable<string> {
     return this.http.get(`/api/user/account/profile/${email}`, { responseType: 'text' });
+  }
+
+  changeAddress(address: AddressType) {
+    console.log('changeAddress().');
+
+    return this.http.post('/api/user/account/profile/changeAddress', address);
   }
 }

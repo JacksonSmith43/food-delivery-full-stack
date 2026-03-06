@@ -13,25 +13,22 @@ public class Address {
     private String postalCode;
     private String city;
     private String country;
-    private boolean isDefault;
 
     @ManyToOne
-    @JoinColumn(name = "user_id") // Foreign key. This references user. 
+    @JoinColumn(name = "user_id") // Foreign key. This references user.
     private User user;
 
     public Address() {
 
     }
 
-    public Address(Long id, String label, String streetName, String postalCode, String city, String country,
-            boolean isDefault) {
+    public Address(Long id, String label, String streetName, String postalCode, String city, String country) {
         this.id = id;
         this.label = label;
         this.streetName = streetName;
         this.postalCode = postalCode;
         this.city = city;
         this.country = country;
-        this.isDefault = isDefault;
     }
 
     public Long getId() {
@@ -82,17 +79,9 @@ public class Address {
         this.country = country;
     }
 
-    public boolean isDefault() {
-        return isDefault;
-    }
-
-    public void setDefault(boolean isDefault) {
-        this.isDefault = isDefault;
-    }
-
     @Override
     public String toString() {
         return "Address [id=" + id + ", label=" + label + ", streetName=" + streetName + ", postalCode=" + postalCode
-                + ", city=" + city + ", country=" + country + ", isDefault=" + isDefault + "]";
+                + ", city=" + city + ", country=" + country + "]";
     }
 }

@@ -27,6 +27,7 @@ export class ProfileComponent {
 
   email: string = '';
   password: string = '';
+  address: string = '';
 
   passwordLength = computed(() => {
     let authUserPassword = this.authService.authUser()?.password;
@@ -66,7 +67,7 @@ export class ProfileComponent {
     // ProfileModalComponent is the component that should be displayed when clicking on the modal field.
     const dialogRef = this.dialog.open(ProfileModalComponent, {
       width: '80%',
-      data: { email: this.email, password: this.password },
+      data: { email: this.email, password: this.password, address: this.address },
     });
 
     // Returns an observable when the user closes the modal.
@@ -79,7 +80,7 @@ export class ProfileComponent {
   }
 
   getPasswordLength() {
-    console.log('getPasswordLength().');
+    // console.log('getPasswordLength().');
     return Array(this.passwordLength()).fill(0);
   }
 }
