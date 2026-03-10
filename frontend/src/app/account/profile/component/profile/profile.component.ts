@@ -25,6 +25,22 @@ export class ProfileComponent {
   selectedFormField = this.accountService.selectedFormField;
   currentUserProfile = this.accountService.currentUserProfile;
 
+  userAddress = computed(() =>
+    this.currentUserProfile()?.address.map(
+      (a) =>
+        'Street name: ' +
+        a.streetName +
+        ' PLZ: ' +
+        a.postalCode +
+        ' City: ' +
+        a.city +
+        ' Country: ' +
+        a.country +
+        ' Label: ' +
+        a.label,
+    ),
+  );
+
   email: string = '';
   password: string = '';
   address: string = '';

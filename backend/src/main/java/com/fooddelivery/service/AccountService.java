@@ -9,12 +9,19 @@ import com.fooddelivery.dto.AddressDTO;
 import com.fooddelivery.dto.UserProfileResponseDTO;
 import com.fooddelivery.entity.Address;
 import com.fooddelivery.entity.User;
+import com.fooddelivery.repository.AddressRepository;
 import com.fooddelivery.repository.UserRepository;
 
 @Service
 public class AccountService {
     @Autowired
+    private AddressRepository addressRepository;
+    @Autowired
     private UserRepository userRepository;
+
+    AccountService(AddressRepository addressRepository) {
+        this.addressRepository = addressRepository;
+    }
 
     public UserProfileResponseDTO getUserProfile(String email) {
         System.out.println("AccountService_getUserProfile().");
@@ -36,6 +43,8 @@ public class AccountService {
                         .map(this::mapAddressToDTO)
                         // toList() collects the results of the mapping into a new List<AddressDTO>.
                         .toList();
+
+        System.out.println("AccountService_getUserProfile()_addresses" + addresses);
 
         return new UserProfileResponseDTO(
                 user.getEmail(),
@@ -68,5 +77,18 @@ public class AccountService {
             System.out.println("AccountService_parsePostalCode(): Invalid postal code format: " + postalCode);
             return null;
         }
+    }
+
+    public Address changeOrAddAddress(Address address, String email) {
+        System.out.println("AccountService_changeOrAddAddress().");
+
+        User user = userRepository.getByEmail(email);
+
+        if (user == null) {
+            throw new IllegalArgumentException("AccountService_changeOrAddAddress()_User not found.");
+        }
+
+        address.setUser(user);
+        return addressRepository.save(address);
     }
 }

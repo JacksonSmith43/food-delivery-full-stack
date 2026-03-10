@@ -61,7 +61,7 @@
         </div>
     </form>
     } @else if(selectedFormField() === "address"){
-    <form [formGroup]="addressForm" (ngSubmit)="onChangeAddress()">
+    <form [formGroup]="addressForm" (ngSubmit)="onChangeOrAddAddress()">
         <div class="address-view">
 
             <label for="streetName">Street *</label>
@@ -111,7 +111,7 @@
 
             <mat-label for="address-label">Address Location *</mat-label>
             <mat-select id="address-label" matNativeControl name="address-label" [formControl]="label">
-                <mat-option value="" selected="selected" hidden="hidden">Choose here</mat-option>
+                <mat-option value="" selected="selected">Choose here</mat-option>
                 @for(a of getAddressLabel(); track a){
                 <mat-option [value]="a">{{a}}</mat-option>
                 }
@@ -122,7 +122,6 @@
             <mat-error class="error-message">{{validatorsService.addressLabelIsInvalid}}</mat-error>
             }
             }
-
 
 
             <button matButton="elevated" [disabled]="addressForm.invalid">Change Address</button>

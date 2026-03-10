@@ -159,7 +159,7 @@ export class ProfileModalComponent {
     }
   }
 
-  onChangeAddress(): void {
+  onChangeOrAddAddress(): void {
     console.log('onChangeAddress().');
 
     try {
@@ -169,10 +169,14 @@ export class ProfileModalComponent {
       let city = this.validatorsService.addressForm.value.city;
       let country = this.validatorsService.addressForm.value.country;
 
-      console.log('onChangeAddress()_streetName: ', streetName);
-      console.log('onChangeAddress()_label: ', label);
+      let currentEmail = this.accountService.currentUserProfile()?.email;
 
-      if (streetName && label && postalCode && city && country) {
+      console.log('onChangeOrAddAddress()_streetName: ', streetName);
+      console.log('onChangeOrAddAddress()_label: ', label);
+
+      if (streetName && label && postalCode && city && country && currentEmail) {
+        this.isValidChange.set(true);
+
         let address: AddressType = {
           label,
           streetName,
@@ -181,29 +185,33 @@ export class ProfileModalComponent {
           country,
         };
 
-        this.accountService.changeAddress(address).subscribe({
+        this.accountService.changeOrAddAddress(address, currentEmail).subscribe({
           next: (address) => {
-            console.log('onChangeAddress()_address: ', address);
+            console.log('onChangeOrAddAddress()_address: ', address);
             this.successMessage.set('Your address has successfully been changed.');
           },
           error: (error) => {
-            console.error('onChangeAddress()_subscribe_Error: ', error);
+            console.error('onChangeOrAddAddress()_subscribe_Error: ', error);
             this.errorMessage.set(error.message);
+            this.isValidChange.set(false);
           },
         });
 
         setTimeout(() => {
-          this.dialogRef.close(streetName);
+          this.dialogRef.close({ streetName, postalCode, label, city, country });
           this.successMessage.set('');
           this.errorMessage.set('');
+          this.isValidChange.set(false);
         }, 2000);
       } else {
-        console.log('onChangeAddress()_Invalid Input: Address input or address label is missing.');
+        console.log(
+          'onChangeOrAddAddress()_Invalid Input: Address input or address label is missing.',
+        );
         this.errorMessage.set('Please provide all address fields.');
         return;
       }
     } catch (error) {
-      console.error('onChangeAddress()_Error: ', error);
+      console.error('onChangeOrAddAddress()_Error: ', error);
     }
   }
 
