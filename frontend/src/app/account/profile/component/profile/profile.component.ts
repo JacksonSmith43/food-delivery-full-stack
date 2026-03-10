@@ -25,20 +25,61 @@ export class ProfileComponent {
   selectedFormField = this.accountService.selectedFormField;
   currentUserProfile = this.accountService.currentUserProfile;
 
-  userAddress = computed(() =>
-    this.currentUserProfile()?.address.map(
-      (a) =>
-        'Street name: ' +
-        a.streetName +
-        ' PLZ: ' +
-        a.postalCode +
-        ' City: ' +
-        a.city +
-        ' Country: ' +
-        a.country +
-        ' Label: ' +
-        a.label,
-    ),
+  addressLabel = computed(() => this.currentUserProfile()?.address.map((l) => l.label));
+  addressComputed = computed(() => this.currentUserProfile()?.address);
+
+  homeLabel = computed(() =>
+    this.currentUserProfile()
+      ?.address.filter((a) => a.label === 'Home')
+      .map(
+        (a) =>
+          'Street name: ' +
+          a.streetName +
+          ' PLZ: ' +
+          a.postalCode +
+          ' City: ' +
+          a.city +
+          ' Country: ' +
+          a.country +
+          ' Label: ' +
+          a.label,
+      ),
+  );
+
+  grannyLabel = computed(() =>
+    this.currentUserProfile()
+      ?.address.filter((a) => a.label === 'Granny')
+      .map(
+        (a) =>
+          'Street name: ' +
+          a.streetName +
+          ' PLZ: ' +
+          a.postalCode +
+          ' City: ' +
+          a.city +
+          ' Country: ' +
+          a.country +
+          ' Label: ' +
+          a.label,
+      ),
+  );
+
+  friendLabel = computed(() =>
+    this.currentUserProfile()
+      ?.address.filter((a) => a.label === 'Friend')
+      .map(
+        (a) =>
+          'Street name: ' +
+          a.streetName +
+          ' PLZ: ' +
+          a.postalCode +
+          ' City: ' +
+          a.city +
+          ' Country: ' +
+          a.country +
+          ' Label: ' +
+          a.label,
+      ),
   );
 
   email: string = '';
