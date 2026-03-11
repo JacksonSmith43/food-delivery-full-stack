@@ -25,21 +25,16 @@
         tabindex="0" title="Click to change your address.">
         <label for="address">Address</label>
         <button id="address" mat-raised-button aria-label="Address.">
-            @for(address of addressComputed(); track address){
-
-            @if(address.label === "Home"){
-            {{homeLabel()}}
-
-            }@else if(address.label === "Friend"){
-            {{friendLabel()}}
-
-            }@else if(address.label === "Granny"){
-            {{grannyLabel()}}
-            }
-            }
+            <div class="address-list">
+                @for(address of sortedAddresses(); track address){
+                <div class="address-line">
+                    {{formatAddress(address)}}
+                </div>
+                }
+            </div>
         </button>
     </div>
-    
+
 
     <div class="phone-number-container credentials" (keydown.enter)="openDialog('phoneNumber')"
         (click)="openDialog('phoneNumber')" tabindex="0" title="Click to change your phone number.">

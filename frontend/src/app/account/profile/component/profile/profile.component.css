@@ -25,6 +25,10 @@
   border: 0; /* So that all of the individual stars (*) won´t be hightlighted when hovering over it. */
 }
 
+.address-list {
+  display: grid;
+}
+
 label {
   color: gray;
   font-size: large;

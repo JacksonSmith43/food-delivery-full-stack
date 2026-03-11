@@ -25,62 +25,23 @@ export class ProfileComponent {
   selectedFormField = this.accountService.selectedFormField;
   currentUserProfile = this.accountService.currentUserProfile;
 
-  addressLabel = computed(() => this.currentUserProfile()?.address.map((l) => l.label));
-  addressComputed = computed(() => this.currentUserProfile()?.address);
+  // The addressOrder object defines the desired order of address labels. <string, number> means that the keys are strings and the values are numbers.
+  addressOrder: Record<string, number> = {
+    Home: 1,
+    Work: 2,
+    Granny: 3,
+    Friend: 4,
+  };
 
-  homeLabel = computed(() =>
-    this.currentUserProfile()
-      ?.address.filter((a) => a.label === 'Home')
-      .map(
-        (a) =>
-          'Street name: ' +
-          a.streetName +
-          ' PLZ: ' +
-          a.postalCode +
-          ' City: ' +
-          a.city +
-          ' Country: ' +
-          a.country +
-          ' Label: ' +
-          a.label,
-      ),
-  );
-
-  grannyLabel = computed(() =>
-    this.currentUserProfile()
-      ?.address.filter((a) => a.label === 'Granny')
-      .map(
-        (a) =>
-          'Street name: ' +
-          a.streetName +
-          ' PLZ: ' +
-          a.postalCode +
-          ' City: ' +
-          a.city +
-          ' Country: ' +
-          a.country +
-          ' Label: ' +
-          a.label,
-      ),
-  );
-
-  friendLabel = computed(() =>
-    this.currentUserProfile()
-      ?.address.filter((a) => a.label === 'Friend')
-      .map(
-        (a) =>
-          'Street name: ' +
-          a.streetName +
-          ' PLZ: ' +
-          a.postalCode +
-          ' City: ' +
-          a.city +
-          ' Country: ' +
-          a.country +
-          ' Label: ' +
-          a.label,
-      ),
-  );
+  sortedAddresses = computed(() => {
+    const addresses = this.currentUserProfile()?.address ?? [];
+    return [...addresses].sort(
+      // sort calls the function multiple times/loops. It compares two elements.
+      // this.addressOrder[a.label] is the equivalent to addressOrder['Home'] which returns 1.
+      // 999 means that unknown labels will be last.
+      (a, b) => (this.addressOrder[a.label] ?? 999) - (this.addressOrder[b.label] ?? 999),
+    );
+  });
 
   email: string = '';
   password: string = '';
@@ -139,5 +100,15 @@ export class ProfileComponent {
   getPasswordLength() {
     // console.log('getPasswordLength().');
     return Array(this.passwordLength()).fill(0);
+  }
+
+  formatAddress(a: {
+    label: string;
+    streetName: string;
+    postalCode: string | number;
+    city: string;
+    country: string;
+  }): string {
+    return `Label: ${a.label} Street name: ${a.streetName} PLZ: ${a.postalCode} City: ${a.city} Country: ${a.country}`;
   }
 }
