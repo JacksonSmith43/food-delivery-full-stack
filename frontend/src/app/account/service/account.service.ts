@@ -48,4 +48,12 @@ export class AccountService {
       responseType: 'text',
     });
   }
+
+  changePhoneNumber(email: string, phoneNumber: string) {
+    console.log('changePhoneNumber().');
+
+    return this.http.post(`/api/user/account/profile/changePhoneNumber/${email}`, phoneNumber, {
+      responseType: 'text',
+    });
+  }
 }

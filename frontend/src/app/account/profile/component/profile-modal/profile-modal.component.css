@@ -4,20 +4,15 @@
   outline: 0.25rem solid gray;
 }
 
-.email-view {
-  display: grid;
-}
-
-.password-view {
+.email-view,
+.password-view,
+.address-view,
+.phone-number-view {
   display: grid;
 }
 
 #old-password {
   margin-bottom: 1rem;
-}
-
-.address-view {
-  display: grid;
 }
 
 #country {

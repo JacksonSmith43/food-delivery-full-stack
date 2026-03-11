@@ -34,6 +34,7 @@ export class ProfileModalComponent {
   passwordForm = this.validatorsService.passwordForm;
   emailForm = this.validatorsService.emailForm;
   addressForm = this.validatorsService.addressForm;
+  phoneNumberForm = this.validatorsService.phoneNumberForm;
 
   currentPassword = this.validatorsService.passwordForm.controls.currentPassword;
   newPassword = this.validatorsService.passwordForm.controls.newPassword;
@@ -43,8 +44,9 @@ export class ProfileModalComponent {
   postalCode = this.validatorsService.addressForm.controls.postalCode;
   city = this.validatorsService.addressForm.controls.city;
   country = this.validatorsService.addressForm.controls.country;
-  addressLabel = this.validatorsService.addressForm.controls.label;
   label = this.validatorsService.addressForm.controls.label;
+
+  phoneNumber = this.validatorsService.phoneNumberForm.controls.phoneNumber;
 
   constructor(
     // dialogRef references the opened modal. Allows it so that the modal can be closed and that data can be returned.
@@ -222,5 +224,34 @@ export class ProfileModalComponent {
       return this.addressLabels;
     }
     return [];
+  }
+
+  onPhoneNumber() {
+    console.log('onPhoneNumber().');
+
+    let phoneNumber = this.validatorsService.phoneNumberForm.controls.phoneNumber.value;
+    let email = this.accountService.currentUserProfile()?.email;
+
+    if (email && phoneNumber) {
+      this.accountService.changePhoneNumber(email, phoneNumber).subscribe({
+        next: (phoneNumber) => {
+          console.log('onPhoneNumber()_phoneNumber: ', phoneNumber);
+          this.isValidChange.set(true);
+          this.successMessage.set('Phone number successfully added.');
+        },
+        error: (e) => {
+          console.error('onPhoneNumber()_Error: ', e);
+          this.successMessage.set('');
+          this.errorMessage.set(e.message);
+          this.isValidChange.set(false);
+        },
+      });
+
+      setTimeout(() => {
+        this.dialogRef.close(phoneNumber);
+        this.successMessage.set('');
+        this.isValidChange.set(false);
+      }, 2000);
+    }
   }
 }

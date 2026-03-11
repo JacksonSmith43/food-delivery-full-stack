@@ -135,5 +135,35 @@
 
         </div>
     </form>
+
+
+
+    }@else if(selectedFormField() === "phoneNumber"){
+    <form [formGroup]="phoneNumberForm" (ngSubmit)="onPhoneNumber()">
+        <div class="phone-number-view">
+
+            <label for="phoneNumber">Phone Number *</label>
+            <input id="phoneNumber" type="tel" placeholder="012345678" minlength="3" maxlength="20"
+                title="Has to contain at least 3 numbers until maximum 20." [formControl]="phoneNumber">
+
+            @if( (phoneNumber.invalid && (phoneNumber.touched || phoneNumber.dirty))){
+            @if(phoneNumber.hasError("required") ||
+            phoneNumber.hasError("minlength") ||
+            phoneNumber.hasError("maxlength") ){
+            <mat-error class="error-message">{{validatorsService.phoneNumberIsInvalid}}</mat-error>
+            }
+            }
+
+            <button matButton="elevated" [disabled]="phoneNumberForm.invalid">Change Phone Number</button>
+
+            @if(isValidChange()){
+            <p class="success-message">{{successMessage()}}</p>
+            }@else{
+
+            <p class="error-message">{{errorMessage()}}</p>
+            }
+
+        </div>
+    </form>
     }
 </div>

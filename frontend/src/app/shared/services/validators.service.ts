@@ -33,9 +33,17 @@ export class ValidatorsService {
       this.currentAddressChecker.bind(this),
     ] as ValidatorFn[]),
     label: new FormControl('', [Validators.required] as ValidatorFn[]),
-    postalCode: new FormControl(0, [Validators.required, Validators.min(1), Validators.max(23)]),
+    postalCode: new FormControl(null, [Validators.required, Validators.min(1), Validators.max(23)]),
     city: new FormControl('', [...this.getAddressValidators()] as ValidatorFn[]),
     country: new FormControl('', [...this.getAddressValidators()] as ValidatorFn[]),
+  });
+
+  phoneNumberForm = new FormGroup({
+    phoneNumber: new FormControl('', [
+      Validators.required,
+      Validators.minLength(3),
+      Validators.maxLength(20),
+    ]),
   });
 
   public getPasswordValidators(): ValidatorFn[] {
@@ -196,6 +204,20 @@ export class ValidatorsService {
       return 'Has to contain at least 3 characters.';
     } else if (this.addressForm.controls.country.hasError('maxlength')) {
       return 'Is allowed to contain maximum 50 characters.';
+    } else {
+      return '';
+    }
+  }
+
+  get phoneNumberIsInvalid() {
+    console.log('phoneNumberIsInvalid().');
+
+    if (this.phoneNumberForm.controls.phoneNumber.hasError('required')) {
+      return 'A phone number input is required.';
+    } else if (this.phoneNumberForm.controls.phoneNumber.hasError('minlength')) {
+      return 'Too few. Has to between 1 and 20 numbers.';
+    } else if (this.phoneNumberForm.controls.phoneNumber.hasError('maxlength')) {
+      return 'Too many. Has to between 1 and 20 numbers.';
     } else {
       return '';
     }
