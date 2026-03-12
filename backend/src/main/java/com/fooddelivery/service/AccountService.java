@@ -79,16 +79,46 @@ public class AccountService {
         }
     }
 
-    public Address changeOrAddAddress(Address address, String email) {
-        System.out.println("AccountService_changeOrAddAddress().");
+    public Address addAddress(Address address, String email) {
+        System.out.println("AccountService_addAddress().");
 
         User user = userRepository.getByEmail(email);
 
         if (user == null) {
-            throw new IllegalArgumentException("AccountService_changeOrAddAddress()_User not found.");
+            throw new IllegalArgumentException("AccountService_addAddress()_User not found.");
         }
 
         address.setUser(user);
         return addressRepository.save(address);
+    }
+
+    public Boolean changePhoneNumber(String phoneNumber, String email) {
+        System.out.println("changePhoneNumber().");
+
+        try {
+
+            User user = userRepository.getByEmail(email);
+
+            if (user == null) {
+                throw new IllegalArgumentException("AccountService_changePhoneNumber()_User not found.");
+            }
+
+            String phoneNumberExists = user.getPhoneNumber();
+
+            if (!phoneNumberExists.isEmpty()) {
+                if (phoneNumberExists.equals(phoneNumber)) {
+                    System.out.println("changePhoneNumber()_The same phone number already exists.");
+                    return false;
+                }
+            }
+
+            user.setPhoneNumber(phoneNumber);
+            userRepository.save(user);
+            return true;
+
+        } catch (Exception e) {
+            System.out.println("AccountService_changePhoneNumber()_An error occurred: " + e.getMessage());
+            throw new RuntimeException("AccountService_changePhoneNumber()_An error occurred: " + e.getMessage());
+        }
     }
 }

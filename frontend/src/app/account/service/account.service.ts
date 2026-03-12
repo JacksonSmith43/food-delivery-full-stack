@@ -41,10 +41,10 @@ export class AccountService {
     return this.http.get(`/api/user/account/profile/${email}`, { responseType: 'text' });
   }
 
-  changeOrAddAddress(address: AddressType, email: string) {
-    console.log('changeOrAddAddress().');
+  addAddress(address: AddressType, email: string) {
+    console.log('addAddress().');
 
-    return this.http.post(`/api/user/account/profile/changeOrAddAddress/${email}`, address, {
+    return this.http.post(`/api/user/account/profile/addAddress/${email}`, address, {
       responseType: 'text',
     });
   }

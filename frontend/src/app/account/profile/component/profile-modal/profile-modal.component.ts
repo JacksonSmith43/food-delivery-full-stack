@@ -161,8 +161,8 @@ export class ProfileModalComponent {
     }
   }
 
-  onChangeOrAddAddress(): void {
-    console.log('onChangeAddress().');
+  addAddress(): void {
+    console.log('addAddress().');
 
     try {
       let streetName = this.validatorsService.addressForm.value.streetName;
@@ -173,8 +173,8 @@ export class ProfileModalComponent {
 
       let currentEmail = this.accountService.currentUserProfile()?.email;
 
-      console.log('onChangeOrAddAddress()_streetName: ', streetName);
-      console.log('onChangeOrAddAddress()_label: ', label);
+      console.log('addAddress()_streetName: ', streetName);
+      console.log('addAddress()_label: ', label);
 
       if (streetName && label && postalCode && city && country && currentEmail) {
         this.isValidChange.set(true);
@@ -187,14 +187,22 @@ export class ProfileModalComponent {
           country,
         };
 
-        this.accountService.changeOrAddAddress(address, currentEmail).subscribe({
+        this.accountService.addAddress(address, currentEmail).subscribe({
           next: (address) => {
-            console.log('onChangeOrAddAddress()_address: ', address);
-            this.successMessage.set('Your address has successfully been changed.');
+            console.log('addAddress()_address: ', address);
+            this.successMessage.set('Your address has successfully been added.');
+
+            let newAdress: AddressType = JSON.parse(address);
+            let currentAddresses = this.accountService.currentUserProfile()!.address || [];
+
+            this.accountService.currentUserProfile.set({
+              ...this.accountService.currentUserProfile()!,
+              address: [...currentAddresses, newAdress],
+            });
           },
           error: (error) => {
-            console.error('onChangeOrAddAddress()_subscribe_Error: ', error);
-            this.errorMessage.set(error.message);
+            console.error('addAddress()_subscribe_Error: ', error.error);
+            this.errorMessage.set(error.error);
             this.isValidChange.set(false);
           },
         });
@@ -206,14 +214,12 @@ export class ProfileModalComponent {
           this.isValidChange.set(false);
         }, 2000);
       } else {
-        console.log(
-          'onChangeOrAddAddress()_Invalid Input: Address input or address label is missing.',
-        );
+        console.log('addAddress()_Invalid Input: Address input or address label is missing.');
         this.errorMessage.set('Please provide all address fields.');
         return;
       }
     } catch (error) {
-      console.error('onChangeOrAddAddress()_Error: ', error);
+      console.error('addAddress()_Error: ', error);
     }
   }
 
@@ -226,23 +232,29 @@ export class ProfileModalComponent {
     return [];
   }
 
-  onPhoneNumber() {
-    console.log('onPhoneNumber().');
+  onChangePhoneNumber() {
+    console.log('onChangePhoneNumber().');
 
     let phoneNumber = this.validatorsService.phoneNumberForm.controls.phoneNumber.value;
     let email = this.accountService.currentUserProfile()?.email;
+    let userProfile = this.accountService.currentUserProfile();
 
     if (email && phoneNumber) {
       this.accountService.changePhoneNumber(email, phoneNumber).subscribe({
         next: (phoneNumber) => {
-          console.log('onPhoneNumber()_phoneNumber: ', phoneNumber);
+          console.log('onChangePhoneNumber()_phoneNumber: ', phoneNumber);
           this.isValidChange.set(true);
-          this.successMessage.set('Phone number successfully added.');
+          this.successMessage.set('Phone number successfully changed.');
+          this.accountService.currentUserProfile.set({
+            ...userProfile!,
+            phoneNumber,
+          });
         },
         error: (e) => {
-          console.error('onPhoneNumber()_Error: ', e);
+          console.error('onChangePhoneNumber()_Error: ', e.error);
+
           this.successMessage.set('');
-          this.errorMessage.set(e.message);
+          this.errorMessage.set(e.error);
           this.isValidChange.set(false);
         },
       });

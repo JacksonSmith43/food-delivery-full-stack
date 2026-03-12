@@ -61,7 +61,7 @@
         </div>
     </form>
     } @else if(selectedFormField() === "address"){
-    <form [formGroup]="addressForm" (ngSubmit)="onChangeOrAddAddress()">
+    <form [formGroup]="addressForm" (ngSubmit)="addAddress()">
         <div class="address-view">
 
             <label for="streetName">Street *</label>
@@ -139,7 +139,7 @@
 
 
     }@else if(selectedFormField() === "phoneNumber"){
-    <form [formGroup]="phoneNumberForm" (ngSubmit)="onPhoneNumber()">
+    <form [formGroup]="phoneNumberForm" (ngSubmit)="onChangePhoneNumber()">
         <div class="phone-number-view">
 
             <label for="phoneNumber">Phone Number *</label>

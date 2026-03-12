@@ -2,7 +2,7 @@ import { AddressType } from '../../../shared/model/address-type';
 
 export interface UserProfileType {
   email: string;
-  phoneNumber: number;
+  phoneNumber: string;
   address: AddressType[];
   defaultAddressId: number;
 }

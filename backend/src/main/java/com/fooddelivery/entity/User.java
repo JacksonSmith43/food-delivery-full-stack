@@ -3,6 +3,8 @@ package com.fooddelivery.entity;
 import java.util.List;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "users")
@@ -13,10 +15,14 @@ public class User {
     private Long id;
 
     @Column
+    @Email
     private String email;
+
     @Column
+    @Size(min = 6, max = 30)
     private String password;
 
+    @Size(min = 3, max = 20)
     private String phoneNumber;
 
     // mappedBy ensures that multiple addresses can be associated with one user.

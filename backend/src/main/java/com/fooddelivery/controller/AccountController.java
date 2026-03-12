@@ -39,27 +39,59 @@ public class AccountController {
         return ResponseEntity.ok(userProfile);
     }
 
-    @PostMapping("profile/changeOrAddAddress/{email}")
-    ResponseEntity<AddressDTO> changeOrAddAddress(@PathVariable String email, @RequestBody Address address) {
-        System.out.println("AccountController_changeOrAddAddress().");
+    @PostMapping("profile/addAddress/{email}")
+    ResponseEntity<AddressDTO> addAddress(@PathVariable String email, @RequestBody Address address) {
+        System.out.println("AccountController_addAddress().");
 
-        Address userAddress = accountService.changeOrAddAddress(address, email);
+        Address userAddress = accountService.addAddress(address, email);
 
         if (userAddress == null) {
-            System.out.println("AccountController_changeOrAddAddress()_The user does not exist.");
+            System.out.println("AccountController_addAddress()_The user does not exist.");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
 
         AddressDTO dto = new AddressDTO(
-            userAddress.getId(),
-            userAddress.getLabel(),
-            userAddress.getStreetName(),
-            userAddress.getPostalCode() == null ? null : Integer.valueOf(userAddress.getPostalCode()),
-            userAddress.getCity(),
-            userAddress.getCountry()
-        );
+                userAddress.getId(),
+                userAddress.getLabel(),
+                userAddress.getStreetName(),
+                userAddress.getPostalCode() == null ? null : Integer.valueOf(userAddress.getPostalCode()),
+                userAddress.getCity(),
+                userAddress.getCountry());
 
-        System.out.println("AccountController_changeOrAddAddress()_Successful address change/addition.");
+        System.out.println("AccountController_addAddress()_Successful address addition.");
         return ResponseEntity.ok(dto);
+    }
+
+    @PostMapping("profile/changePhoneNumber/{email}")
+    ResponseEntity<String> changePhoneNumber(@PathVariable String email, @RequestBody String phoneNumber) {
+        System.out.println("AccountController_changePhoneNumber().");
+
+        try {
+
+            if (phoneNumber.isEmpty()) {
+                System.out.println("AccountController_changePhoneNumber()_Phone number is empty.");
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+            }
+
+            boolean validPhoneNumber = accountService.changePhoneNumber(phoneNumber, email);
+
+            if (validPhoneNumber) {
+                System.out.println("AccountController_changePhoneNumber()_Successful phone number change.");
+                return ResponseEntity.ok(phoneNumber);
+
+            } else if (validPhoneNumber == false) {
+                System.out.println("AccountController_changePhoneNumber()_The phone number is invalid/already exists.");
+                return ResponseEntity.status(HttpStatus.CONFLICT)
+                        .body("The phone number is invalid or already exists.");
+            } else {
+                System.out.println("AccountController_changePhoneNumber()_The user does not exist.");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("The user does not exist.");
+            }
+
+        } catch (Exception e) {
+            System.out.println("AccountController_changePhoneNumber()_An error occurred: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+
     }
 }
