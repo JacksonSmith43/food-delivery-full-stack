@@ -124,7 +124,12 @@
             }
 
 
+            @if(this.errorMessage().includes("label already exists")){
             <button matButton="elevated" [disabled]="addressForm.invalid">Change Address</button>
+
+            } @else{
+            <button matButton="elevated" [disabled]="addressForm.invalid">Add Address</button>
+            }
 
             @if(isValidChange()){
             <p class="success-message">{{successMessage()}}</p>

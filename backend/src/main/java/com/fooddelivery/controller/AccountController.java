@@ -1,7 +1,6 @@
 package com.fooddelivery.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -29,14 +28,8 @@ public class AccountController {
     ResponseEntity<UserProfileResponseDTO> getProfile(@PathVariable String email) {
         System.out.println("AccountController_getProfile().");
 
-        UserProfileResponseDTO userProfile = accountService.getUserProfile(email);
-
-        if (userProfile == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        }
-
-        System.out.println("AccountController_getProfile()_userProfile: " + userProfile);
-        return ResponseEntity.ok(userProfile);
+        System.out.println("AccountController_getProfile()_userProfile_email: " + email);
+        return ResponseEntity.ok(accountService.getUserProfile(email));
     }
 
     @PostMapping("profile/addAddress/{email}")
@@ -44,11 +37,6 @@ public class AccountController {
         System.out.println("AccountController_addAddress().");
 
         Address userAddress = accountService.addAddress(address, email);
-
-        if (userAddress == null) {
-            System.out.println("AccountController_addAddress()_The user does not exist.");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        }
 
         AddressDTO dto = new AddressDTO(
                 userAddress.getId(),
@@ -66,32 +54,8 @@ public class AccountController {
     ResponseEntity<String> changePhoneNumber(@PathVariable String email, @RequestBody String phoneNumber) {
         System.out.println("AccountController_changePhoneNumber().");
 
-        try {
-
-            if (phoneNumber.isEmpty()) {
-                System.out.println("AccountController_changePhoneNumber()_Phone number is empty.");
-                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
-            }
-
-            boolean validPhoneNumber = accountService.changePhoneNumber(phoneNumber, email);
-
-            if (validPhoneNumber) {
-                System.out.println("AccountController_changePhoneNumber()_Successful phone number change.");
-                return ResponseEntity.ok(phoneNumber);
-
-            } else if (validPhoneNumber == false) {
-                System.out.println("AccountController_changePhoneNumber()_The phone number is invalid/already exists.");
-                return ResponseEntity.status(HttpStatus.CONFLICT)
-                        .body("The phone number is invalid or already exists.");
-            } else {
-                System.out.println("AccountController_changePhoneNumber()_The user does not exist.");
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("The user does not exist.");
-            }
-
-        } catch (Exception e) {
-            System.out.println("AccountController_changePhoneNumber()_An error occurred: " + e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-        }
-
+        accountService.changePhoneNumber(phoneNumber, email);
+        System.out.println("AccountController_changePhoneNumber()_Successful phone number change.");
+        return ResponseEntity.ok(phoneNumber);
     }
 }

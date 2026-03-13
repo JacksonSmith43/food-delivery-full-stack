@@ -90,7 +90,8 @@ export class ProfileModalComponent {
           },
           error: (e) => {
             console.error('changeEmailAddress()_Error: ', e);
-            this.errorMessage.set('An error occurred. Please try again.');
+            this.errorMessage.set(JSON.parse(e.error).code);
+            // this.errorMessage.set('An error occurred. Please try again.');
           },
         });
 
@@ -144,7 +145,8 @@ export class ProfileModalComponent {
           },
           error: (e) => {
             console.error('onChangePassword()_Error: ', e);
-            this.errorMessage.set('An error occurred. Please try again. Error: ' + e.message);
+            this.errorMessage.set(JSON.parse(e.error).code);
+            // this.errorMessage.set('An error occurred. Please try again. Error: ' + e.message);
           },
         });
 
@@ -202,17 +204,23 @@ export class ProfileModalComponent {
           },
           error: (error) => {
             console.error('addAddress()_subscribe_Error: ', error.error);
-            this.errorMessage.set(error.error);
+            this.errorMessage.set(JSON.parse(error.error).code);
             this.isValidChange.set(false);
           },
         });
 
-        setTimeout(() => {
-          this.dialogRef.close({ streetName, postalCode, label, city, country });
-          this.successMessage.set('');
-          this.errorMessage.set('');
-          this.isValidChange.set(false);
-        }, 2000);
+        if (this.errorMessage().includes('ADDRESS_LABEL_EXISTS')) {
+          this.errorMessage.set(
+            'This label already exists. Only one of each label can be used. In order to replace the previous address with this new one, press the Change Address button.',
+          );
+        } else {
+          setTimeout(() => {
+            this.dialogRef.close({ streetName, postalCode, label, city, country });
+            this.successMessage.set('');
+            this.errorMessage.set('');
+            this.isValidChange.set(false);
+          }, 2000);
+        }
       } else {
         console.log('addAddress()_Invalid Input: Address input or address label is missing.');
         this.errorMessage.set('Please provide all address fields.');
@@ -254,7 +262,7 @@ export class ProfileModalComponent {
           console.error('onChangePhoneNumber()_Error: ', e.error);
 
           this.successMessage.set('');
-          this.errorMessage.set(e.error);
+          this.errorMessage.set(JSON.parse(e.error).code);
           this.isValidChange.set(false);
         },
       });

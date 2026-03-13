@@ -9,6 +9,11 @@ import com.fooddelivery.dto.AddressDTO;
 import com.fooddelivery.dto.UserProfileResponseDTO;
 import com.fooddelivery.entity.Address;
 import com.fooddelivery.entity.User;
+import com.fooddelivery.exception.AddressLabelAlreadyExistsException;
+import com.fooddelivery.exception.NotUserFoundException;
+import com.fooddelivery.exception.PhoneNumberAlreadyExistsException;
+import com.fooddelivery.exception.PhoneNumberEmptyException;
+import com.fooddelivery.exception.PostCodeIsEmptyOrNull;
 import com.fooddelivery.repository.AddressRepository;
 import com.fooddelivery.repository.UserRepository;
 
@@ -30,7 +35,7 @@ public class AccountService {
 
         if (user == null) {
             System.out.println("AccountService_getUserProfile(): User not found for email: " + email);
-            return null;
+            throw new NotUserFoundException("AccountService_getUserProfile(): User not found for email.");
         }
 
         List<AddressDTO> addresses = user.getAddress() == null
@@ -69,14 +74,10 @@ public class AccountService {
         System.out.println("AccountService_parsePostalCode()_postalCode: " + postalCode);
 
         if (postalCode == null || postalCode.isBlank()) {
-            return null;
+            throw new PostCodeIsEmptyOrNull("AccountService_parsePostalCode()_Postoce is empty or null.");
         }
-        try {
-            return Integer.valueOf(postalCode);
-        } catch (NumberFormatException ignored) {
-            System.out.println("AccountService_parsePostalCode(): Invalid postal code format: " + postalCode);
-            return null;
-        }
+
+        return Integer.valueOf(postalCode);
     }
 
     public Address addAddress(Address address, String email) {
@@ -85,40 +86,50 @@ public class AccountService {
         User user = userRepository.getByEmail(email);
 
         if (user == null) {
-            throw new IllegalArgumentException("AccountService_addAddress()_User not found.");
+            throw new NotUserFoundException("AccountService_addAddress()_User not found.");
+        }
+
+        if (user.getAddress() != null) {
+            // Checks whether the address with that label already exists.
+            boolean labelExists = user.getAddress().stream()
+                    .anyMatch(existingAddress -> existingAddress.getLabel().equals(address.getLabel()));
+
+            if (labelExists) {
+                throw new AddressLabelAlreadyExistsException(
+                        "AccountService_addAddress()_An address with that label already exists.");
+            }
+
         }
 
         address.setUser(user);
         return addressRepository.save(address);
     }
 
-    public Boolean changePhoneNumber(String phoneNumber, String email) {
+    public void changePhoneNumber(String phoneNumber, String email) {
         System.out.println("changePhoneNumber().");
 
-        try {
-
-            User user = userRepository.getByEmail(email);
-
-            if (user == null) {
-                throw new IllegalArgumentException("AccountService_changePhoneNumber()_User not found.");
-            }
-
-            String phoneNumberExists = user.getPhoneNumber();
-
-            if (!phoneNumberExists.isEmpty()) {
-                if (phoneNumberExists.equals(phoneNumber)) {
-                    System.out.println("changePhoneNumber()_The same phone number already exists.");
-                    return false;
-                }
-            }
-
-            user.setPhoneNumber(phoneNumber);
-            userRepository.save(user);
-            return true;
-
-        } catch (Exception e) {
-            System.out.println("AccountService_changePhoneNumber()_An error occurred: " + e.getMessage());
-            throw new RuntimeException("AccountService_changePhoneNumber()_An error occurred: " + e.getMessage());
+        if (phoneNumber.isEmpty()) {
+            System.out.println("AccountController_changePhoneNumber()_Phone number is empty.");
+            throw new PhoneNumberEmptyException("AccountController_changePhoneNumber()_Phone number is empty.");
         }
+
+        User user = userRepository.getByEmail(email);
+
+        if (user == null) {
+            throw new NotUserFoundException("AccountService_changePhoneNumber()_User not found.");
+        }
+
+        String phoneNumberExists = user.getPhoneNumber();
+
+        if (!phoneNumberExists.isEmpty()) {
+            if (phoneNumberExists.equals(phoneNumber)) {
+                System.out.println("changePhoneNumber()_The same phone number already exists.");
+                throw new PhoneNumberAlreadyExistsException(
+                        "changePhoneNumber()_The same phone number already exists.");
+            }
+        }
+
+        user.setPhoneNumber(phoneNumber);
+        userRepository.save(user);
     }
 }
