@@ -56,4 +56,10 @@ export class AccountService {
       responseType: 'text',
     });
   }
+
+  changeAddress(userId: number, newAddress: AddressType) {
+    console.log('changeAddress().');
+
+    return this.http.put(`/api/user/account/profile/changeAddress/${userId}`, newAddress);
+  }
 }

@@ -1,5 +1,5 @@
 export interface AddressType {
-  // id: number;
+  id?: number;
   label: string;
   streetName: string;
   postalCode: number;

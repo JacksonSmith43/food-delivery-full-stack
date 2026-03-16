@@ -125,10 +125,11 @@
 
 
             @if(this.errorMessage().includes("label already exists")){
-            <button matButton="elevated" [disabled]="addressForm.invalid">Change Address</button>
+            <button type="button" matButton="elevated" [disabled]="addressForm.invalid"
+                (click)="replaceAddressWithExistingLabel()">Change Address</button>
 
             } @else{
-            <button matButton="elevated" [disabled]="addressForm.invalid">Add Address</button>
+            <button type="submit" matButton="elevated" [disabled]="addressForm.invalid">Add Address</button>
             }
 
             @if(isValidChange()){

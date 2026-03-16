@@ -201,26 +201,27 @@ export class ProfileModalComponent {
               ...this.accountService.currentUserProfile()!,
               address: [...currentAddresses, newAdress],
             });
+
+            setTimeout(() => {
+              this.dialogRef.close({ streetName, postalCode, label, city, country });
+              this.successMessage.set('');
+              this.errorMessage.set('');
+              this.isValidChange.set(false);
+            }, 2000);
           },
           error: (error) => {
             console.error('addAddress()_subscribe_Error: ', error.error);
-            this.errorMessage.set(JSON.parse(error.error).code);
+            const code = JSON.parse(error.error).code;
+            if (code === 'ADDRESS_LABEL_EXISTS') {
+              this.errorMessage.set(
+                'This label already exists. Only one of each label can be used once. In order to replace the previous address with this new one, press the Change Address button.',
+              );
+            } else {
+              this.errorMessage.set(code);
+            }
             this.isValidChange.set(false);
           },
         });
-
-        if (this.errorMessage().includes('ADDRESS_LABEL_EXISTS')) {
-          this.errorMessage.set(
-            'This label already exists. Only one of each label can be used. In order to replace the previous address with this new one, press the Change Address button.',
-          );
-        } else {
-          setTimeout(() => {
-            this.dialogRef.close({ streetName, postalCode, label, city, country });
-            this.successMessage.set('');
-            this.errorMessage.set('');
-            this.isValidChange.set(false);
-          }, 2000);
-        }
       } else {
         console.log('addAddress()_Invalid Input: Address input or address label is missing.');
         this.errorMessage.set('Please provide all address fields.');
@@ -272,6 +273,61 @@ export class ProfileModalComponent {
         this.successMessage.set('');
         this.isValidChange.set(false);
       }, 2000);
+    }
+  }
+
+  replaceAddressWithExistingLabel() {
+    console.log('replaceAddressWithExistingLabel().');
+
+    let userId = this.accountService.currentUserProfile()?.id;
+    const existingAddresses = this.accountService.currentUserProfile()?.address || [];
+
+    let streetName = this.validatorsService.addressForm.value.streetName;
+    let label = this.validatorsService.addressForm.value.label;
+    let postalCode = this.validatorsService.addressForm.value.postalCode;
+    let city = this.validatorsService.addressForm.value.city;
+    let country = this.validatorsService.addressForm.value.country;
+
+    console.log('replaceAddressWithExistingLabel()_streetName: ', streetName);
+    console.log('replaceAddressWithExistingLabel()_label: ', label);
+
+    const existingAddressId = existingAddresses.find((a) => a.label === label)?.id; // The id of the already existing label that that wants to be added.
+
+    if (streetName && label && postalCode && city && country && userId && existingAddressId) {
+      this.isValidChange.set(true);
+
+      let address: AddressType = {
+        id: existingAddressId,
+        label,
+        streetName,
+        postalCode,
+        city,
+        country,
+      };
+
+      this.accountService.changeAddress(userId, address).subscribe({
+        next: (address) => {
+          console.log('replaceAddressWithExistingLabel()_address', address);
+          this.successMessage.set('The address has successfully been changed.');
+
+          setTimeout(() => {
+            this.dialogRef.close(address);
+            this.successMessage.set('');
+            this.isValidChange.set(false);
+          }, 2000);
+        },
+        error: (error) => {
+          console.error('replaceAddressWithExistingLabel()_Error', error.error);
+          this.successMessage.set('');
+          this.errorMessage.set(JSON.parse(error.error).code);
+          this.isValidChange.set(false);
+        },
+      });
+    } else {
+      this.errorMessage.set(
+        'replaceAddressWithExistingLabel()_No existing address was found for this label.',
+      );
+      this.isValidChange.set(false);
     }
   }
 }

@@ -3,6 +3,7 @@ package com.fooddelivery.dto;
 import java.util.List;
 
 public class UserProfileResponseDTO {
+    private Long id;
 
     private String email;
 
@@ -14,10 +15,19 @@ public class UserProfileResponseDTO {
 
     }
 
-    public UserProfileResponseDTO(String email, String phoneNumber, List<AddressDTO> address) {
+    public UserProfileResponseDTO(Long id, String email, String phoneNumber, List<AddressDTO> address) {
+        this.id = id;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.address = address;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getEmail() {

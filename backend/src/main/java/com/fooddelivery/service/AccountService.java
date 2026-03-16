@@ -9,6 +9,7 @@ import com.fooddelivery.dto.AddressDTO;
 import com.fooddelivery.dto.UserProfileResponseDTO;
 import com.fooddelivery.entity.Address;
 import com.fooddelivery.entity.User;
+import com.fooddelivery.exception.AddressDoesNotAlreadyExistException;
 import com.fooddelivery.exception.AddressLabelAlreadyExistsException;
 import com.fooddelivery.exception.NotUserFoundException;
 import com.fooddelivery.exception.PhoneNumberAlreadyExistsException;
@@ -52,6 +53,7 @@ public class AccountService {
         System.out.println("AccountService_getUserProfile()_addresses" + addresses);
 
         return new UserProfileResponseDTO(
+                user.getId(),
                 user.getEmail(),
                 user.getPhoneNumber(),
                 addresses);
@@ -106,11 +108,11 @@ public class AccountService {
     }
 
     public void changePhoneNumber(String phoneNumber, String email) {
-        System.out.println("changePhoneNumber().");
+        System.out.println("AccountService_changePhoneNumber().");
 
         if (phoneNumber.isEmpty()) {
-            System.out.println("AccountController_changePhoneNumber()_Phone number is empty.");
-            throw new PhoneNumberEmptyException("AccountController_changePhoneNumber()_Phone number is empty.");
+            System.out.println("AccountService_changePhoneNumber()_Phone number is empty.");
+            throw new PhoneNumberEmptyException("AccountService_changePhoneNumber()_Phone number is empty.");
         }
 
         User user = userRepository.getByEmail(email);
@@ -123,13 +125,36 @@ public class AccountService {
 
         if (!phoneNumberExists.isEmpty()) {
             if (phoneNumberExists.equals(phoneNumber)) {
-                System.out.println("changePhoneNumber()_The same phone number already exists.");
+                System.out.println("AccountService_changePhoneNumber()_The same phone number already exists.");
                 throw new PhoneNumberAlreadyExistsException(
-                        "changePhoneNumber()_The same phone number already exists.");
+                        "AccountService_changePhoneNumber()_The same phone number already exists.");
             }
         }
 
         user.setPhoneNumber(phoneNumber);
         userRepository.save(user);
+    }
+
+    public void changeAddress(Long userId, Address address) {
+        System.out.println("AccountService_changeAddress().");
+
+        User user = userRepository.getReferenceById(userId);
+        if (user == null) {
+            throw new NotUserFoundException("AccountService_changeAddress()_User does not exist.");
+        }
+
+        Address existingAddress = addressRepository.getReferenceById(address.getId());
+        if (!existingAddress.getUser().getId().equals(user.getId())) {
+            throw new AddressDoesNotAlreadyExistException(
+                    "AccountService_changeAddress()_Address does not already exist.");
+        }
+
+        existingAddress.setLabel(address.getLabel());
+        existingAddress.setStreetName(address.getStreetName());
+        existingAddress.setPostalCode(address.getPostalCode());
+        existingAddress.setCity(address.getCity());
+        existingAddress.setCountry(address.getCountry());
+
+        addressRepository.save(existingAddress);
     }
 }
