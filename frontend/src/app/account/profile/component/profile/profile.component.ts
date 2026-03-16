@@ -109,6 +109,6 @@ export class ProfileComponent {
     city: string;
     country: string;
   }): string {
-    return `Label: ${a.label} Street name: ${a.streetName} PLZ: ${a.postalCode} City: ${a.city} Country: ${a.country}`;
+    return `${a.streetName}, ${a.postalCode}, ${a.city}, ${a.country}`;
   }
 }

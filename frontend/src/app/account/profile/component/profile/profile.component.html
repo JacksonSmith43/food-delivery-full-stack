@@ -28,6 +28,7 @@
             <div class="address-list">
                 @for(address of sortedAddresses(); track address){
                 <div class="address-line">
+                    <p>{{ address.label }} Address </p>
                     {{formatAddress(address)}}
                 </div>
                 }

@@ -27,6 +27,13 @@
 
 .address-list {
   display: grid;
+  margin-top: 1rem;
+}
+
+.address-line {
+  outline: 0.025rem solid gray;
+  padding-bottom: 1rem;
+  border-radius: 0.55rem;
 }
 
 label {
