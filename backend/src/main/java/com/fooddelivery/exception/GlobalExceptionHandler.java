@@ -59,4 +59,68 @@ public class GlobalExceptionHandler {
                                 "code", "ADDRESS_DOES_NOT_ALREADY_EXIST",
                                 "message", exception.getMessage()));
         }
+
+        @ExceptionHandler(EmailAlreadyExistsException.class)
+        public ResponseEntity<Map<String, Object>> handleEmailAlreadyExists(
+                        EmailAlreadyExistsException exception) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of(
+                                "code", "EMAIL_ALREADY_EXIST",
+                                "message", exception.getMessage()));
+        }
+
+        @ExceptionHandler(EmailDoesNotExistException.class)
+        public ResponseEntity<Map<String, Object>> handleEmailDoesNotExist(
+                        EmailDoesNotExistException exception) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of(
+                                "code", "EMAIL_DOES_NOT_EXIST",
+                                "message", exception.getMessage()));
+        }
+
+        @ExceptionHandler(PasswordDoesNotExistException.class)
+        public ResponseEntity<Map<String, Object>> handlePasswordDoesNotExist(
+                        PasswordDoesNotExistException exception) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of(
+                                "code", "PASSWORD_DOES_NOT_EXIST",
+                                "message", exception.getMessage()));
+        }
+
+        @ExceptionHandler(EmailIsEmptyException.class)
+        public ResponseEntity<Map<String, Object>> handleEmailIsEmpty(
+                        EmailIsEmptyException exception) {
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(Map.of(
+                                "code", "EMAIL_IS_EMPTY",
+                                "message", exception.getMessage()));
+        }
+
+        @ExceptionHandler(InvalidCurrentPasswordException.class)
+        public ResponseEntity<Map<String, Object>> handleInvalidCurrentPassword(
+                        InvalidCurrentPasswordException exception) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of(
+                                "code", "INVALID_CURRENT_PASSWORD",
+                                "message", exception.getMessage()));
+        }
+
+        @ExceptionHandler(SameAsCurrentPasswordException.class)
+        public ResponseEntity<Map<String, Object>> handleSameAsCurrentPassword(
+                        SameAsCurrentPasswordException exception) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of(
+                                "code", "SAME_AS_CURRENT_PASSWORD",
+                                "message", exception.getMessage()));
+        }
+
+        @ExceptionHandler(PasswordIsEmptyException.class)
+        public ResponseEntity<Map<String, Object>> handlePasswordIsEmpty(
+                        PasswordIsEmptyException exception) {
+                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(Map.of(
+                                "code", "PASSWORD_IS_EMPTY",
+                                "message", exception.getMessage()));
+        }
+
+        @ExceptionHandler(IncorrectCurrentPasswordException.class)
+        public ResponseEntity<Map<String, Object>> handleIncorrectCurrentPassword(
+                        IncorrectCurrentPasswordException exception) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of(
+                                "code", "INCORRECT_CURRENT_PASSWORD",
+                                "message", exception.getMessage()));
+        }
 }

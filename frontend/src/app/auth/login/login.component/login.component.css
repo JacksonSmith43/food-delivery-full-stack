@@ -29,15 +29,18 @@ button {
   margin-top: 1rem;
 }
 
-.error-message {
+.error-message,
+.success-message {
   font-weight: 500;
   font-size: medium;
   text-align: center;
+}
+
+.error-message {
   color: red;
 }
 
-
-.success-message{
+.success-message {
   color: green;
 }
 

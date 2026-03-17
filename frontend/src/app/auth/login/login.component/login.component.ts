@@ -56,7 +56,7 @@ export class LoginComponent implements OnInit {
       error: (e) => {
         console.error('onLogin()_error: ', e);
         this.authService.authUser.set(undefined);
-        this.authService.errorMessage.set(e.error);
+        this.authService.errorMessage.set(JSON.parse(e.error).code);
       },
     });
   }

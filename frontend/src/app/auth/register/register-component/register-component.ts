@@ -13,7 +13,10 @@ import { AuthType } from '../../model/auth-user-type';
 })
 export class RegisterComponent {
   authService = inject(AuthService);
+
   errorMessage = this.authService.errorMessage;
+  successMessage = this.authService.successMessage;
+  isValid = this.authService.isValid;
 
   registerForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -45,11 +48,18 @@ export class RegisterComponent {
     this.authService.registerUser(registerForm.email, registerForm.password).subscribe({
       next: (user) => {
         console.log('onRegister()_next_user: ', user);
+        this.successMessage.set('Successful registration.');
+        this.isValid.set(true);
         this.errorMessage.set('');
+
+        setTimeout(() => {
+          this.successMessage.set('');
+          this.isValid.set(false);
+        }, 2000);
       },
       error: (e) => {
         console.error('onRegister()_error: ', e);
-        this.errorMessage.set(e.error);
+        this.errorMessage.set(JSON.parse(e.error).code);
       },
     });
   }

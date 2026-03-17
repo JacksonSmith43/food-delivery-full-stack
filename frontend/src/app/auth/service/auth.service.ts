@@ -12,6 +12,7 @@ export class AuthService {
   successMessage = signal<string>('');
   errorMessage = signal<string>('');
   authUser = signal<AuthType | undefined>(undefined);
+  isValid = signal<boolean>(false);
 
   registerUser(email: string, password: string) {
     console.log('registerUser().');
@@ -20,7 +21,7 @@ export class AuthService {
 
   loginUser(email: string, password: string) {
     console.log('AuthService_loginUser().');
-    this.authUser.set({ email, password  });
+    this.authUser.set({ email, password });
     sessionStorage.setItem('userCredentials', JSON.stringify(this.authUser()));
 
     return this.http.post(`/api/auth/login/${email}`, password, { responseType: 'text' });
