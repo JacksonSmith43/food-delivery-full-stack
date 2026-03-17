@@ -1,51 +1,68 @@
 <div class="profile-container">
-    @if(authService.authUser() !== undefined){
+  @if (authService.authUser() !== undefined) {
     <h2>Profile</h2>
 
-    <div class="email-container credentials" (keydown.enter)="openDialog('email')" (click)="openDialog('email')"
-        tabindex="0" title="Click to change your email address.">
-        <label for="email">Email address</label>
-        <button id="email" mat-raised-button aria-label="Email address.">
-            {{this.authService.authUser()?.email}}
-        </button>
+    <div
+      class="email-container credentials"
+      (keydown.enter)="openDialog('email')"
+      (click)="openDialog('email')"
+      tabindex="0"
+      title="Click to change your email address."
+    >
+      <label for="email">Email address</label>
+      <button id="email" mat-raised-button aria-label="Email address.">
+        {{ this.authService.authUser()?.email }}
+      </button>
     </div>
 
-    <div class="password-container credentials" (keydown.enter)="openDialog('password')"
-        (click)="openDialog('password')" tabindex="0" title="Click to change your password.">
-        <label for="password">Password</label>
-        <div class="password-button-container">
-            @for(i of getPasswordLength(); track $index){
-            <button id="password" mat-raised-button aria-label="Masked Password.">*</button>
-            }
-        </div>
+    <div
+      class="password-container credentials"
+      (keydown.enter)="openDialog('password')"
+      (click)="openDialog('password')"
+      tabindex="0"
+      title="Click to change your password."
+    >
+      <label for="password">Password</label>
+      <div class="password-button-container">
+        @for (i of getPasswordLength(); track $index) {
+          <button id="password" mat-raised-button aria-label="Masked Password.">*</button>
+        }
+      </div>
     </div>
 
-
-    <div class="address-container credentials" (keydown.enter)="openDialog('address')" (click)="openDialog('address')"
-        tabindex="0" title="Click to change your address.">
-        <label for="address">Address</label>
-        <button id="address" mat-raised-button aria-label="Address.">
-            <div class="address-list">
-                @for(address of sortedAddresses(); track address){
-                <div class="address-line">
-                    <p>{{ address.label }} Address </p>
-                    {{formatAddress(address)}}
-                </div>
-                }
+    <div
+      class="address-container credentials"
+      (keydown.enter)="openDialog('address')"
+      (click)="openDialog('address')"
+      tabindex="0"
+      title="Click to change your address."
+    >
+      <label for="address">Address</label>
+      <button id="address" mat-raised-button aria-label="Address.">
+        <div class="address-list">
+          @for (address of sortedAddresses(); track address) {
+            <div class="address-line">
+              <p>{{ address.label }} Address</p>
+              {{ formatAddress(address) }}
             </div>
-        </button>
+          }
+        </div>
+      </button>
     </div>
 
-
-    <div class="phone-number-container credentials" (keydown.enter)="openDialog('phoneNumber')"
-        (click)="openDialog('phoneNumber')" tabindex="0" title="Click to change your phone number.">
-        <label for="phone-number">Phone number</label>
-        <button id="phone-number" mat-raised-button aria-label="Phone number.">
-            {{currentUserProfile()?.phoneNumber}}
-        </button>
+    <div
+      class="phone-number-container credentials"
+      (keydown.enter)="openDialog('phoneNumber')"
+      (click)="openDialog('phoneNumber')"
+      tabindex="0"
+      title="Click to change your phone number."
+    >
+      <label for="phone-number">Phone number</label>
+      <button id="phone-number" mat-raised-button aria-label="Phone number.">
+        {{ currentUserProfile()?.phoneNumber }}
+      </button>
     </div>
-
-    }@else {
+  } @else {
     <h2 class="login-warning">Login to see your account details.</h2>
-    }
+  }
 </div>

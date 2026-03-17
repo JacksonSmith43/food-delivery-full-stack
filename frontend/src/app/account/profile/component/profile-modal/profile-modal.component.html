@@ -1,175 +1,237 @@
 <div class="profile-modal-container">
-    @if(selectedFormField() === "email"){
+  @if (selectedFormField() === 'email') {
     <form [formGroup]="emailForm" (ngSubmit)="onChangeEmail()">
-        <div class="email-view">
-            <label for="email">Email-Address</label>
-            <input id="email" type="email" placeholder="michael@gmail.com" [formControl]="email">
-            <button type="submit" matButton="elevated" [disabled]="emailForm.invalid">Change email address</button>
+      <div class="email-view">
+        <label for="email">Email-Address</label>
+        <input id="email" type="email" placeholder="michael@gmail.com" [formControl]="email" />
+        <button type="submit" matButton="elevated" [disabled]="emailForm.invalid">
+          Change email address
+        </button>
 
-            @if( this.email.invalid && (this.email.touched || this.email.dirty)){
-            @if(this.email.hasError("required") || this.emailForm.controls.email.hasError("email")){
-            <p class="error-message">{{validatorsService.emailIsInvalid}}</p>
-            }
-            }@else {
-            @if(isValidChange()){
-            <p class="success-message">{{successMessage()}}</p>
-            }
-            <p class="error-message">{{errorMessage()}}</p>
-
-            }
-        </div>
+        @if (this.email.invalid && (this.email.touched || this.email.dirty)) {
+          @if (this.email.hasError('required') || this.emailForm.controls.email.hasError('email')) {
+            <p class="error-message">{{ validatorsService.emailIsInvalid }}</p>
+          }
+        } @else {
+          @if (isValidChange()) {
+            <p class="success-message">{{ successMessage() }}</p>
+          }
+          <p class="error-message">{{ errorMessage() }}</p>
+        }
+      </div>
     </form>
-
-    }@else if(selectedFormField() === "password"){
+  } @else if (selectedFormField() === 'password') {
     <form [formGroup]="passwordForm" (ngSubmit)="onChangePassword()">
-        <div class="password-view">
-            <label for="old-password">Old Password</label>
-            <input id="old-password" type="password" placeholder="dHsleFo(9)?" minlength="6" maxlength="30"
-                title="Has to contain at least 6 characters until maximum 30." [formControl]="currentPassword">
+      <div class="password-view">
+        <label for="old-password">Old Password</label>
+        <input
+          id="old-password"
+          type="password"
+          placeholder="dHsleFo(9)?"
+          minlength="6"
+          maxlength="30"
+          title="Has to contain at least 6 characters until maximum 30."
+          [formControl]="currentPassword"
+        />
 
-            @if((this.currentPassword.invalid && (this.currentPassword.touched || this.currentPassword.dirty)) ){
-            @if(this.currentPassword.hasError("required") || this.currentPassword.hasError("minlength") ||
-            this.currentPassword.hasError("maxlength") || this.currentPassword.hasError("differentCurrentPassword")
-            ){
-            <p class="error-message">{{this.validatorsService.currentPasswordIsInvalid}}</p>
+        @if (
+          this.currentPassword.invalid &&
+          (this.currentPassword.touched || this.currentPassword.dirty)
+        ) {
+          @if (
+            this.currentPassword.hasError('required') ||
+            this.currentPassword.hasError('minlength') ||
+            this.currentPassword.hasError('maxlength') ||
+            this.currentPassword.hasError('differentCurrentPassword')
+          ) {
+            <p class="error-message">{{ this.validatorsService.currentPasswordIsInvalid }}</p>
+          }
+        }
 
-            }
-            }
+        <label for="new-password">New Password</label>
+        <input
+          id="new-password"
+          type="password"
+          placeholder="!KlfhUr=8&rG"
+          minlength="6"
+          maxlength="30"
+          title="Has to contain at least 6 characters until maximum 30."
+          [formControl]="newPassword"
+        />
 
-            <label for="new-password">New Password</label>
-            <input id="new-password" type="password" placeholder="!KlfhUr=8&rG" minlength="6" maxlength="30"
-                title="Has to contain at least 6 characters until maximum 30." [formControl]="newPassword">
+        @if (newPassword.invalid && (newPassword.touched || newPassword.dirty)) {
+          @if (
+            newPassword.hasError('required') ||
+            newPassword.hasError('minlength') ||
+            newPassword.hasError('maxlength') ||
+            newPassword.hasError('sameAsCurrentPassword')
+          ) {
+            <p class="error-message">{{ validatorsService.newPasswordIsInvalid }}</p>
+          }
+        }
+        <button matButton="elevated" [disabled]="passwordForm.invalid">Change password</button>
 
-            @if( (newPassword.invalid && (newPassword.touched || newPassword.dirty))){
-            @if( newPassword.hasError("required") || newPassword.hasError("minlength") ||
-            newPassword.hasError("maxlength") || newPassword.hasError("sameAsCurrentPassword") ){
-            <p class="error-message">{{validatorsService.newPasswordIsInvalid}}</p>
-            }
-
-            }
-            <button matButton="elevated" [disabled]="passwordForm.invalid">Change password</button>
-
-
-            @if(isValidChange()){
-            <p class="success-message">{{successMessage()}}</p>
-            }@else{
-
-            <p class="error-message">{{errorMessage()}}</p>
-            }
-
-
-        </div>
+        @if (isValidChange()) {
+          <p class="success-message">{{ successMessage() }}</p>
+        } @else {
+          <p class="error-message">{{ errorMessage() }}</p>
+        }
+      </div>
     </form>
-    } @else if(selectedFormField() === "address"){
+  } @else if (selectedFormField() === 'address') {
     <form [formGroup]="addressForm" (ngSubmit)="addAddress()">
-        <div class="address-view">
+      <div class="address-view">
+        <label for="streetName">Street *</label>
+        <input
+          id="streetName"
+          type="text"
+          placeholder="Golfstraße"
+          minlength="3"
+          maxlength="50"
+          title="Has to contain at least 3 characters until maximum 50."
+          [formControl]="streetName"
+        />
 
-            <label for="streetName">Street *</label>
-            <input id="streetName" type="text" placeholder="Golfstraße" minlength="3" maxlength="50"
-                title="Has to contain at least 3 characters until maximum 50." [formControl]="streetName">
+        @if (streetName.invalid && (streetName.touched || streetName.dirty)) {
+          @if (
+            streetName.hasError('required') ||
+            streetName.hasError('minlength') ||
+            streetName.hasError('maxlength') ||
+            streetName.hasError('sameAsCurrentAddress')
+          ) {
+            <mat-error class="error-message">{{ validatorsService.streetNameIsInvalid }}</mat-error>
+          }
+        }
+        <label for="postalCode">Postalcode *</label>
+        <input
+          id="postalCode"
+          type="number"
+          placeholder="20"
+          min="1"
+          max="23"
+          title="Has to look like this: 12 or 23."
+          [formControl]="postalCode"
+        />
 
-            @if( (streetName.invalid && (streetName.touched || streetName.dirty))){
-            @if(streetName.hasError("required") ||
-            streetName.hasError("minlength") ||
-            streetName.hasError("maxlength") ||
-            streetName.hasError("sameAsCurrentAddress")
-            ){
-            <mat-error class="error-message">{{validatorsService.streetNameIsInvalid}}</mat-error>
-            }
-            }
-            <label for="postalCode">Postalcode *</label>
-            <input id="postalCode" type="number" placeholder="20" min="1" max="23"
-                title="Has to look like this: 12 or 23." [formControl]="postalCode">
+        @if (postalCode.invalid && (postalCode.touched || postalCode.dirty)) {
+          @if (
+            postalCode.hasError('required') ||
+            postalCode.hasError('min') ||
+            postalCode.hasError('max')
+          ) {
+            <mat-error class="error-message">{{ validatorsService.postalCodeIsInvalid }}</mat-error>
+          }
+        }
+        <label for="city">City *</label>
+        <input
+          id="city"
+          type="text"
+          placeholder="Vienna"
+          minlength="3"
+          maxlength="50"
+          title="Has to contain at least 3 characters until maximum 50."
+          [formControl]="city"
+        />
+        @if (city.invalid && (city.touched || city.dirty)) {
+          @if (
+            city.hasError('required') || city.hasError('minlength') || city.hasError('maxlength')
+          ) {
+            <mat-error class="error-message">{{ validatorsService.cityIsInvalid }}</mat-error>
+          }
+        }
+        <label for="country">Country *</label>
+        <input
+          id="country"
+          type="text"
+          placeholder="Austria"
+          minlength="3"
+          maxlength="50"
+          title="Has to contain at least 3 characters until maximum 50."
+          [formControl]="country"
+        />
+        @if (country.invalid && (country.touched || country.dirty)) {
+          @if (
+            country.hasError('required') ||
+            country.hasError('minlength') ||
+            country.hasError('maxlength')
+          ) {
+            <mat-error class="error-message">{{ validatorsService.countryIsInvalid }}</mat-error>
+          }
+        }
 
-            @if( (postalCode.invalid && (postalCode.touched || postalCode.dirty))){
-            @if(postalCode.hasError("required") || postalCode.hasError("min") ||
-            postalCode.hasError("max")
-            ){
-            <mat-error class="error-message">{{validatorsService.postalCodeIsInvalid}}</mat-error>
-            }
-            }
-            <label for="city">City *</label>
-            <input id="city" type="text" placeholder="Vienna" minlength="3" maxlength="50"
-                title="Has to contain at least 3 characters until maximum 50." [formControl]="city">
-            @if( (city.invalid && (city.touched || city.dirty))){
-            @if(city.hasError("required") ||
-            city.hasError("minlength") ||
-            city.hasError("maxlength") ){
-            <mat-error class="error-message">{{validatorsService.cityIsInvalid}}</mat-error>
-            }
-            }
-            <label for="country">Country *</label>
-            <input id="country" type="text" placeholder="Austria" minlength="3" maxlength="50"
-                title="Has to contain at least 3 characters until maximum 50." [formControl]="country">
-            @if( (country.invalid && (country.touched || country.dirty))){
-            @if(country.hasError("required") ||
-            country.hasError("minlength") ||
-            country.hasError("maxlength") ){
-            <mat-error class="error-message">{{validatorsService.countryIsInvalid}}</mat-error>
-            }
-            }
+        <mat-label for="address-label">Address Location *</mat-label>
+        <mat-select id="address-label" matNativeControl name="address-label" [formControl]="label">
+          <mat-option value="" selected="selected">Choose here</mat-option>
+          @for (a of getAddressLabel(); track a) {
+            <mat-option [value]="a">{{ a }}</mat-option>
+          }
+        </mat-select>
+        @if (label.invalid && (label.touched || label.dirty)) {
+          @if (label.hasError('required')) {
+            <mat-error class="error-message">{{
+              validatorsService.addressLabelIsInvalid
+            }}</mat-error>
+          }
+        }
 
-            <mat-label for="address-label">Address Location *</mat-label>
-            <mat-select id="address-label" matNativeControl name="address-label" [formControl]="label">
-                <mat-option value="" selected="selected">Choose here</mat-option>
-                @for(a of getAddressLabel(); track a){
-                <mat-option [value]="a">{{a}}</mat-option>
-                }
-            </mat-select>
-            @if( (label.invalid && (label.touched || label.dirty))){
-            @if(label.hasError("required")
-            ){
-            <mat-error class="error-message">{{validatorsService.addressLabelIsInvalid}}</mat-error>
-            }
-            }
+        @if (this.errorMessage().includes('label already exists')) {
+          <button
+            type="button"
+            matButton="elevated"
+            [disabled]="addressForm.invalid"
+            (click)="replaceAddressWithExistingLabel()"
+          >
+            Change Address
+          </button>
+        } @else {
+          <button type="submit" matButton="elevated" [disabled]="addressForm.invalid">
+            Add Address
+          </button>
+        }
 
-
-            @if(this.errorMessage().includes("label already exists")){
-            <button type="button" matButton="elevated" [disabled]="addressForm.invalid"
-                (click)="replaceAddressWithExistingLabel()">Change Address</button>
-
-            } @else{
-            <button type="submit" matButton="elevated" [disabled]="addressForm.invalid">Add Address</button>
-            }
-
-            @if(isValidChange()){
-            <p class="success-message">{{successMessage()}}</p>
-            }@else{
-
-            <p class="error-message">{{errorMessage()}}</p>
-            }
-
-        </div>
+        @if (isValidChange()) {
+          <p class="success-message">{{ successMessage() }}</p>
+        } @else {
+          <p class="error-message">{{ errorMessage() }}</p>
+        }
+      </div>
     </form>
-
-
-
-    }@else if(selectedFormField() === "phoneNumber"){
+  } @else if (selectedFormField() === 'phoneNumber') {
     <form [formGroup]="phoneNumberForm" (ngSubmit)="onChangePhoneNumber()">
-        <div class="phone-number-view">
+      <div class="phone-number-view">
+        <label for="phoneNumber">Phone Number *</label>
+        <input
+          id="phoneNumber"
+          type="tel"
+          placeholder="012345678"
+          minlength="3"
+          maxlength="20"
+          title="Has to contain at least 3 numbers until maximum 20."
+          [formControl]="phoneNumber"
+        />
 
-            <label for="phoneNumber">Phone Number *</label>
-            <input id="phoneNumber" type="tel" placeholder="012345678" minlength="3" maxlength="20"
-                title="Has to contain at least 3 numbers until maximum 20." [formControl]="phoneNumber">
+        @if (phoneNumber.invalid && (phoneNumber.touched || phoneNumber.dirty)) {
+          @if (
+            phoneNumber.hasError('required') ||
+            phoneNumber.hasError('minlength') ||
+            phoneNumber.hasError('maxlength')
+          ) {
+            <mat-error class="error-message">{{
+              validatorsService.phoneNumberIsInvalid
+            }}</mat-error>
+          }
+        }
 
-            @if( (phoneNumber.invalid && (phoneNumber.touched || phoneNumber.dirty))){
-            @if(phoneNumber.hasError("required") ||
-            phoneNumber.hasError("minlength") ||
-            phoneNumber.hasError("maxlength") ){
-            <mat-error class="error-message">{{validatorsService.phoneNumberIsInvalid}}</mat-error>
-            }
-            }
+        <button matButton="elevated" [disabled]="phoneNumberForm.invalid">
+          Change Phone Number
+        </button>
 
-            <button matButton="elevated" [disabled]="phoneNumberForm.invalid">Change Phone Number</button>
-
-            @if(isValidChange()){
-            <p class="success-message">{{successMessage()}}</p>
-            }@else{
-
-            <p class="error-message">{{errorMessage()}}</p>
-            }
-
-        </div>
+        @if (isValidChange()) {
+          <p class="success-message">{{ successMessage() }}</p>
+        } @else {
+          <p class="error-message">{{ errorMessage() }}</p>
+        }
+      </div>
     </form>
-    }
+  }
 </div>
