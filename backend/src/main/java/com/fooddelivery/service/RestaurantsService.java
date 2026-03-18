@@ -14,18 +14,16 @@ public class RestaurantsService {
     private RestaurantRepository restaurantRepository;
 
     public List<Restaurants> getRestaurantImages() {
-        System.out.println("Service_getRestaurantImages().");
+        System.out.println("RestaurantsService_getRestaurantImages().");
 
-        try {
-            List<Restaurants> restaurants = restaurantRepository.findAll();
+        List<Restaurants> restaurants = restaurantRepository.findAll();
 
-            System.out.println("Service_getRestaurantImages()_Alright.");
-            return restaurants.stream().toList();
-
-        } catch (Exception e) {
-            System.err.println("Service_getRestaurantImages()_Error: " + e.getMessage());
-            return List.of();
+        if (restaurants.isEmpty()) {
+            List.of();
         }
+
+        System.out.println("RestaurantsService_getRestaurantImages_restaurants: " + restaurants);
+        return restaurants.stream().toList();
     }
 
 }

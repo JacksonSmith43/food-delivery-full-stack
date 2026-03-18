@@ -11,7 +11,7 @@ import com.fooddelivery.entity.Address;
 import com.fooddelivery.entity.User;
 import com.fooddelivery.exception.AddressDoesNotAlreadyExistException;
 import com.fooddelivery.exception.AddressLabelAlreadyExistsException;
-import com.fooddelivery.exception.NotUserFoundException;
+import com.fooddelivery.exception.UserNotFoundException;
 import com.fooddelivery.exception.PhoneNumberAlreadyExistsException;
 import com.fooddelivery.exception.PhoneNumberEmptyException;
 import com.fooddelivery.exception.PostCodeIsEmptyOrNull;
@@ -36,7 +36,7 @@ public class AccountService {
 
         if (user == null) {
             System.out.println("AccountService_getUserProfile(): User not found for email: " + email);
-            throw new NotUserFoundException("AccountService_getUserProfile(): User not found for email.");
+            throw new UserNotFoundException("AccountService_getUserProfile(): User not found for email.");
         }
 
         List<AddressDTO> addresses = user.getAddress() == null
@@ -88,7 +88,7 @@ public class AccountService {
         User user = userRepository.getByEmail(email);
 
         if (user == null) {
-            throw new NotUserFoundException("AccountService_addAddress()_User not found.");
+            throw new UserNotFoundException("AccountService_addAddress()_User not found.");
         }
 
         if (user.getAddress() != null) {
@@ -118,7 +118,7 @@ public class AccountService {
         User user = userRepository.getByEmail(email);
 
         if (user == null) {
-            throw new NotUserFoundException("AccountService_changePhoneNumber()_User not found.");
+            throw new UserNotFoundException("AccountService_changePhoneNumber()_User not found.");
         }
 
         String phoneNumberExists = user.getPhoneNumber();
@@ -140,7 +140,7 @@ public class AccountService {
 
         User user = userRepository.getReferenceById(userId);
         if (user == null) {
-            throw new NotUserFoundException("AccountService_changeAddress()_User does not exist.");
+            throw new UserNotFoundException("AccountService_changeAddress()_User does not exist.");
         }
 
         Address existingAddress = addressRepository.getReferenceById(address.getId());

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
-        @ExceptionHandler(NotUserFoundException.class)
+        @ExceptionHandler(UserNotFoundException.class)
         // <String, Object>: code (the key) is a string and USER_NOT_FOUND is the value
         // and an
         // object because the message can be of any type.
@@ -87,7 +87,7 @@ public class GlobalExceptionHandler {
         @ExceptionHandler(EmailIsEmptyException.class)
         public ResponseEntity<Map<String, Object>> handleEmailIsEmpty(
                         EmailIsEmptyException exception) {
-                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(Map.of(
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of(
                                 "code", "EMAIL_IS_EMPTY",
                                 "message", exception.getMessage()));
         }
@@ -111,7 +111,7 @@ public class GlobalExceptionHandler {
         @ExceptionHandler(PasswordIsEmptyException.class)
         public ResponseEntity<Map<String, Object>> handlePasswordIsEmpty(
                         PasswordIsEmptyException exception) {
-                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(Map.of(
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of(
                                 "code", "PASSWORD_IS_EMPTY",
                                 "message", exception.getMessage()));
         }
@@ -123,4 +123,5 @@ public class GlobalExceptionHandler {
                                 "code", "INCORRECT_CURRENT_PASSWORD",
                                 "message", exception.getMessage()));
         }
+
 }
