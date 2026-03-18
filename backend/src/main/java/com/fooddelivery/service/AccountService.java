@@ -11,6 +11,7 @@ import com.fooddelivery.entity.Address;
 import com.fooddelivery.entity.User;
 import com.fooddelivery.exception.AddressDoesNotAlreadyExistException;
 import com.fooddelivery.exception.AddressLabelAlreadyExistsException;
+import com.fooddelivery.exception.PhoneNumberInputIsNullException;
 import com.fooddelivery.exception.UserNotFoundException;
 import com.fooddelivery.exception.PhoneNumberAlreadyExistsException;
 import com.fooddelivery.exception.PhoneNumberEmptyException;
@@ -110,6 +111,11 @@ public class AccountService {
     public void changePhoneNumber(String phoneNumber, String email) {
         System.out.println("AccountService_changePhoneNumber().");
 
+        if (phoneNumber == null) {
+            System.out.println("AccountService_changePhoneNumber()_Phone number is null.");
+            throw new PhoneNumberInputIsNullException("Phone number input is null.");
+        }
+
         if (phoneNumber.isEmpty()) {
             System.out.println("AccountService_changePhoneNumber()_Phone number is empty.");
             throw new PhoneNumberEmptyException("AccountService_changePhoneNumber()_Phone number is empty.");
@@ -121,18 +127,21 @@ public class AccountService {
             throw new UserNotFoundException("AccountService_changePhoneNumber()_User not found.");
         }
 
-        String phoneNumberExists = user.getPhoneNumber();
+        if (user.getPhoneNumber() != null) {
+            String phoneNumberExists = user.getPhoneNumber();
 
-        if (!phoneNumberExists.isEmpty()) {
             if (phoneNumberExists.equals(phoneNumber)) {
                 System.out.println("AccountService_changePhoneNumber()_The same phone number already exists.");
                 throw new PhoneNumberAlreadyExistsException(
                         "AccountService_changePhoneNumber()_The same phone number already exists.");
             }
+        } else {
+            System.out.println("AccountService_changePhoneNumber()_Phone number is null.");
         }
 
         user.setPhoneNumber(phoneNumber);
         userRepository.save(user);
+
     }
 
     public void changeAddress(Long userId, Address address) {

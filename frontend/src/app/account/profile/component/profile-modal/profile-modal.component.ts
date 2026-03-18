@@ -82,10 +82,7 @@ export class ProfileModalComponent {
             const authUserData = this.authService.authUser();
             if (authUserData) {
               this.authService.authUser.set({ ...authUserData, email: newEmail! });
-              sessionStorage.setItem(
-                'userCredentials',
-                JSON.stringify(this.authService.authUser()),
-              );
+              sessionStorage.setItem('userCredentials', JSON.stringify(this.authService.authUser()));
             }
           },
           error: (e) => {
@@ -124,9 +121,7 @@ export class ProfileModalComponent {
             console.log('onChangePassword()_Response: ', response);
 
             if (response === null) {
-              console.log(
-                'onChangePassword()_Response is null. This means that the current password is incorrect.',
-              );
+              console.log('onChangePassword()_Response is null. This means that the current password is incorrect.');
               this.errorMessage.set(response);
               return;
             }
@@ -137,10 +132,7 @@ export class ProfileModalComponent {
             const authUserData = this.authService.authUser();
             if (authUserData) {
               this.authService.authUser.set({ ...authUserData, password: newPassword! });
-              sessionStorage.setItem(
-                'userCredentials',
-                JSON.stringify(this.authService.authUser()),
-              );
+              sessionStorage.setItem('userCredentials', JSON.stringify(this.authService.authUser()));
             }
           },
           error: (e) => {
@@ -249,6 +241,7 @@ export class ProfileModalComponent {
     let userProfile = this.accountService.currentUserProfile();
 
     if (email && phoneNumber) {
+      console.log('phoneNumber', phoneNumber);
       this.accountService.changePhoneNumber(email, phoneNumber).subscribe({
         next: (phoneNumber) => {
           console.log('onChangePhoneNumber()_phoneNumber: ', phoneNumber);
@@ -324,9 +317,7 @@ export class ProfileModalComponent {
         },
       });
     } else {
-      this.errorMessage.set(
-        'replaceAddressWithExistingLabel()_No existing address was found for this label.',
-      );
+      this.errorMessage.set('replaceAddressWithExistingLabel()_No existing address was found for this label.');
       this.isValidChange.set(false);
     }
   }

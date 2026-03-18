@@ -124,4 +124,12 @@ public class GlobalExceptionHandler {
                                 "message", exception.getMessage()));
         }
 
+        @ExceptionHandler(PhoneNumberInputIsNullException.class)
+        public ResponseEntity<Map<String, Object>> handleNullPhoneNumberInput(
+                        PhoneNumberInputIsNullException exception) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of(
+                                "code", "PHONE_NUMBER_INPUT_NULL",
+                                "message", exception.getMessage()));
+        }
+
 }
