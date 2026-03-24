@@ -84,6 +84,12 @@ export class ProfileModalComponent {
               this.authService.authUser.set({ ...authUserData, email: newEmail! });
               sessionStorage.setItem('userCredentials', JSON.stringify(this.authService.authUser()));
             }
+
+            setTimeout(() => {
+              this.dialogRef.close(newEmail);
+              this.successMessage.set('');
+              this.errorMessage.set('');
+            }, 2000);
           },
           error: (e) => {
             console.error('changeEmailAddress()_Error: ', e);
@@ -91,12 +97,6 @@ export class ProfileModalComponent {
             // this.errorMessage.set('An error occurred. Please try again.');
           },
         });
-
-        setTimeout(() => {
-          this.dialogRef.close(newEmail);
-          this.successMessage.set('');
-          this.errorMessage.set('');
-        }, 2000);
 
         console.log('onChangeEmail()_newEmail: ', newEmail);
       }
@@ -116,6 +116,10 @@ export class ProfileModalComponent {
         let currentPassword = this.authService.authUser()?.password;
         let email = this.authService.authUser()?.email;
 
+        this.successMessage.set('');
+        this.errorMessage.set('');
+        this.isValidChange.set(false);
+
         this.accountService.changePassword(currentPassword!, newPassword!, email!).subscribe({
           next: (response) => {
             console.log('onChangePassword()_Response: ', response);
@@ -134,6 +138,11 @@ export class ProfileModalComponent {
               this.authService.authUser.set({ ...authUserData, password: newPassword! });
               sessionStorage.setItem('userCredentials', JSON.stringify(this.authService.authUser()));
             }
+            setTimeout(() => {
+              this.dialogRef.close(newPassword);
+              this.successMessage.set('');
+              this.errorMessage.set('');
+            }, 2000);
           },
           error: (e) => {
             console.error('onChangePassword()_Error: ', e);
@@ -142,13 +151,9 @@ export class ProfileModalComponent {
           },
         });
 
-        setTimeout(() => {
-          this.dialogRef.close(newPassword);
-          this.successMessage.set('');
-          this.errorMessage.set('');
-        }, 2000);
-
         console.log('onChangePassword()_newPassword: ', newPassword);
+      } else {
+        this.passwordForm.markAllAsTouched();
       }
     } catch (error) {
       console.error('onChangePassword()_Error: ', error);
@@ -170,16 +175,45 @@ export class ProfileModalComponent {
       console.log('addAddress()_streetName: ', streetName);
       console.log('addAddress()_label: ', label);
 
-      if (streetName && label && postalCode && city && country && currentEmail) {
-        this.isValidChange.set(true);
+      this.successMessage.set('');
+      this.errorMessage.set('');
+      this.isValidChange.set(false);
+
+      if (!currentEmail) {
+        this.errorMessage.set('User profile is not loaded. Please reopen the profile page.');
+        return;
+      }
+
+      if (this.addressForm.invalid) {
+        console.log('addAddress()_form value: ', this.addressForm.value);
+        console.log('addAddress()_form errors: ', this.addressForm.errors);
+        console.log('addAddress()_streetName errors: ', this.streetName.errors);
+        console.log('addAddress()_postalCode errors: ', this.postalCode.errors);
+        console.log('addAddress()_city errors: ', this.city.errors);
+        console.log('addAddress()_country errors: ', this.country.errors);
+        console.log('addAddress()_label errors: ', this.label.errors);
+
+        this.addressForm.markAllAsTouched();
+        this.errorMessage.set('Please fix the highlighted address fields.');
+        return;
+      }
+
+      this.isValidChange.set(true);
+
+        const safeStreetName = streetName!;
+        const safeLabel = label!;
+        const safePostalCode = postalCode!;
+        const safeCity = city!;
+        const safeCountry = country!;
 
         let address: AddressType = {
-          label,
-          streetName,
-          postalCode,
-          city,
-          country,
+          label: safeLabel,
+          streetName: safeStreetName,
+          postalCode: safePostalCode,
+          city: safeCity,
+          country: safeCountry,
         };
+        console.log('addAddress()_address: ', address);
 
         this.accountService.addAddress(address, currentEmail).subscribe({
           next: (address) => {
@@ -195,7 +229,14 @@ export class ProfileModalComponent {
             });
 
             setTimeout(() => {
-              this.dialogRef.close({ streetName, postalCode, label, city, country });
+              this.dialogRef.close({
+                streetName: safeStreetName,
+                postalCode: safePostalCode,
+                label: safeLabel,
+                city: safeCity,
+                country: safeCountry,
+              });
+
               this.successMessage.set('');
               this.errorMessage.set('');
               this.isValidChange.set(false);
@@ -203,22 +244,28 @@ export class ProfileModalComponent {
           },
           error: (error) => {
             console.error('addAddress()_subscribe_Error: ', error.error);
-            const code = JSON.parse(error.error).code;
-            if (code === 'ADDRESS_LABEL_EXISTS') {
-              this.errorMessage.set(
-                'This label already exists. Only one of each label can be used once. In order to replace the previous address with this new one, press the Change Address button.',
-              );
-            } else {
-              this.errorMessage.set(code);
-            }
-            this.isValidChange.set(false);
-          },
-        });
-      } else {
-        console.log('addAddress()_Invalid Input: Address input or address label is missing.');
-        this.errorMessage.set('Please provide all address fields.');
-        return;
-      }
+
+            const code =
+              typeof error.error === 'string'
+                ? (() => {
+                    try {
+                      return JSON.parse(error.error).code;
+                    } catch {
+                      return error.error;
+                    }
+                  })()
+                : error.error?.code;
+
+            this.errorMessage.set(code || 'An unexpected error occurred.');
+
+          if (code === 'ADDRESS_LABEL_EXISTS') {
+            this.errorMessage.set(
+              'This label already exists. Only one of each label can be used once. In order to replace the previous address with this new one, press the Change Address button.',
+            );
+          }
+          this.isValidChange.set(false);
+        },
+      });
     } catch (error) {
       console.error('addAddress()_Error: ', error);
     }
@@ -240,7 +287,21 @@ export class ProfileModalComponent {
     let email = this.accountService.currentUserProfile()?.email;
     let userProfile = this.accountService.currentUserProfile();
 
-    if (email && phoneNumber) {
+    this.successMessage.set('');
+    this.errorMessage.set('');
+    this.isValidChange.set(false);
+
+    if (this.phoneNumberForm.invalid) {
+      this.phoneNumberForm.markAllAsTouched();
+      return;
+    }
+
+    if (!email) {
+      this.errorMessage.set('User profile is not loaded. Please reopen the profile page.');
+      return;
+    }
+
+    if (email && phoneNumber != null) {
       console.log('phoneNumber', phoneNumber);
       this.accountService.changePhoneNumber(email, phoneNumber).subscribe({
         next: (phoneNumber) => {
@@ -251,21 +312,34 @@ export class ProfileModalComponent {
             ...userProfile!,
             phoneNumber,
           });
+
+          setTimeout(() => {
+            this.dialogRef.close(phoneNumber);
+            this.successMessage.set('');
+            this.isValidChange.set(false);
+          }, 2000);
         },
         error: (e) => {
           console.error('onChangePhoneNumber()_Error: ', e.error);
 
-          this.successMessage.set('');
-          this.errorMessage.set(JSON.parse(e.error).code);
+          const code =
+            typeof e.error === 'string'
+              ? (() => {
+                  try {
+                    return JSON.parse(e.error).code;
+                  } catch {
+                    return e.error;
+                  }
+                })()
+              : e.error?.code;
+
+          this.errorMessage.set(code || 'An unexpected error occurred.');
           this.isValidChange.set(false);
         },
       });
-
-      setTimeout(() => {
-        this.dialogRef.close(phoneNumber);
-        this.successMessage.set('');
-        this.isValidChange.set(false);
-      }, 2000);
+    } else {
+      this.phoneNumberForm.markAllAsTouched();
+      this.errorMessage.set('Please fix the highlighted phone number field.');
     }
   }
 
@@ -284,18 +358,28 @@ export class ProfileModalComponent {
     console.log('replaceAddressWithExistingLabel()_streetName: ', streetName);
     console.log('replaceAddressWithExistingLabel()_label: ', label);
 
+    this.successMessage.set('');
+    this.isValidChange.set(false);
+    this.errorMessage.set('');
+
     const existingAddressId = existingAddresses.find((a) => a.label === label)?.id; // The id of the already existing label that that wants to be added.
 
-    if (streetName && label && postalCode && city && country && userId && existingAddressId) {
+    if (this.addressForm.valid && userId && existingAddressId) {
       this.isValidChange.set(true);
+
+      const safeStreetName = streetName!;
+      const safeLabel = label!;
+      const safePostalCode = postalCode!;
+      const safeCity = city!;
+      const safeCountry = country!;
 
       let address: AddressType = {
         id: existingAddressId,
-        label,
-        streetName,
-        postalCode,
-        city,
-        country,
+        label: safeLabel,
+        streetName: safeStreetName,
+        postalCode: safePostalCode,
+        city: safeCity,
+        country: safeCountry,
       };
 
       this.accountService.changeAddress(userId, address).subscribe({
@@ -312,13 +396,24 @@ export class ProfileModalComponent {
         error: (error) => {
           console.error('replaceAddressWithExistingLabel()_Error', error.error);
           this.successMessage.set('');
-          this.errorMessage.set(JSON.parse(error.error).code);
+          const code =
+            typeof error.error === 'string'
+              ? (() => {
+                  try {
+                    return JSON.parse(error.error).code;
+                  } catch {
+                    return error.error;
+                  }
+                })()
+              : error.error?.code;
+
+          this.errorMessage.set(code || 'An unexpected error occurred.');
           this.isValidChange.set(false);
         },
       });
     } else {
+      this.addressForm.markAllAsTouched();
       this.errorMessage.set('replaceAddressWithExistingLabel()_No existing address was found for this label.');
-      this.isValidChange.set(false);
     }
   }
 }

@@ -18,15 +18,17 @@
             ></mat-icon>
             <p>{{ cart.quantity }}</p>
 
-            <mat-icon
-              aria-hidden="false"
-              aria-label="Add item to cart."
-              fontIcon="add"
-              (click)="onAddToCart(cart.menuItem.id)"
-            ></mat-icon>
+            <mat-icon aria-hidden="false" aria-label="Add item to cart." fontIcon="add" (click)="onAddToCart(cart.menuItem.id)"></mat-icon>
           </div>
         </div>
       }
+
+      <div class="message">
+        @if (this.isSuccessful()) {
+          <p class="success-message">{{ this.successMessage() }}</p>
+        }
+        <p class="error-message">{{ this.errorMessage() }}</p>
+      </div>
 
       <div class="summary">
         <p style="font-weight: bold">Cart Total</p>

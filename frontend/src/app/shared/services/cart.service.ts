@@ -1,24 +1,46 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { CartType, CartSummaryType } from '../model/cart-type';
-import { CheckoutType } from '../model/checkout-type';
+import { AccountService } from '../../account/service/account.service';
+import { AuthService } from '../../auth/service/auth.service';
+import { LocalStorageService } from './local-storage.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CartService {
   http = inject(HttpClient);
+  accountService = inject(AccountService);
+  authService = inject(AuthService);
+  locaStorageService = inject(LocalStorageService);
 
   cart = signal<CartType | null>(null);
   cartSummary = signal<CartSummaryType>({ totalQuantity: 0, totalCost: 0, itemCount: 0 });
-  checkoutCartSignal = signal<CheckoutType>({
+  errorMessage = signal<string>('');
+  successMessage = signal<string>('');
+  isSuccessful = signal<boolean>(false);
+
+  checkoutCartComputed = computed(() => ({
     id: 0,
-    address: { id: 0, label: '', streetName: '', postalCode: 0, city: '', country: '' },
-    phoneNumber: 0,
-    cartSummary: { totalQuantity: 0, totalCost: 0, itemCount: 0 },
-  });
+    // email: this.authService.authUser()?.email,
+    address: {
+      id: this.accountService.currentUserProfile()?.address[0]?.id,
+      label: this.accountService.currentUserProfile()?.address[0]?.label,
+      streetName: this.accountService.currentUserProfile()?.address[0]?.streetName,
+      postalCode: this.accountService.currentUserProfile()?.address[0]?.postalCode,
+      city: this.accountService.currentUserProfile()?.address[0]?.city,
+      country: this.accountService.currentUserProfile()?.address[0]?.country,
+    },
+    phoneNumber: this.accountService.currentUserProfile()?.phoneNumber,
+    // defaultAddressId: this.accountService.currentUserProfile()?.defaultAddressId,
+    cartSummary: {
+      totalQuantity: this.cartSummary().totalQuantity,
+      totalCost: this.cartSummary().totalCost,
+      itemCount: this.cartSummary().itemCount,
+    },
+  }));
 
   getCart(): Observable<CartType> {
     console.log('getCart().');
@@ -51,8 +73,7 @@ export class CartService {
 
     this.getCartSummary().subscribe({
       next: (summary) => this.cartSummary.set(summary),
-      error: (error) =>
-        console.error('CartService_refreshCart()_Error refreshing cart summary:', error),
+      error: (error) => console.error('CartService_refreshCart()_Error refreshing cart summary:', error),
     });
   }
 
@@ -72,7 +93,11 @@ export class CartService {
 
   checkoutCart() {
     console.log('checkoutCart().');
-    let checkoutCart = this.checkoutCartSignal();
-    return this.http.post('/api/cart/checkout', checkoutCart);
+    let checkoutCart = this.checkoutCartComputed();
+    let email = this.authService.authUser()?.email;
+    console.log('checkoutCart()_email: ', email);
+
+    console.log('checkoutCart()_checkoutCart: ', checkoutCart);
+    return this.http.post(`/api/cart/checkout/${email}`, checkoutCart, { responseType: 'text' });
   }
 }

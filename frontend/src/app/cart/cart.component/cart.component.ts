@@ -5,6 +5,7 @@ import { MatAnchor } from '@angular/material/button';
 import { CartService } from '../../shared/services/cart.service';
 import { AuthService } from '../../auth/service/auth.service';
 import { LocalStorageService } from '../../shared/services/local-storage.service';
+import { AccountService } from '../../account/service/account.service';
 
 @Component({
   selector: 'app-cart',
@@ -15,20 +16,35 @@ import { LocalStorageService } from '../../shared/services/local-storage.service
 export class CartComponent implements OnInit {
   cartService = inject(CartService);
   authService = inject(AuthService);
-  locaStorage = inject(LocalStorageService);
+  locaStorageService = inject(LocalStorageService);
+  accountService = inject(AccountService);
 
+  isSuccessful = this.cartService.isSuccessful;
+  errorMessage = this.cartService.errorMessage;
+  successMessage = this.cartService.successMessage;
   cart = this.cartService.cart;
   cartSummary = this.cartService.cartSummary;
+
   cartLength = computed(() => this.cart()?.cartItems?.length || 0);
 
   ngOnInit(): void {
     console.log('CartComponent_ngOnInit().');
     this.cartService.refreshCart();
 
-    let userCredentials = this.locaStorage.getUserCredentials();
+    let userCredentials = this.locaStorageService.getUserCredentials();
 
     if (userCredentials) {
       this.authService.authUser.set(userCredentials);
+      this.accountService.getUserProfile(userCredentials.email).subscribe({
+        next: (user) => {
+          console.log('CartComponent_ngOnInit()_next_user: ', JSON.parse(user));
+          this.accountService.currentUserProfile.set(JSON.parse(user));
+        },
+        error: (error) => {
+          console.error('CartComponent_ngOnInit()_Error: ', error.message);
+        },
+      });
+      console.log('CartComponent_ngOnInit()_End.');
     }
   }
 
@@ -51,8 +67,7 @@ export class CartComponent implements OnInit {
         console.log('CartComponent_onAddToCart()_Item added to cart:', cart);
         this.cartService.refreshCart();
       },
-      error: (error) =>
-        console.error('CartComponent_onAddToCart()_Error adding item to cart:', error),
+      error: (error) => console.error('CartComponent_onAddToCart()_Error adding item to cart:', error),
     });
   }
 
@@ -65,8 +80,7 @@ export class CartComponent implements OnInit {
         console.log('CartComponent_onRemoveFromCart()_Item removed from cart:', cart);
         this.cartService.refreshCart();
       },
-      error: (error) =>
-        console.error('CartComponent_onRemoveFromCart()_Error removing item from cart:', error),
+      error: (error) => console.error('CartComponent_onRemoveFromCart()_Error removing item from cart:', error),
     });
   }
 
@@ -76,9 +90,18 @@ export class CartComponent implements OnInit {
     this.cartService.checkoutCart().subscribe({
       next: (userData) => {
         console.log('onCheckout()_userData: ', userData);
+        this.successMessage.set('Checkout successful.');
+        this.isSuccessful.set(true);
+
+        setTimeout(() => {
+          this.successMessage.set('');
+          this.isSuccessful.set(false);
+        }, 2000);
       },
       error: (e) => {
         console.error('onCheckout()_Error: ', e);
+        this.errorMessage.set(JSON.parse(e.error).message || 'Checkout failed. Please try again.');
+        this.isSuccessful.set(false);
       },
     });
   }

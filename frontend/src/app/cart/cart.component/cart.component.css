@@ -49,6 +49,22 @@
   margin-top: 4rem;
 }
 
+.error-message,
+.success-message {
+  font-weight: 500;
+  margin-top: 4rem;
+  font-size: medium;
+  text-align: center;
+}
+
+.error-message {
+  color: red;
+}
+
+.success-message {
+  color: green;
+}
+
 img {
   width: 8rem;
 }
