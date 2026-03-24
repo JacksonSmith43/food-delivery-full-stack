@@ -22,6 +22,7 @@ export class CartComponent implements OnInit {
   isSuccessful = this.cartService.isSuccessful;
   errorMessage = this.cartService.errorMessage;
   successMessage = this.cartService.successMessage;
+
   cart = this.cartService.cart;
   cartSummary = this.cartService.cartSummary;
 
@@ -96,6 +97,9 @@ export class CartComponent implements OnInit {
         setTimeout(() => {
           this.successMessage.set('');
           this.isSuccessful.set(false);
+          // Empties the cart and cart summary after successful checkout.
+          this.cart.set({ id: 0, sessionId: '', cartItems: [] });
+          this.cartSummary.set({ totalQuantity: 0, totalCost: 0, itemCount: 0 });
         }, 2000);
       },
       error: (e) => {

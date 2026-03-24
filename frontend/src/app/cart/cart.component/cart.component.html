@@ -26,8 +26,9 @@
       <div class="message">
         @if (this.isSuccessful()) {
           <p class="success-message">{{ this.successMessage() }}</p>
+        } @else {
+          <p class="error-message">{{ this.errorMessage() }}</p>
         }
-        <p class="error-message">{{ this.errorMessage() }}</p>
       </div>
 
       <div class="summary">

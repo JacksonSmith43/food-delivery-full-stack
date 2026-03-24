@@ -18,6 +18,7 @@ export class CartService {
 
   cart = signal<CartType | null>(null);
   cartSummary = signal<CartSummaryType>({ totalQuantity: 0, totalCost: 0, itemCount: 0 });
+ 
   errorMessage = signal<string>('');
   successMessage = signal<string>('');
   isSuccessful = signal<boolean>(false);
