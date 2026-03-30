@@ -137,7 +137,7 @@ public class OrderService {
         System.out.println("OrderService_emptyCart()_Cart has been cleared.");
     }
 
-    public OrderDTO getOrders(String email) {
+    public List<OrderDTO> getOrders(String email) {
         System.out.println("OrderService_getOrders().");
 
         if (email == null) {
@@ -150,55 +150,39 @@ public class OrderService {
         }
 
         Long userId = user.getId();
-        Order order = orderRepository.findTopByDeliverySnapshotUserIdOrderByCreatedAtDesc(userId)
-                .orElseThrow(() -> new RuntimeException("No orders found for userId: " + userId));
-        List<OrderItem> orderItems = order.getOrderItems();
+        List<Order> orders = orderRepository.findByDeliverySnapshotUserIdOrderByCreatedAtDesc(userId);
+        if (orders.isEmpty()) {
+            throw new RuntimeException("No orders found for userId: " + userId);
+        }
 
-        System.out.println("OrderService_getOrders()_order: " + order);
-        System.out.println("OrderService_getOrders()_orderItems: " + orderItems);
+        List<OrderDTO> orderDtos = orders.stream().map(order -> {
+            DeliverySnapshot deliverySnapshot = order.getDeliverySnapshot();
+            List<OrderItemDTO> orderItemDtos = order.getOrderItems().stream().map(orderItem -> new OrderItemDTO(
+                orderItem.getQuantity(),
+                orderItem.getPrice(),
+                orderItem.getMenuItemNameSnapshot())).toList();
 
-        DeliverySnapshot deliverySnapshot = order.getDeliverySnapshot();
-
-        // Order [id=null, totalAmount=null, totalCost=null, status=null,
-        // createdAt=null, currency=null, paymentMethod=null, paymentStatus=null,
-        // deliverySnapshot=null
-        OrderDTO orders = new OrderDTO(order.getTotalAmount(), order.getTotalCost(),
+            return new OrderDTO(
+                order.getTotalAmount(),
+                order.getTotalCost(),
                 order.getStatus(),
-                order.getCreatedAt(), order.getCurrency(), order.getPaymentMethod(),
-                order.getPaymentStatus(), new DeliverySnapshot(
-                        deliverySnapshot.getName(), deliverySnapshot.getUserId(),
-                        deliverySnapshot.getPhoneNumber(),
-                        deliverySnapshot.getLabel(), deliverySnapshot.getStreetName(),
-                        deliverySnapshot.getPostalCode(),
-                        deliverySnapshot.getCity(), deliverySnapshot.getCountry()),
-                new OrderItemDTO(orderItems.get(0).getQuantity(), orderItems.get(0).getPrice(),
-                        orderItems.get(0).getMenuItemNameSnapshot()));
+                order.getCreatedAt(),
+                order.getCurrency(),
+                order.getPaymentMethod(),
+                order.getPaymentStatus(),
+                new DeliverySnapshot(
+                    deliverySnapshot.getName(),
+                    deliverySnapshot.getUserId(),
+                    deliverySnapshot.getPhoneNumber(),
+                    deliverySnapshot.getLabel(),
+                    deliverySnapshot.getStreetName(),
+                    deliverySnapshot.getPostalCode(),
+                    deliverySnapshot.getCity(),
+                    deliverySnapshot.getCountry()),
+                orderItemDtos);
+        }).toList();
 
-        // TODO: Do something with that seing as it returns all of the items. For
-        // example
-        // when multiple items get selected.
-        // [OrderItem [id=3, quantity=1, price=14.90, menuItemId=8, order=Order [id=3,
-        // totalAmount=2, totalCost=26.40, status=null,
-        // createdAt=2026-03-30T10:23:27.739012, currency=null, paymentMethod=null,
-        // paymentStatus=null, deliverySnapshot=DeliverySnapshot [name=null, userId=1,
-        // phoneNumber=2222, label=Home, streetName=Tardisgasse, postalCode=20,
-        // city=Vienna, country=Austria], menuItemNameSnapshot=Butter Chicken],
-        // OrderItem [id=4, quantity=1, price=11.50, menuItemId=15, order=Order [id=3,
-        // totalAmount=2, totalCost=26.40, status=null,
-        // createdAt=2026-03-30T10:23:27.739012, currency=null, paymentMethod=null,
-        // paymentStatus=null, deliverySnapshot=DeliverySnapshot [name=null, userId=1,
-        // phoneNumber=2222, label=Home, streetName=Tardisgasse, postalCode=20,
-        // city=Vienna, country=Austria], menuItemNameSnapshot=Nudeln mit knusprigem
-        // Huhn]]
-        System.out.println("OrderService_getOrders()_orderItems: " + orderItems);
-        // [totalAmount=2, totalCost=26.40, status=null,
-        // createdAt=2026-03-30T10:23:27.739012, currency=null, paymentMethod=null,
-        // paymentStatus=null, deliverySnapshot=DeliverySnapshot [name=null, userId=1,
-        // phoneNumber=2222, label=Home, streetName=Tardisgasse, postalCode=20,
-        // city=Vienna, country=Austria], orderItem=OrderItemDTO [quantity=1,
-        // price=14.90, menuItemNameSnapshot=Butter Chicken]]
-        System.out.println("OrderService_getOrders()_orders: " + orders);
-
-        return orders;
+        System.out.println("OrderService_getOrders()_ordersCount: " + orderDtos.size());
+        return orderDtos;
     }
 }

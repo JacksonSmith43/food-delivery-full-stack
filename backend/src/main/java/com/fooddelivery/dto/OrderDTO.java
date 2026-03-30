@@ -2,6 +2,7 @@ package com.fooddelivery.dto;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.fooddelivery.entity.DeliverySnapshot;
 
@@ -17,14 +18,14 @@ public class OrderDTO {
     private String paymentStatus;
 
     private DeliverySnapshot deliverySnapshot;
-    private OrderItemDTO orderItem;
+    private List<OrderItemDTO> orderItems;
 
     public OrderDTO() {
 
     }
 
     public OrderDTO(Integer totalAmount, BigDecimal totalCost, String status, LocalDateTime createdAt, String currency,
-            String paymentMethod, String paymentStatus, DeliverySnapshot deliverySnapshot, OrderItemDTO orderItem) {
+            String paymentMethod, String paymentStatus, DeliverySnapshot deliverySnapshot, List<OrderItemDTO> orderItems) {
         this.totalAmount = totalAmount;
         this.totalCost = totalCost;
         this.status = status;
@@ -33,7 +34,7 @@ public class OrderDTO {
         this.paymentMethod = paymentMethod;
         this.paymentStatus = paymentStatus;
         this.deliverySnapshot = deliverySnapshot;
-        this.orderItem = orderItem;
+        this.orderItems = orderItems;
     }
 
     public Integer getTotalAmount() {
@@ -92,12 +93,12 @@ public class OrderDTO {
         this.paymentStatus = paymentStatus;
     }
 
-    public OrderItemDTO getOrderItem() {
-        return orderItem;
+    public List<OrderItemDTO> getOrderItems() {
+        return orderItems;
     }
 
-    public void setOrderItem(OrderItemDTO orderItem) {
-        this.orderItem = orderItem;
+    public void setOrderItems(List<OrderItemDTO> orderItems) {
+        this.orderItems = orderItems;
     }
 
     public DeliverySnapshot getDeliverySnapshot() {
@@ -112,8 +113,8 @@ public class OrderDTO {
     public String toString() {
         return "OrderDTO [totalAmount=" + totalAmount + ", totalCost=" + totalCost + ", status=" + status
                 + ", createdAt=" + createdAt + ", currency=" + currency + ", paymentMethod=" + paymentMethod
-                + ", paymentStatus=" + paymentStatus + ", deliverySnapshot=" + deliverySnapshot + ", orderItem="
-                + orderItem + "]";
+            + ", paymentStatus=" + paymentStatus + ", deliverySnapshot=" + deliverySnapshot + ", orderItems="
+            + orderItems + "]";
     }
 
 }

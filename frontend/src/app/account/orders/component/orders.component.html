@@ -5,9 +5,8 @@
     } @else {
       @for (order of orders(); track $index) {
         <div class="order-items">
-          <p><strong>Phone Number:</strong> {{ order.deliverySnapshot.phoneNumber }}</p>
-
           <p><strong>Label:</strong> {{ order.deliverySnapshot.label }}</p>
+          <p><strong>Phone Number:</strong> {{ order.deliverySnapshot.phoneNumber }}</p>
           <p><strong>Address:</strong> {{ order.deliverySnapshot.streetName }}</p>
           <p><strong>Postal code:</strong> {{ order.deliverySnapshot.postalCode }}</p>
           <p><strong>City:</strong> {{ order.deliverySnapshot.city }}</p>
@@ -18,8 +17,14 @@
           <p><strong>Total Amount:</strong> {{ order.totalAmount }}</p>
           <p><strong>Total Cost:</strong> {{ order.totalCost }}</p>
 
-          <p><strong>Menu Item:</strong> {{ order.orderItem.menuItemNameSnapshot }}</p>
+          @for (item of order.orderItems; track $index) {
+            <p><strong>Menu Item:</strong> {{ item.menuItemNameSnapshot }}</p>
+            <p><strong>Quantity:</strong> {{ item.quantity }}</p>
+            <p><strong>Price:</strong> {{ item.price }}</p>
+          }
         </div>
+
+        <p>////</p>
       }
     }
   } @else {

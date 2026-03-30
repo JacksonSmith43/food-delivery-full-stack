@@ -2,7 +2,7 @@ export interface OrderType {
   totalAmount: number;
   totalCost: number;
   status: string;
-  createdAt: Date;
+  createdAt: string;
   currency: string;
   paymentMethod: string;
   paymentStatus: string;
@@ -16,7 +16,7 @@ export interface OrderType {
     city: string;
     country: string;
   };
-  orderItem: OrderItemType;
+  orderItems: OrderItemType[];
 }
 
 export interface OrderItemType {

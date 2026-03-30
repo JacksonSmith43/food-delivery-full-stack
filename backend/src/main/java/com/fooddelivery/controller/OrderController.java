@@ -68,7 +68,7 @@ public class OrderController {
     public ResponseEntity<List<OrderDTO>> getOrders(@PathVariable String email) {
         System.out.println("OrderController_getOrders().");
 
-        OrderDTO orders = orderService.getOrders(email);
-        return ResponseEntity.ok(List.of(orders));
+        List<OrderDTO> orders = orderService.getOrders(email);
+        return ResponseEntity.ok(orders);
     }
 }
