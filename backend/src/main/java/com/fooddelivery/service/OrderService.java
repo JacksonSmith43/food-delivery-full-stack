@@ -1,15 +1,21 @@
 package com.fooddelivery.service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fooddelivery.dto.AddressDTO;
 import com.fooddelivery.dto.CheckoutCartDTO;
+import com.fooddelivery.dto.OrderDTO;
+import com.fooddelivery.dto.OrderItemDTO;
 import com.fooddelivery.entity.Cart;
+import com.fooddelivery.entity.CartItem;
 import com.fooddelivery.entity.DeliverySnapshot;
 import com.fooddelivery.entity.Order;
+import com.fooddelivery.entity.OrderItem;
+import com.fooddelivery.entity.User;
 import com.fooddelivery.exception.EmailDoesNotExistException;
 import com.fooddelivery.repository.CartRepository;
 import com.fooddelivery.repository.OrderRepository;
@@ -27,11 +33,31 @@ public class OrderService {
     @Autowired
     private CartRepository cartRepository;
 
-    public void createOrder(CheckoutCartDTO checkoutCartDto, Long userId) {
+    public void createOrder(CheckoutCartDTO checkoutCartDto, Long userId, String sessionId) {
         System.out.println("OrderService_createOrder().");
 
         Order order = new Order();
         AddressDTO address = checkoutCartDto.getAddress();
+        Cart cart = cartRepository.findBySessionId(sessionId).orElse(null);
+
+        if (cart == null) {
+            throw new RuntimeException("OrderService_createOrder()_Cart not found for sessionId: " + sessionId);
+        }
+
+        List<CartItem> cartItems = cart.getCartItems();
+
+        if (cartItems == null || cartItems.isEmpty()) {
+            throw new RuntimeException("OrderService_createOrder()_Cannot checkout an empty cart.");
+        }
+
+        // Order [id=null, totalAmount=null, totalCost=null, status=null,
+        // createdAt=null, currency=null, paymentMethod=null, paymentStatus=null,
+        // deliverySnapshot=null
+        System.out.println("OrderService_createOrder()_order: " + order);
+        // Cart [id=2, sessionId=DEBCD94362F87A14CD5B0DAB38C7A9CE, totalItems=2]
+        System.out.println("OrderService_createOrder()_cart: " + cart);
+        // [CartItem [id=5, menuItem=Phad Thai (Nationalgericht), quantity=1]]
+        System.out.println("OrderService_createOrder()_cartItems: " + cartItems);
 
         DeliverySnapshot snapshot = new DeliverySnapshot(
                 null,
@@ -42,12 +68,35 @@ public class OrderService {
                 String.valueOf(address.getPostalCode()),
                 address.getCity(),
                 address.getCountry());
+        // DeliverySnapshot [name=null, userId=1, phoneNumber=2222, label=Home,
+        // streetName=Tardisgasse, postalCode=20, city=Vienna, country=Austria]
+        System.out.println("OrderService_createOrder()_snapshot: " + snapshot);
 
         order.setDeliverySnapshot(snapshot);
         order.setTotalAmount(checkoutCartDto.getCartSummary().getTotalQuantity());
         order.setTotalCost(checkoutCartDto.getCartSummary().getTotalCost());
         order.setCreatedAt(LocalDateTime.now());
 
+        List<OrderItem> orderItems = cartItems.stream().map(cartItem -> {
+            OrderItem orderItem = new OrderItem();
+            orderItem.setMenuItemId(cartItem.getMenuItem().getId());
+            orderItem.setPrice(cartItem.getMenuItem().getPrice());
+            orderItem.setQuantity(cartItem.getQuantity());
+            orderItem.setOrder(order);
+            orderItem.setMenuItemNameSnapshot(cartItem.getMenuItem().getFoodName());
+            return orderItem;
+        }).toList();
+
+        // [OrderItem [id=null, quantity=1, price=12.80, menuItemId=22, order=Order
+        // [id=null, totalAmount=1, totalCost=12.8, status=null,
+        // createdAt=2026-03-30T10:37:08.939855300, currency=null, paymentMethod=null,
+        // paymentStatus=null, deliverySnapshot=DeliverySnapshot [name=null, userId=1,
+        // phoneNumber=2222, label=Home, streetName=Tardisgasse, postalCode=20,
+        // city=Vienna, country=Austria], menuItemNameSnapshot=Phad Thai
+        // (Nationalgericht)]]
+        System.out.println("OrderService_createOrder()_orderItems: " + orderItems);
+
+        order.setOrderItems(orderItems);
         orderRepository.save(order);
     }
 
@@ -56,7 +105,12 @@ public class OrderService {
             throw new EmailDoesNotExistException("Email is null.");
         }
 
-        Long id = userRepository.getByEmail(email).getId();
+        User user = userRepository.getByEmail(email);
+        if (user == null) {
+            throw new EmailDoesNotExistException("User does not exist for email: " + email);
+        }
+
+        Long id = user.getId();
         return id;
     }
 
@@ -67,10 +121,12 @@ public class OrderService {
     // preventing partial updates to the database. If it successfully completes, the
     // transaction will be committed, ensuring that the cart is properly cleared.
     @Transactional
-    public void emptyCart(String sessionId) {
+    public void emptyCart(String sessionId, Long userId) {
         System.out.println("OrderService_emptyCart().");
 
         Cart cart = cartRepository.findBySessionId(sessionId).orElse(null);
+        // Cart [id=1, sessionId=27FBA8B6AC67A3AEC0BCF839F97980F8, totalItems=1]
+        System.out.println("OrderService_emptyCart()_cart: " + cart);
 
         if (cart == null) {
             throw new RuntimeException("OrderService_emptyCart()_Cart not found for sessionId: " + sessionId);
@@ -79,5 +135,70 @@ public class OrderService {
         cart.getCartItems().clear();
         cartRepository.save(cart);
         System.out.println("OrderService_emptyCart()_Cart has been cleared.");
+    }
+
+    public OrderDTO getOrders(String email) {
+        System.out.println("OrderService_getOrders().");
+
+        if (email == null) {
+            throw new EmailDoesNotExistException("Email is null.");
+        }
+
+        User user = userRepository.getByEmail(email);
+        if (user == null) {
+            throw new EmailDoesNotExistException("User does not exist for email: " + email);
+        }
+
+        Long userId = user.getId();
+        Order order = orderRepository.findTopByDeliverySnapshotUserIdOrderByCreatedAtDesc(userId)
+                .orElseThrow(() -> new RuntimeException("No orders found for userId: " + userId));
+        List<OrderItem> orderItems = order.getOrderItems();
+
+        System.out.println("OrderService_getOrders()_order: " + order);
+        System.out.println("OrderService_getOrders()_orderItems: " + orderItems);
+
+        DeliverySnapshot deliverySnapshot = order.getDeliverySnapshot();
+
+        // Order [id=null, totalAmount=null, totalCost=null, status=null,
+        // createdAt=null, currency=null, paymentMethod=null, paymentStatus=null,
+        // deliverySnapshot=null
+        OrderDTO orders = new OrderDTO(order.getTotalAmount(), order.getTotalCost(),
+                order.getStatus(),
+                order.getCreatedAt(), order.getCurrency(), order.getPaymentMethod(),
+                order.getPaymentStatus(), new DeliverySnapshot(
+                        deliverySnapshot.getName(), deliverySnapshot.getUserId(),
+                        deliverySnapshot.getPhoneNumber(),
+                        deliverySnapshot.getLabel(), deliverySnapshot.getStreetName(),
+                        deliverySnapshot.getPostalCode(),
+                        deliverySnapshot.getCity(), deliverySnapshot.getCountry()),
+                new OrderItemDTO(orderItems.get(0).getQuantity(), orderItems.get(0).getPrice(),
+                        orderItems.get(0).getMenuItemNameSnapshot()));
+
+        // TODO: Do something with that seing as it returns all of the items. For
+        // example
+        // when multiple items get selected.
+        // [OrderItem [id=3, quantity=1, price=14.90, menuItemId=8, order=Order [id=3,
+        // totalAmount=2, totalCost=26.40, status=null,
+        // createdAt=2026-03-30T10:23:27.739012, currency=null, paymentMethod=null,
+        // paymentStatus=null, deliverySnapshot=DeliverySnapshot [name=null, userId=1,
+        // phoneNumber=2222, label=Home, streetName=Tardisgasse, postalCode=20,
+        // city=Vienna, country=Austria], menuItemNameSnapshot=Butter Chicken],
+        // OrderItem [id=4, quantity=1, price=11.50, menuItemId=15, order=Order [id=3,
+        // totalAmount=2, totalCost=26.40, status=null,
+        // createdAt=2026-03-30T10:23:27.739012, currency=null, paymentMethod=null,
+        // paymentStatus=null, deliverySnapshot=DeliverySnapshot [name=null, userId=1,
+        // phoneNumber=2222, label=Home, streetName=Tardisgasse, postalCode=20,
+        // city=Vienna, country=Austria], menuItemNameSnapshot=Nudeln mit knusprigem
+        // Huhn]]
+        System.out.println("OrderService_getOrders()_orderItems: " + orderItems);
+        // [totalAmount=2, totalCost=26.40, status=null,
+        // createdAt=2026-03-30T10:23:27.739012, currency=null, paymentMethod=null,
+        // paymentStatus=null, deliverySnapshot=DeliverySnapshot [name=null, userId=1,
+        // phoneNumber=2222, label=Home, streetName=Tardisgasse, postalCode=20,
+        // city=Vienna, country=Austria], orderItem=OrderItemDTO [quantity=1,
+        // price=14.90, menuItemNameSnapshot=Butter Chicken]]
+        System.out.println("OrderService_getOrders()_orders: " + orders);
+
+        return orders;
     }
 }

@@ -3,6 +3,8 @@ package com.fooddelivery.entity;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.*;
+
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,10 +70,10 @@ public class Cart {
         cartItem.setCart(null);
     }
 
-    public Double getTotalCost() {
+    public BigDecimal getTotalCost() {
         return cartItems.stream()
-                .mapToDouble(CartItem::getItemTotalPrice)
-                .sum();
+                .map(CartItem::getItemTotalPrice)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     public Integer getTotalQuantity() {

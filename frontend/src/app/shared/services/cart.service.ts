@@ -18,7 +18,7 @@ export class CartService {
 
   cart = signal<CartType | null>(null);
   cartSummary = signal<CartSummaryType>({ totalQuantity: 0, totalCost: 0, itemCount: 0 });
- 
+
   errorMessage = signal<string>('');
   successMessage = signal<string>('');
   isSuccessful = signal<boolean>(false);
@@ -92,7 +92,7 @@ export class CartService {
     return cartItem ? cartItem.quantity : 0; // If the id does not match the menuItemId, then return 0.
   }
 
-  checkoutCart() {
+  checkoutCart(): Observable<string> {
     console.log('checkoutCart().');
     let checkoutCart = this.checkoutCartComputed();
     let email = this.authService.authUser()?.email;

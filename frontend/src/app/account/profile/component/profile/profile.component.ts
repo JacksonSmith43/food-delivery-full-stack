@@ -61,7 +61,15 @@ export class ProfileComponent {
     if (userCredentials) {
       this.authService.authUser.set(userCredentials);
 
-      this.accountService.getUserProfile(userCredentials.email);
+      this.accountService.getUserProfile(userCredentials.email).subscribe({
+        next: (user) => {
+          console.log('AccountComponent_ngOnInit()_user: ', user);
+          this.accountService.currentUserProfile.set(JSON.parse(user));
+        },
+        error: (error) => {
+          console.error('ProfileComponent_ngOnInit()_Error loading profile: ', error.error.message);
+        },
+      });
     }
   }
 

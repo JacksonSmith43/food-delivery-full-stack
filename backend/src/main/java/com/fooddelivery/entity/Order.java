@@ -2,15 +2,18 @@ package com.fooddelivery.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.AttributeOverrides;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -52,11 +55,15 @@ public class Order {
     })
     private DeliverySnapshot deliverySnapshot;
 
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
+    private List<OrderItem> orderItems;
+
     public Order() {
     }
 
     public Order(Long id, Integer totalAmount, BigDecimal totalCost, String status, LocalDateTime createdAt,
-            String currency, String paymentMethod, String paymentStatus, DeliverySnapshot deliverySnapshot) {
+            String currency, String paymentMethod, String paymentStatus, DeliverySnapshot deliverySnapshot,
+            List<OrderItem> orderItems) {
         this.id = id;
         this.totalAmount = totalAmount;
         this.totalCost = totalCost;
@@ -66,6 +73,7 @@ public class Order {
         this.paymentMethod = paymentMethod;
         this.paymentStatus = paymentStatus;
         this.deliverySnapshot = deliverySnapshot;
+        this.orderItems = orderItems;
     }
 
     public Long getId() {
@@ -140,11 +148,19 @@ public class Order {
         this.deliverySnapshot = deliverySnapshot;
     }
 
+    public List<OrderItem> getOrderItems() {
+        return orderItems;
+    }
+
+    public void setOrderItems(List<OrderItem> orderItems) {
+        this.orderItems = orderItems;
+    }
+
     @Override
     public String toString() {
         return "Order [id=" + id + ", totalAmount=" + totalAmount + ", totalCost=" + totalCost + ", status=" + status
                 + ", createdAt=" + createdAt + ", currency=" + currency + ", paymentMethod=" + paymentMethod
-                + ", paymentStatus=" + paymentStatus + ", deliverySnapshot=" + deliverySnapshot + "]";
+                + ", paymentStatus=" + paymentStatus + ", deliverySnapshot=" + deliverySnapshot;
     }
 
 }

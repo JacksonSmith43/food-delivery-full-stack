@@ -1,5 +1,7 @@
 package com.fooddelivery.entity;
 
+import java.math.BigDecimal;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
@@ -63,8 +65,8 @@ public class CartItem {
         this.cart = cart;
     }
 
-    public Double getItemTotalPrice() {
-        return menuItem.getPrice() * quantity;
+    public BigDecimal getItemTotalPrice() {
+        return menuItem.getPrice().multiply(new BigDecimal(quantity));
     }
 
     @Override

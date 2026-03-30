@@ -1,5 +1,7 @@
 package com.fooddelivery.entity;
 
+import java.math.BigDecimal;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.*;
@@ -15,7 +17,7 @@ public class MenuItem {
     private String foodName;
 
     private String description;
-    private Double price;
+    private BigDecimal price;
 
     @Column(name = "food_image")
     private String foodImage;
@@ -30,7 +32,7 @@ public class MenuItem {
 
     }
 
-    public MenuItem(Long id, String foodName, String description, Double price, String foodImage) {
+    public MenuItem(Long id, String foodName, String description, BigDecimal price, String foodImage) {
         this.id = id;
         this.foodName = foodName;
         this.description = description;
@@ -38,7 +40,7 @@ public class MenuItem {
         this.foodImage = foodImage;
     }
 
-    public MenuItem(String foodName, String description, Double price, String foodImage) {
+    public MenuItem(String foodName, String description, BigDecimal price, String foodImage) {
         this.foodName = foodName;
         this.description = description;
         this.price = price;
@@ -69,11 +71,11 @@ public class MenuItem {
         this.description = description;
     }
 
-    public Double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 

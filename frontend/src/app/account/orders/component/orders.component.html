@@ -1,1 +1,28 @@
-<p>orders.component works!</p>
+<div class="orders-container">
+  @if (authService.authUser() !== undefined) {
+    @if (orders().length === 0) {
+      <p>No orders found yet.</p>
+    } @else {
+      @for (order of orders(); track $index) {
+        <div class="order-items">
+          <p><strong>Phone Number:</strong> {{ order.deliverySnapshot.phoneNumber }}</p>
+
+          <p><strong>Label:</strong> {{ order.deliverySnapshot.label }}</p>
+          <p><strong>Address:</strong> {{ order.deliverySnapshot.streetName }}</p>
+          <p><strong>Postal code:</strong> {{ order.deliverySnapshot.postalCode }}</p>
+          <p><strong>City:</strong> {{ order.deliverySnapshot.city }}</p>
+          <p><strong>Country:</strong> {{ order.deliverySnapshot.country }}</p>
+          <p><strong>Created At:</strong> {{ order.createdAt }}</p>
+          <p><strong>User ID:</strong> {{ order.deliverySnapshot.userId }}</p>
+
+          <p><strong>Total Amount:</strong> {{ order.totalAmount }}</p>
+          <p><strong>Total Cost:</strong> {{ order.totalCost }}</p>
+
+          <p><strong>Menu Item:</strong> {{ order.orderItem.menuItemNameSnapshot }}</p>
+        </div>
+      }
+    }
+  } @else {
+    <h2 class="login-warning">Login to see your order details.</h2>
+  }
+</div>
