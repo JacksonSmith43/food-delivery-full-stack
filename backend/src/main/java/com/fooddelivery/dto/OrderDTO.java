@@ -7,6 +7,7 @@ import java.util.List;
 import com.fooddelivery.entity.DeliverySnapshot;
 
 public class OrderDTO {
+    private Long orderId;
 
     // Order.
     private Integer totalAmount;
@@ -24,8 +25,10 @@ public class OrderDTO {
 
     }
 
-    public OrderDTO(Integer totalAmount, BigDecimal totalCost, String status, LocalDateTime createdAt, String currency,
-            String paymentMethod, String paymentStatus, DeliverySnapshot deliverySnapshot, List<OrderItemDTO> orderItems) {
+    public OrderDTO(Long orderId, Integer totalAmount, BigDecimal totalCost, String status, LocalDateTime createdAt,
+            String currency, String paymentMethod, String paymentStatus, DeliverySnapshot deliverySnapshot,
+            List<OrderItemDTO> orderItems) {
+        this.orderId = orderId;
         this.totalAmount = totalAmount;
         this.totalCost = totalCost;
         this.status = status;
@@ -35,6 +38,14 @@ public class OrderDTO {
         this.paymentStatus = paymentStatus;
         this.deliverySnapshot = deliverySnapshot;
         this.orderItems = orderItems;
+    }
+
+    public Long getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(Long orderId) {
+        this.orderId = orderId;
     }
 
     public Integer getTotalAmount() {
@@ -111,10 +122,11 @@ public class OrderDTO {
 
     @Override
     public String toString() {
-        return "OrderDTO [totalAmount=" + totalAmount + ", totalCost=" + totalCost + ", status=" + status
+        return "OrderDTO [orderId=" + orderId + ", totalAmount=" + totalAmount + ", totalCost=" + totalCost
+                + ", status=" + status
                 + ", createdAt=" + createdAt + ", currency=" + currency + ", paymentMethod=" + paymentMethod
-            + ", paymentStatus=" + paymentStatus + ", deliverySnapshot=" + deliverySnapshot + ", orderItems="
-            + orderItems + "]";
+                + ", paymentStatus=" + paymentStatus + ", deliverySnapshot=" + deliverySnapshot + ", orderItems="
+                + orderItems + "]";
     }
 
 }

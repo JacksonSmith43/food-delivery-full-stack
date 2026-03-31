@@ -1,4 +1,5 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
+import { DatePipe } from '@angular/common';
 
 import { CartService } from '../../../shared/services/cart.service';
 import { OrderService } from '../../../shared/services/order.service';
@@ -8,7 +9,7 @@ import { OrderType } from '../../../shared/model/order-type';
 
 @Component({
   selector: 'app-orders',
-  imports: [],
+  imports: [DatePipe],
   templateUrl: './orders.component.html',
   styleUrl: './orders.component.css',
 })
@@ -44,5 +45,29 @@ export class OrdersComponent implements OnInit {
         console.error('OrdersComponent_ngOnInit()_Error: ', error?.error?.message ?? error);
       },
     });
+  }
+
+  formatAddress(a: {
+    label: string;
+    streetName: string;
+    postalCode: string | number;
+    city: string;
+    country: string;
+  }): string {
+    return `${a.label}, ${a.streetName}, ${a.postalCode} ${a.city}, ${a.country}`;
+  }
+
+  getStatusClass(status: string): string {
+    const normalised = status?.toLowerCase() ?? '';
+    return `status-${normalised}`;
+  }
+
+  formatStatus(status: string): string {
+    if (!status) {
+      return 'Unknown';
+    }
+
+    const normalised = status.toLowerCase();
+    return normalised.charAt(0).toUpperCase() + normalised.slice(1);
   }
 }

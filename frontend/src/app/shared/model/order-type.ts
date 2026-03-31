@@ -1,4 +1,5 @@
 export interface OrderType {
+  orderId: number;
   totalAmount: number;
   totalCost: number;
   status: string;

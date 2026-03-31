@@ -1,33 +1,78 @@
-<div class="orders-container">
+<section class="orders-page" aria-labelledby="orders-title">
   @if (authService.authUser() !== undefined) {
+    <header class="orders-header">
+      <h1 id="orders-title">My Orders</h1>
+      <p>Alle Bestellungen auf einen Blick.</p>
+    </header>
+
     @if (orders().length === 0) {
-      <p>No orders found yet.</p>
+      <div class="empty-state" aria-live="polite">
+        <h2>No orders found yet</h2>
+        <p>Sobald du bestellst, erscheinen deine Bestellungen hier.</p>
+      </div>
     } @else {
-      @for (order of orders(); track $index) {
-        <div class="order-items">
-          <p><strong>Label:</strong> {{ order.deliverySnapshot.label }}</p>
-          <p><strong>Phone Number:</strong> {{ order.deliverySnapshot.phoneNumber }}</p>
-          <p><strong>Address:</strong> {{ order.deliverySnapshot.streetName }}</p>
-          <p><strong>Postal code:</strong> {{ order.deliverySnapshot.postalCode }}</p>
-          <p><strong>City:</strong> {{ order.deliverySnapshot.city }}</p>
-          <p><strong>Country:</strong> {{ order.deliverySnapshot.country }}</p>
-          <p><strong>Created At:</strong> {{ order.createdAt }}</p>
-          <p><strong>User ID:</strong> {{ order.deliverySnapshot.userId }}</p>
+      <div class="orders-grid" role="list" aria-label="orders list">
+        @for (order of orders(); track order.orderId) {
+          <article class="order-card" role="listitem" aria-label="Order {{ order.orderId }}">
+            <div class="card-top">
+              <div>
+                <p class="order-id">Order #{{ order.orderId }}</p>
+                <p class="order-date">{{ order.createdAt | date: 'dd.MM.yyyy, HH:mm' }}</p>
+              </div>
+              <span class="status-badge {{ getStatusClass(order.status) }}" aria-label="Status {{ formatStatus(order.status) }}">
+                {{ formatStatus(order.status) }}
+              </span>
+            </div>
 
-          <p><strong>Total Amount:</strong> {{ order.totalAmount }}</p>
-          <p><strong>Total Cost:</strong> {{ order.totalCost }}</p>
+            <div class="order-meta">
+              <div class="meta-box">
+                <span>Items</span>
+                <strong>{{ order.totalAmount }}</strong>
+              </div>
+              <div class="meta-box">
+                <span>Total</span>
+                <strong>{{ order.totalCost }} {{ order.currency || 'EUR' }}</strong>
+              </div>
+              <div class="meta-box">
+                <span>Payment</span>
+                <strong>{{ order.paymentMethod }}</strong>
+              </div>
+            </div>
 
-          @for (item of order.orderItems; track $index) {
-            <p><strong>Menu Item:</strong> {{ item.menuItemNameSnapshot }}</p>
-            <p><strong>Quantity:</strong> {{ item.quantity }}</p>
-            <p><strong>Price:</strong> {{ item.price }}</p>
-          }
-        </div>
+            <div class="delivery-block">
+              <p class="block-title">Delivery Address</p>
+              <p>
+                {{
+                  formatAddress({
+                    label: order.deliverySnapshot.label,
+                    streetName: order.deliverySnapshot.streetName,
+                    postalCode: order.deliverySnapshot.postalCode,
+                    city: order.deliverySnapshot.city,
+                    country: order.deliverySnapshot.country,
+                  })
+                }}
+              </p>
+            </div>
 
-        <p>////</p>
-      }
+            <div class="items-block">
+              <p class="block-title">Items</p>
+              <div class="items-list" role="list" aria-label="Order items">
+                @for (item of order.orderItems; track $index) {
+                  <div class="item-row" role="listitem">
+                    <span class="item-name">{{ item.menuItemNameSnapshot }}</span>
+                    <span class="item-qty">x{{ item.quantity }}</span>
+                    <span class="item-price">{{ item.price }} {{ order.currency || 'EUR' }}</span>
+                  </div>
+                }
+              </div>
+            </div>
+          </article>
+        }
+      </div>
     }
   } @else {
-    <h2 class="login-warning">Login to see your order details.</h2>
+    <div class="login-warning">
+      <h2>Login to see your order details.</h2>
+    </div>
   }
-</div>
+</section>

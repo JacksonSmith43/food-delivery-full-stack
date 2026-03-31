@@ -163,6 +163,7 @@ public class OrderService {
                 orderItem.getMenuItemNameSnapshot())).toList();
 
             return new OrderDTO(
+                order.getId(),
                 order.getTotalAmount(),
                 order.getTotalCost(),
                 order.getStatus(),
