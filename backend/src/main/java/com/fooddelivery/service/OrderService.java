@@ -168,7 +168,6 @@ public class OrderService {
                 order.getTotalCost(),
                 order.getStatus(),
                 order.getCreatedAt(),
-                order.getCurrency(),
                 order.getPaymentMethod(),
                 order.getPaymentStatus(),
                 new DeliverySnapshot(

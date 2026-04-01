@@ -4,7 +4,6 @@ export interface OrderType {
   totalCost: number;
   status: string;
   createdAt: string;
-  currency: string;
   paymentMethod: string;
   paymentStatus: string;
   deliverySnapshot: {

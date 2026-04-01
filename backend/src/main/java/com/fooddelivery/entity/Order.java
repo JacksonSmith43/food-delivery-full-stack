@@ -34,8 +34,6 @@ public class Order {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    private String currency;
-
     @Column(name = "payment_method")
     private String paymentMethod;
 
@@ -62,14 +60,13 @@ public class Order {
     }
 
     public Order(Long id, Integer totalAmount, BigDecimal totalCost, String status, LocalDateTime createdAt,
-            String currency, String paymentMethod, String paymentStatus, DeliverySnapshot deliverySnapshot,
+            String paymentMethod, String paymentStatus, DeliverySnapshot deliverySnapshot,
             List<OrderItem> orderItems) {
         this.id = id;
         this.totalAmount = totalAmount;
         this.totalCost = totalCost;
         this.status = status;
         this.createdAt = createdAt;
-        this.currency = currency;
         this.paymentMethod = paymentMethod;
         this.paymentStatus = paymentStatus;
         this.deliverySnapshot = deliverySnapshot;
@@ -90,14 +87,6 @@ public class Order {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public String getCurrency() {
-        return currency;
-    }
-
-    public void setCurrency(String currency) {
-        this.currency = currency;
     }
 
     public Integer getTotalAmount() {
@@ -159,7 +148,7 @@ public class Order {
     @Override
     public String toString() {
         return "Order [id=" + id + ", totalAmount=" + totalAmount + ", totalCost=" + totalCost + ", status=" + status
-                + ", createdAt=" + createdAt + ", currency=" + currency + ", paymentMethod=" + paymentMethod
+                + ", createdAt=" + createdAt + ", paymentMethod=" + paymentMethod
                 + ", paymentStatus=" + paymentStatus + ", deliverySnapshot=" + deliverySnapshot;
     }
 

@@ -14,7 +14,6 @@ public class OrderDTO {
     private BigDecimal totalCost;
     private String status;
     private LocalDateTime createdAt;
-    private String currency;
     private String paymentMethod;
     private String paymentStatus;
 
@@ -26,14 +25,13 @@ public class OrderDTO {
     }
 
     public OrderDTO(Long orderId, Integer totalAmount, BigDecimal totalCost, String status, LocalDateTime createdAt,
-            String currency, String paymentMethod, String paymentStatus, DeliverySnapshot deliverySnapshot,
+            String paymentMethod, String paymentStatus, DeliverySnapshot deliverySnapshot,
             List<OrderItemDTO> orderItems) {
         this.orderId = orderId;
         this.totalAmount = totalAmount;
         this.totalCost = totalCost;
         this.status = status;
         this.createdAt = createdAt;
-        this.currency = currency;
         this.paymentMethod = paymentMethod;
         this.paymentStatus = paymentStatus;
         this.deliverySnapshot = deliverySnapshot;
@@ -80,14 +78,6 @@ public class OrderDTO {
         this.createdAt = createdAt;
     }
 
-    public String getCurrency() {
-        return currency;
-    }
-
-    public void setCurrency(String currency) {
-        this.currency = currency;
-    }
-
     public String getPaymentMethod() {
         return paymentMethod;
     }
@@ -124,7 +114,7 @@ public class OrderDTO {
     public String toString() {
         return "OrderDTO [orderId=" + orderId + ", totalAmount=" + totalAmount + ", totalCost=" + totalCost
                 + ", status=" + status
-                + ", createdAt=" + createdAt + ", currency=" + currency + ", paymentMethod=" + paymentMethod
+                + ", createdAt=" + createdAt + ", paymentMethod=" + paymentMethod
                 + ", paymentStatus=" + paymentStatus + ", deliverySnapshot=" + deliverySnapshot + ", orderItems="
                 + orderItems + "]";
     }

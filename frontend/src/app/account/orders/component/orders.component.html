@@ -31,11 +31,7 @@
               </div>
               <div class="meta-box">
                 <span>Total</span>
-                <strong>{{ order.totalCost }} {{ order.currency || 'EUR' }}</strong>
-              </div>
-              <div class="meta-box">
-                <span>Payment</span>
-                <strong>{{ order.paymentMethod }}</strong>
+                <strong>{{ order.totalCost }} EUR</strong>
               </div>
             </div>
 
@@ -61,7 +57,7 @@
                   <div class="item-row" role="listitem">
                     <span class="item-name">{{ item.menuItemNameSnapshot }}</span>
                     <span class="item-qty">x{{ item.quantity }}</span>
-                    <span class="item-price">{{ item.price }} {{ order.currency || 'EUR' }}</span>
+                    <span class="item-price">{{ item.price }} EUR</span>
                   </div>
                 }
               </div>
