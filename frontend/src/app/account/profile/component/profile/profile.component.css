@@ -25,17 +25,6 @@
   border: 0; /* So that all of the individual stars (*) won´t be hightlighted when hovering over it. */
 }
 
-.address-list {
-  display: grid;
-  margin-top: 1rem;
-}
-
-.address-line {
-  outline: 0.025rem solid gray;
-  padding-bottom: 1rem;
-  border-radius: 0.55rem;
-}
-
 label {
   color: gray;
   font-size: large;

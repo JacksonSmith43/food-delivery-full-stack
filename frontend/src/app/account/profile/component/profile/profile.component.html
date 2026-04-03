@@ -4,8 +4,8 @@
 
     <div
       class="email-container credentials"
-      (keydown.enter)="openDialog('email')"
-      (click)="openDialog('email')"
+      (keydown.enter)="this.accountService.openDialog('email')"
+      (click)="this.accountService.openDialog('email')"
       tabindex="0"
       title="Click to change your email address."
     >
@@ -17,8 +17,8 @@
 
     <div
       class="password-container credentials"
-      (keydown.enter)="openDialog('password')"
-      (click)="openDialog('password')"
+      (keydown.enter)="this.accountService.openDialog('password')"
+      (click)="this.accountService.openDialog('password')"
       tabindex="0"
       title="Click to change your password."
     >
@@ -31,29 +31,9 @@
     </div>
 
     <div
-      class="address-container credentials"
-      (keydown.enter)="openDialog('address')"
-      (click)="openDialog('address')"
-      tabindex="0"
-      title="Click to change your address."
-    >
-      <label for="address">Address</label>
-      <button id="address" mat-raised-button aria-label="Address.">
-        <div class="address-list">
-          @for (address of sortedAddresses(); track address) {
-            <div class="address-line">
-              <p>{{ address.label }} Address</p>
-              {{ formatAddress(address) }}
-            </div>
-          }
-        </div>
-      </button>
-    </div>
-
-    <div
       class="phone-number-container credentials"
-      (keydown.enter)="openDialog('phoneNumber')"
-      (click)="openDialog('phoneNumber')"
+      (keydown.enter)="this.accountService.openDialog('phoneNumber')"
+      (click)="this.accountService.openDialog('phoneNumber')"
       tabindex="0"
       title="Click to change your phone number."
     >

@@ -1,16 +1,10 @@
 <div class="account-container">
   @if (authService.authUser() !== undefined) {
     <h2>Account</h2>
-    <button matButton="tonal" [routerLink]="'/profile'" routerLinkActive="selected">
-      My profile
-    </button>
+    <button matButton="tonal" [routerLink]="'/profile'" routerLinkActive="selected">My profile</button>
     <button matButton="tonal" [routerLink]="'/orders'" routerLinkActive="selected">Orders</button>
-    <button matButton="tonal" [routerLink]="'/favourites'" routerLinkActive="selected">
-      Favourites
-    </button>
-    <button matButton="tonal" [routerLink]="'/addresses'" routerLinkActive="selected">
-      My addresses
-    </button>
+    <button matButton="tonal" [routerLink]="'/favourites'" routerLinkActive="selected">Favourites</button>
+    <button matButton="tonal" [routerLink]="'/myAddresses'" routerLinkActive="selected">My addresses</button>
   } @else {
     <h2 class="login-warning">Login to see your account details.</h2>
   }

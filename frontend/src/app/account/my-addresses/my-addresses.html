@@ -1,0 +1,22 @@
+<section class="my-addresses-container">
+  <header>
+    <h2>My Addresses</h2>
+  </header>
+  <div
+    class="addresses"
+    (keydown.enter)="this.accountService.openDialog('address')"
+    (click)="this.accountService.openDialog('address')"
+    title="Click to change or add your address."
+  >
+    <button id="address-button" mat-raised-button aria-label="My Addresses.">
+      <div class="address-list">
+        @for (address of sortedAddresses(); track address) {
+          <div class="address-line" tabindex="0">
+            <p>{{ address.label }} Address</p>
+            {{ formatAddress(address) }}
+          </div>
+        }
+      </div>
+    </button>
+  </div>
+</section>

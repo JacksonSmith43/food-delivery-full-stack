@@ -1,0 +1,44 @@
+.my-addresses-container {
+  text-align: center;
+}
+
+.addresses {
+  display: grid;
+  padding: 1rem 1rem;
+  margin: auto 2rem;
+
+  outline: 0.15rem solid gray;
+  border-radius: 2rem;
+}
+
+.address-list {
+  display: grid;
+  margin: 1rem 1rem;
+}
+
+#address-button {
+  background-color: unset;
+}
+
+.address-line {
+  padding: 2rem 2rem;
+  margin-top: 1rem;
+  border-radius: 2rem;
+  outline: 0.15rem solid gray;
+}
+
+.addresses button {
+  margin: auto;
+  all: unset; /* So that the button does not look like a button. */
+
+  font-size: large;
+  font-weight: 500;
+}
+
+.addresses:hover {
+  background-color: rgb(54, 53, 53);
+}
+
+.address-line:focus {
+  outline: 0.25rem solid red;
+}
