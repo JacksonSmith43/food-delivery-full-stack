@@ -5,7 +5,7 @@ import { CartService } from '../../../shared/services/cart.service';
 import { OrderService } from '../../../shared/services/order.service';
 import { AuthService } from '../../../auth/service/auth.service';
 import { LocalStorageService } from '../../../shared/services/local-storage.service';
-import { OrderType } from '../../../shared/model/order-type';
+import { OrderStatusType, OrderType } from '../../../shared/model/order-type';
 
 @Component({
   selector: 'app-orders',
@@ -57,8 +57,8 @@ export class OrdersComponent implements OnInit {
     return `${a.label}, ${a.streetName}, ${a.postalCode} ${a.city}, ${a.country}`;
   }
 
-  getStatusClass(status: string): string {
-    const normalised = status?.toLowerCase() ?? '';
+  getStatusClass(status: OrderStatusType): string {
+    const normalised = status?.toString().toLowerCase() ?? 'unknown';
     return `status-${normalised}`;
   }
 

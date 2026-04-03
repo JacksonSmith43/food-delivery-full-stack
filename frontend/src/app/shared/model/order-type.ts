@@ -2,7 +2,7 @@ export interface OrderType {
   orderId: number;
   totalAmount: number;
   totalCost: number;
-  status: string;
+  status: OrderStatusType;
   createdAt: string;
   paymentMethod: string;
   paymentStatus: string;
@@ -25,4 +25,9 @@ export interface OrderItemType {
   menuItemNameSnapshot: string;
 }
 
-export type OrderStatusType = 'PENDING' | 'CONFIRMED' | 'PREPARING' | 'DELIVERED' | 'CANCELLED';
+export enum OrderStatusType {
+  'PLACED',
+  'PREPARING',
+  'OUT_FOR_DELIVERY',
+  'DELIVERED',
+}

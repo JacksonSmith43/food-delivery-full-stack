@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.fooddelivery.entity.DeliverySnapshot;
+import com.fooddelivery.entity.Order;
 
 public class OrderDTO {
     private Long orderId;
@@ -12,7 +13,7 @@ public class OrderDTO {
     // Order.
     private Integer totalAmount;
     private BigDecimal totalCost;
-    private String status;
+    private Order.Status status;
     private LocalDateTime createdAt;
     private String paymentMethod;
     private String paymentStatus;
@@ -24,8 +25,8 @@ public class OrderDTO {
 
     }
 
-    public OrderDTO(Long orderId, Integer totalAmount, BigDecimal totalCost, String status, LocalDateTime createdAt,
-            String paymentMethod, String paymentStatus, DeliverySnapshot deliverySnapshot,
+    public OrderDTO(Long orderId, Integer totalAmount, BigDecimal totalCost, Order.Status status,
+            LocalDateTime createdAt, String paymentMethod, String paymentStatus, DeliverySnapshot deliverySnapshot,
             List<OrderItemDTO> orderItems) {
         this.orderId = orderId;
         this.totalAmount = totalAmount;
@@ -62,11 +63,11 @@ public class OrderDTO {
         this.totalCost = totalCost;
     }
 
-    public String getStatus() {
+    public Order.Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Order.Status status) {
         this.status = status;
     }
 

@@ -19,8 +19,8 @@
                 <p class="order-id">Order #{{ order.orderId }}</p>
                 <p class="order-date">{{ order.createdAt | date: 'dd.MM.yyyy, HH:mm' }}</p>
               </div>
-              <span class="status-badge {{ getStatusClass(order.status) }}" aria-label="Status {{ formatStatus(order.status) }}">
-                {{ formatStatus(order.status) }}
+              <span class="status-badge {{ getStatusClass(order.status) }}" aria-label="Status {{ formatStatus(order.status.toString()) }}">
+                {{ formatStatus(order.status.toString()) }}
               </span>
             </div>
 

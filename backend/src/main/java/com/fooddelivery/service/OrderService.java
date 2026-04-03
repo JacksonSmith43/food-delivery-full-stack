@@ -50,9 +50,10 @@ public class OrderService {
             throw new RuntimeException("OrderService_createOrder()_Cannot checkout an empty cart.");
         }
 
-        // Order [id=null, totalAmount=null, totalCost=null, status=null,
-        // createdAt=null, currency=null, paymentMethod=null, paymentStatus=null,
-        // deliverySnapshot=null
+        order.setStatus(Order.Status.PLACED);
+
+        // Order [id=null, totalAmount=null, totalCost=null, status=PLACED,
+        // createdAt=null, paymentMethod=null, paymentStatus=null, deliverySnapshot=null
         System.out.println("OrderService_createOrder()_order: " + order);
         // Cart [id=2, sessionId=DEBCD94362F87A14CD5B0DAB38C7A9CE, totalItems=2]
         System.out.println("OrderService_createOrder()_cart: " + cart);
@@ -87,13 +88,12 @@ public class OrderService {
             return orderItem;
         }).toList();
 
-        // [OrderItem [id=null, quantity=1, price=12.80, menuItemId=22, order=Order
-        // [id=null, totalAmount=1, totalCost=12.8, status=null,
-        // createdAt=2026-03-30T10:37:08.939855300, currency=null, paymentMethod=null,
+        // [OrderItem [id=null, quantity=1, price=10.90, menuItemId=14, order=Order
+        // [id=null, totalAmount=1, totalCost=10.9, status=PLACED,
+        // createdAt=2026-04-01T11:18:13.531887700, paymentMethod=null,
         // paymentStatus=null, deliverySnapshot=DeliverySnapshot [name=null, userId=1,
         // phoneNumber=2222, label=Home, streetName=Tardisgasse, postalCode=20,
-        // city=Vienna, country=Austria], menuItemNameSnapshot=Phad Thai
-        // (Nationalgericht)]]
+        // city=Vienna, country=Austria], menuItemNameSnapshot=Pinsa Vegana]]
         System.out.println("OrderService_createOrder()_orderItems: " + orderItems);
 
         order.setOrderItems(orderItems);
@@ -158,28 +158,28 @@ public class OrderService {
         List<OrderDTO> orderDtos = orders.stream().map(order -> {
             DeliverySnapshot deliverySnapshot = order.getDeliverySnapshot();
             List<OrderItemDTO> orderItemDtos = order.getOrderItems().stream().map(orderItem -> new OrderItemDTO(
-                orderItem.getQuantity(),
-                orderItem.getPrice(),
-                orderItem.getMenuItemNameSnapshot())).toList();
+                    orderItem.getQuantity(),
+                    orderItem.getPrice(),
+                    orderItem.getMenuItemNameSnapshot())).toList();
 
             return new OrderDTO(
-                order.getId(),
-                order.getTotalAmount(),
-                order.getTotalCost(),
-                order.getStatus(),
-                order.getCreatedAt(),
-                order.getPaymentMethod(),
-                order.getPaymentStatus(),
-                new DeliverySnapshot(
-                    deliverySnapshot.getName(),
-                    deliverySnapshot.getUserId(),
-                    deliverySnapshot.getPhoneNumber(),
-                    deliverySnapshot.getLabel(),
-                    deliverySnapshot.getStreetName(),
-                    deliverySnapshot.getPostalCode(),
-                    deliverySnapshot.getCity(),
-                    deliverySnapshot.getCountry()),
-                orderItemDtos);
+                    order.getId(),
+                    order.getTotalAmount(),
+                    order.getTotalCost(),
+                    order.getStatus(),
+                    order.getCreatedAt(),
+                    order.getPaymentMethod(),
+                    order.getPaymentStatus(),
+                    new DeliverySnapshot(
+                            deliverySnapshot.getName(),
+                            deliverySnapshot.getUserId(),
+                            deliverySnapshot.getPhoneNumber(),
+                            deliverySnapshot.getLabel(),
+                            deliverySnapshot.getStreetName(),
+                            deliverySnapshot.getPostalCode(),
+                            deliverySnapshot.getCity(),
+                            deliverySnapshot.getCountry()),
+                    orderItemDtos);
         }).toList();
 
         System.out.println("OrderService_getOrders()_ordersCount: " + orderDtos.size());
