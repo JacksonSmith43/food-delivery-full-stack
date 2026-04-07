@@ -88,4 +88,9 @@ export class AccountService {
       this.password = result;
     });
   }
+
+  deleteAddress(addressId: number) {
+    console.log('AccountService_deleteAddress().');
+    return this.http.delete(`/api/user/account/address/deleteAddress/${addressId}`);
+  }
 }

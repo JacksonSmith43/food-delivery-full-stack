@@ -166,4 +166,15 @@ public class AccountService {
 
         addressRepository.save(existingAddress);
     }
+
+    public void deleteAddress(Long addressId) {
+        System.out.println("AccountService_deleteAddress().");
+
+        Address id = addressRepository.getReferenceById(addressId);
+        if (id == null) {
+            throw new AddressDoesNotAlreadyExistException("Address does not exist.");
+        }
+
+        addressRepository.delete(id);
+    }
 }

@@ -67,7 +67,18 @@ export class MyAddressesComponent {
     return `${a.streetName}, ${a.postalCode}, ${a.city}, ${a.country}`;
   }
 
-  onDeleteAddress() {
-    console.log('onDeleteAddress().');
+  onDeleteAddress(id: number): void {
+    console.log('MyAddressesComponent_onDeleteAddress().');
+    if (id === null) {
+      return;
+    }
+    this.accountService.deleteAddress(id).subscribe({
+      next: (a) => {
+        console.log('MyAddressesComponent_onDeleteAddress()_a', a);
+      },
+      error: (e) => {
+        console.error('MyAddressesComponent_onDeleteAddress_Error: ', e.message);
+      },
+    });
   }
 }

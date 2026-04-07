@@ -11,16 +11,18 @@
           {{ formatAddress(address) }}
 
           <div class="button-controls">
-            <button
-              mat-raised-button
-              class="delete-button"
-              type="button"
-              (click)="onDeleteAddress()"
-              title="Delete address."
-              aria-label="{{ address.label }} Address"
-            >
-              <mat-icon>delete</mat-icon>
-            </button>
+            @if (address.id != null) {
+              <button
+                mat-raised-button
+                class="delete-button"
+                type="button"
+                (click)="onDeleteAddress(address.id)"
+                title="Delete address."
+                aria-label="{{ address.label }} Address"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            }
 
             <button
               id="address-button"
