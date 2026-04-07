@@ -2,21 +2,39 @@
   <header>
     <h2>My Addresses</h2>
   </header>
-  <div
-    class="addresses"
-    (keydown.enter)="this.accountService.openDialog('address')"
-    (click)="this.accountService.openDialog('address')"
-    title="Click to change or add your address."
-  >
-    <button id="address-button" mat-raised-button aria-label="My Addresses.">
-      <div class="address-list">
-        @for (address of sortedAddresses(); track address) {
-          <div class="address-line" tabindex="0">
-            <p>{{ address.label }} Address</p>
-            {{ formatAddress(address) }}
+
+  <div class="addresses" aria-label="My Addresses.">
+    <div class="address-list">
+      @for (address of sortedAddresses(); track address) {
+        <div class="address-line" tabindex="0">
+          <p>{{ address.label }} Address</p>
+          {{ formatAddress(address) }}
+
+          <div class="button-controls">
+            <button
+              mat-raised-button
+              class="delete-button"
+              type="button"
+              (click)="onDeleteAddress()"
+              title="Delete address."
+              aria-label="{{ address.label }} Address"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+
+            <button
+              id="address-button"
+              mat-raised-button
+              type="button"
+              aria-label="Edit or add Address."
+              title="Edit or add address"
+              (click)="accountService.openDialog('address')"
+            >
+              <mat-icon>edit</mat-icon>
+            </button>
           </div>
-        }
-      </div>
-    </button>
+        </div>
+      }
+    </div>
   </div>
 </section>

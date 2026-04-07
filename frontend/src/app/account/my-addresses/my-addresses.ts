@@ -1,4 +1,6 @@
 import { Component, computed, inject } from '@angular/core';
+import { MatAnchor } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 
 import { AccountService } from '../service/account.service';
 import { LocalStorageService } from '../../shared/services/local-storage.service';
@@ -6,7 +8,7 @@ import { AuthService } from '../../auth/service/auth.service';
 
 @Component({
   selector: 'app-my-addresses',
-  imports: [],
+  imports: [MatAnchor, MatIcon],
   templateUrl: './my-addresses.html',
   styleUrl: './my-addresses.css',
 })
@@ -63,5 +65,9 @@ export class MyAddressesComponent {
     country: string;
   }): string {
     return `${a.streetName}, ${a.postalCode}, ${a.city}, ${a.country}`;
+  }
+
+  onDeleteAddress() {
+    console.log('onDeleteAddress().');
   }
 }
