@@ -1,5 +1,6 @@
 package com.fooddelivery.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -16,6 +17,10 @@ public class Address {
 
     @ManyToOne
     @JoinColumn(name = "user_id") // Foreign key. This references user.
+    // Prevents circular serialisation: Address → User → List<Address> → ...
+    // User is never used in the address-related API calls, so it can safely be
+    // ignored in JSON responses.
+    @JsonIgnore
     private User user;
 
     public Address() {

@@ -1,5 +1,7 @@
 package com.fooddelivery.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -77,9 +79,12 @@ public class AccountController {
     }
 
     @DeleteMapping("address/deleteAddress/{addressId}")
-    private void deleteAddress(@PathVariable Long addressId) {
+    private ResponseEntity<List<Address>> deleteAddress(@PathVariable Long addressId) {
         System.out.println("AccountController_deleteAddress().");
 
-        accountService.deleteAddress(addressId);
+        List<Address> allAddresses = accountService.deleteAddress(addressId);
+        System.out.println("AccountController_deleteAddress()_allAddresses" + allAddresses);
+
+        return ResponseEntity.ok().body(allAddresses);
     }
 }

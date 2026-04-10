@@ -1,0 +1,17 @@
+@if (isOpen()) {
+  <div class="popup" autofocus>
+    <!-- cdkTrapFocus: Tab key stays within the popup. -->
+    <!-- cdkTrapFocusAutoCapture: The focus is automatically captured when the popup opens. -->
+    <div class="popup-content" cdkTrapFocus cdkTrapFocusAutoCapture>
+      <h2>{{ title() }}</h2>
+      <p>{{ message() }}</p>
+      <!-- Cancel only closes the popup. -->
+      <!-- cdkFocusInitial: Focus is automatically set to this button when the popup opens. -->
+      <button class="cancel-button" mat-raised-button type="button" (click)="close()" aria-label="Cancel button." cdkFocusInitial>
+        No
+      </button>
+      <!-- Confirm emits the positive event to the parent. -->
+      <button class="confirm-button" mat-raised-button type="button" (click)="onConfirm()" aria-label="Confirm button.">Yes</button>
+    </div>
+  </div>
+}

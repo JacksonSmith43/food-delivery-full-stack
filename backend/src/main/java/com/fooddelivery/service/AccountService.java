@@ -167,7 +167,7 @@ public class AccountService {
         addressRepository.save(existingAddress);
     }
 
-    public void deleteAddress(Long addressId) {
+    public List<Address> deleteAddress(Long addressId) {
         System.out.println("AccountService_deleteAddress().");
 
         Address id = addressRepository.getReferenceById(addressId);
@@ -176,5 +176,6 @@ public class AccountService {
         }
 
         addressRepository.delete(id);
+        return addressRepository.findAll();
     }
 }

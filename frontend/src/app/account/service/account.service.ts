@@ -1,11 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { Observable } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
 
 import { UserProfileType } from '../profile/modal/user-profile-type';
 import { AddressType } from '../../shared/model/address-type';
 import { ProfileModalComponent } from '../profile/component/profile-modal/profile-modal.component';
-import { MatDialog } from '@angular/material/dialog';
 
 @Injectable({
   providedIn: 'root',
@@ -89,8 +89,8 @@ export class AccountService {
     });
   }
 
-  deleteAddress(addressId: number) {
+  deleteAddress(addressId: number): Observable<AddressType[]> {
     console.log('AccountService_deleteAddress().');
-    return this.http.delete(`/api/user/account/address/deleteAddress/${addressId}`);
+    return this.http.delete<AddressType[]>(`/api/user/account/address/deleteAddress/${addressId}`);
   }
 }

@@ -3,6 +3,11 @@
     <h2>My Addresses</h2>
   </header>
 
+  <!-- Parent listens to child events:
+      (confirmed) => run delete logic
+      (closed)    => optional cleanup/logging -->
+  <app-popup (confirmed)="onPopupConfirmed()" (closed)="onPopupClosed()"></app-popup>
+
   <div class="addresses" aria-label="My Addresses.">
     <div class="address-list">
       @for (address of sortedAddresses(); track address) {
@@ -36,6 +41,19 @@
             </button>
           </div>
         </div>
+      }
+
+      @if (sortedAddresses().length === 0) {
+        <button
+          id="address-button"
+          mat-raised-button
+          type="button"
+          aria-label="Add Address."
+          title="Add address"
+          (click)="accountService.openDialog('address')"
+        >
+          <mat-icon>add</mat-icon>
+        </button>
       }
     </div>
   </div>
