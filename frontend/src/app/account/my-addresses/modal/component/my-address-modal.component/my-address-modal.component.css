@@ -1,17 +1,27 @@
-.profile-modal-container {
+.address-modal-container {
   margin: 2rem 2rem;
   padding: 2rem 2rem;
   outline: 0.25rem solid gray;
 }
 
-.email-view,
-.password-view,
-.phone-number-view {
+.address-view {
   display: grid;
 }
 
-#old-password {
+#country {
   margin-bottom: 1rem;
+}
+
+#address-label {
+  margin-top: 0.25rem;
+  margin-bottom: 1rem;
+  padding: 0.25rem 0.25rem;
+  border-radius: 0.55rem;
+  outline: 0.025rem solid gray;
+}
+
+.address-view label {
+  margin-top: 1rem;
 }
 
 .error-message,

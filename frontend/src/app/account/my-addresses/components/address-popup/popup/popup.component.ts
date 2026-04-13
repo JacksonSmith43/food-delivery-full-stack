@@ -4,9 +4,9 @@ import { MatAnchor } from '@angular/material/button';
 
 @Component({
   selector: 'app-popup',
-  imports: [MatAnchor, A11yModule],
-  templateUrl: './popup.html',
-  styleUrl: './popup.css',
+  imports: [A11yModule, MatAnchor],
+  templateUrl: './popup.component.html',
+  styleUrl: './popup.component.css',
 })
 export class PopupComponent {
   isOpen = signal<boolean>(false);

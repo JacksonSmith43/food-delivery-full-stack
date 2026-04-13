@@ -9,7 +9,7 @@ import { LoginComponent } from './auth/login/login.component/login.component';
 import { AccountComponent } from './account/component/account.component';
 import { ProfileComponent } from './account/profile/component/profile/profile.component';
 import { OrdersComponent } from './account/orders/component/orders.component';
-import { MyAddressesComponent } from './account/my-addresses/my-addresses';
+import { MyAddressesComponent } from './account/my-addresses/my-addresses.component';
 
 export const routes: Routes = [
   { path: 'register', component: RegisterComponent },

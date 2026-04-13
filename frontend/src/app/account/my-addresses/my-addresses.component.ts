@@ -5,18 +5,20 @@ import { MatIcon } from '@angular/material/icon';
 import { AccountService } from '../service/account.service';
 import { LocalStorageService } from '../../shared/services/local-storage.service';
 import { AuthService } from '../../auth/service/auth.service';
-import { PopupComponent } from './components/address-popup/popup/popup';
+import { PopupComponent } from './components/address-popup/popup/popup.component';
+import { MyAddressService } from './service/my-address.service';
 
 @Component({
   selector: 'app-my-addresses',
   imports: [MatAnchor, MatIcon, PopupComponent],
-  templateUrl: './my-addresses.html',
-  styleUrl: './my-addresses.css',
+  templateUrl: './my-addresses.component.html',
+  styleUrl: './my-addresses.component.css',
 })
 export class MyAddressesComponent {
   accountService = inject(AccountService);
   locaStorageService = inject(LocalStorageService);
   authService = inject(AuthService);
+  myAddressService = inject(MyAddressService);
 
   currentUserProfile = this.accountService.currentUserProfile;
 
@@ -99,10 +101,10 @@ export class MyAddressesComponent {
     }
 
     const addressId = this.pendingDeleteId;
-    this.accountService.deleteAddress(addressId).subscribe({
+    this.myAddressService.deleteAddress(addressId).subscribe({
       next: (updatedAddresses) => {
         console.log('MyAddressesComponent_onPopupConfirmed()_updatedAddresses: ', updatedAddresses);
-      
+
         const profile = this.accountService.currentUserProfile();
         if (profile) {
           this.accountService.currentUserProfile.set({ ...profile, address: updatedAddresses });

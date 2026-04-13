@@ -17,8 +17,22 @@
   cursor: pointer;
 }
 
-#address-button {
+#add-address-button {
   background-color: unset;
+  padding: 4rem 4rem;
+  margin-top: 1rem;
+  margin: auto auto;
+}
+
+button {
+  box-shadow: none;
+}
+
+.add-button {
+  font-size: 3.12rem;
+  height: 3.12rem;
+  width: 3.12rem;
+  margin-top: 2rem;
 }
 
 .address-line {
@@ -44,6 +58,7 @@
 }
 
 .address-line:focus,
-button:focus {
+button:focus,
+.add-button:focus {
   outline: 0.25rem solid red;
 }

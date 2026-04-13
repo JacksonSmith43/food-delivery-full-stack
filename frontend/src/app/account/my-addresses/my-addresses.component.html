@@ -35,7 +35,7 @@
               type="button"
               aria-label="Edit or add Address."
               title="Edit or add address"
-              (click)="accountService.openDialog('address')"
+              (click)="myAddressService.openDialog('address')"
             >
               <mat-icon>edit</mat-icon>
             </button>
@@ -43,18 +43,16 @@
         </div>
       }
 
-      @if (sortedAddresses().length === 0) {
-        <button
-          id="address-button"
-          mat-raised-button
-          type="button"
-          aria-label="Add Address."
-          title="Add address"
-          (click)="accountService.openDialog('address')"
-        >
-          <mat-icon>add</mat-icon>
-        </button>
-      }
+      <button
+        id="add-address-button"
+        mat-raised-button
+        type="button"
+        aria-label="Add Address."
+        title="Add address."
+        (click)="myAddressService.openDialog('address')"
+      >
+        <mat-icon class="add-button" tabIndex="0">add</mat-icon>
+      </button>
     </div>
   </div>
 </section>
