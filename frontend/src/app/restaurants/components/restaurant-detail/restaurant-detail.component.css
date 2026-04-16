@@ -45,14 +45,37 @@
   margin-bottom: 3rem;
 }
 
-.mat-icon {
+.favourite-button {
+  display: flex;
+  flex-direction: column;
+  margin-left: 1rem;
+  width: 0rem;
+  width: auto;
+  height: auto;
+
+  color: red;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.quantity-control {
   display: flex;
 
   margin-top: 0.5rem;
   margin: auto auto;
-
-  width: 8rem;
+  padding: 1rem 1rem;
   gap: 0.5rem;
+}
+
+.quantity-control button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.item-quantity {
+  margin-left: 1rem;
 }
 
 img {
@@ -67,4 +90,14 @@ p {
 
 .menu-item:hover {
   background-color: #681b33;
+}
+
+.favourite-button:hover {
+  color: rgb(155, 22, 22);
+}
+
+.remove-button:focus,
+.add-button:focus,
+.favourite-button:focus {
+  outline: 0.25rem solid red;
 }

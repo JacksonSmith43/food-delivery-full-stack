@@ -21,12 +21,10 @@ export class ProfileComponent {
   selectedFormField = this.accountService.selectedFormField;
   currentUserProfile = this.accountService.currentUserProfile;
 
- 
   passwordLength = computed(() => {
     let authUserPassword = this.authService.authUser()?.password;
     return authUserPassword ? authUserPassword.length : 0;
   });
-
 
   ngOnInit(): void {
     console.log('AccountComponent_ngOnInit().');
@@ -42,7 +40,7 @@ export class ProfileComponent {
           this.accountService.currentUserProfile.set(JSON.parse(user));
         },
         error: (error) => {
-          console.error('ProfileComponent_ngOnInit()_Error loading profile: ', error.error.message);
+          console.error('AccountComponent_ngOnInit()_Error loading profile: ', error.error.message);
         },
       });
     }

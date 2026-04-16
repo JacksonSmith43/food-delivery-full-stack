@@ -5,6 +5,8 @@ import { RestaurantsService } from '../../../shared/services/restaurants.service
 import { LocalStorageService } from '../../../shared/services/local-storage.service';
 import { CartService } from '../../../shared/services/cart.service';
 import { AuthService } from '../../../auth/service/auth.service';
+import { FavouritesService } from '../../../shared/services/favourites.service';
+import { AccountService } from '../../../account/service/account.service';
 
 @Component({
   selector: 'app-restaurant-detail',
@@ -18,11 +20,14 @@ export class RestaurantDetailComponent implements OnInit {
   localStorageService = inject(LocalStorageService);
   cartService = inject(CartService);
   authService = inject(AuthService);
+  favouritesService = inject(FavouritesService);
+  accountService = inject(AccountService);
 
   menuItems = this.restaurantService.menuItems;
   restaurant = this.restaurantService.restaurants;
   category = this.restaurantService.categories;
   cartSummary = this.cartService.cartSummary;
+  isFavourite = this.favouritesService.isFavourite;
 
   ngOnInit(): void {
     console.log('RestaurantDetailComponent_ngOnInit().');
@@ -32,6 +37,16 @@ export class RestaurantDetailComponent implements OnInit {
     if (userCredentials) {
       this.authService.authUser.set(userCredentials);
     }
+
+    this.accountService.getUserProfile(userCredentials.email).subscribe({
+      next: (user) => {
+        console.log('RestaurantDetailComponent_ngOnInit()_user: ', user);
+        this.accountService.currentUserProfile.set(JSON.parse(user));
+      },
+      error: (error) => {
+        console.error('RestaurantDetailComponent_ngOnInit()_Error loading profile: ', error.error.message);
+      },
+    });
 
     let menuItems = this.localStorageService.getMenuItems('menuItemsofChosenRestaurant');
     let restaurant = this.localStorageService.getCurrentRestaurant('chosenRestaurant');
@@ -74,6 +89,7 @@ export class RestaurantDetailComponent implements OnInit {
       next: (cart) => {
         console.log('onAddToCart()_Item added to cart:', cart);
         this.cartService.refreshCart();
+        this.isFavourite.set(false);
       },
       error: (error) => console.error('onAddToCart()_Error adding item to cart:', error),
     });
@@ -87,6 +103,7 @@ export class RestaurantDetailComponent implements OnInit {
       next: (cart) => {
         console.log('onRemoveFromCart()_Item removed from cart:', cart);
         this.cartService.refreshCart();
+        this.isFavourite.set(false);
       },
       error: (error) => console.error('onRemoveFromCart()_Error removing item from cart:', error),
     });
@@ -95,5 +112,23 @@ export class RestaurantDetailComponent implements OnInit {
   getItemQuantity(menuItemId: number): number {
     console.log('getItemQuantity().');
     return this.cartService.getItemQuantity(menuItemId);
+  }
+
+  onAddToFavourite(menuId: number) {
+    console.log('onAddToFavourite().');
+
+    this.isFavourite.set(true);
+    let currentId: number = this.accountService.currentUserProfile()!.id;
+
+    this.favouritesService.menuItemIds.update((ids) => [...ids, menuId]);
+
+    this.favouritesService.addToFavourite(currentId, [menuId]).subscribe({
+      next: (favourites) => {
+        console.log('onAddToFavourite()_favourites: ', favourites);
+      },
+      error: (e) => {
+        console.error('onAddToFavourite()_Error: ', e.message);
+      },
+    });
   }
 }
