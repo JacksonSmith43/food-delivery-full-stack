@@ -1,8 +1,7 @@
 package com.fooddelivery.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,10 +21,20 @@ public class FavouritesController {
     private FavouritesService favouritesService;
 
     @PostMapping("favourites/addToFavourites/{userId}")
-    public void addFavourites(@PathVariable Long userId, @RequestBody List<Long> menuItemsIds) {
+    public ResponseEntity<Long> addFavourites(@PathVariable Long userId, @RequestBody Long menuItemId) {
         System.out.println("FavouritesController_addFavourites().");
-        System.out.println("FavouritesController_addFavourites()_menuItemsIds: " + menuItemsIds);
+        System.out.println("FavouritesController_addFavourites()_menuItemId: " + menuItemId);
 
-        favouritesService.addFavourites(userId, menuItemsIds);
+        Long favouriteItems = favouritesService.addFavourites(userId, menuItemId);
+        return ResponseEntity.ok(favouriteItems);
+    }
+
+    @PostMapping("favourites/removeFromFavourites/{userId}")
+    public ResponseEntity<Long> removeFavourites(@PathVariable Long userId, @RequestBody Long menuItemsIds) {
+        System.out.println("FavouritesController_removeFavourites().");
+        System.out.println("FavouritesController_removeFavourites()_menuItemsIds: " + menuItemsIds);
+
+        Long favouriteItems = favouritesService.removeFavourites(userId, menuItemsIds);
+        return ResponseEntity.ok(favouriteItems);
     }
 }

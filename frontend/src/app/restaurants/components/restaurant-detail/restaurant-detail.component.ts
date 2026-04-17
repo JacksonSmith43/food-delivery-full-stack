@@ -122,12 +122,35 @@ export class RestaurantDetailComponent implements OnInit {
 
     this.favouritesService.menuItemIds.update((ids) => [...ids, menuId]);
 
-    this.favouritesService.addToFavourite(currentId, [menuId]).subscribe({
+    this.favouritesService.addToFavourite(currentId, menuId).subscribe({
       next: (favourites) => {
         console.log('onAddToFavourite()_favourites: ', favourites);
+        console.log('onAddToFavourite()_this.favouritesService.menuItemIds(): ', this.favouritesService.menuItemIds());
       },
       error: (e) => {
         console.error('onAddToFavourite()_Error: ', e.message);
+      },
+    });
+  }
+
+  onRemoveFromFavourites(menuId: number) {
+    console.log('onRemoveFromFavourites().');
+
+    this.isFavourite.set(false);
+    let currentId: number = this.accountService.currentUserProfile()!.id;
+
+    this.favouritesService.menuItemIds.update((ids) => [...ids, menuId]);
+
+    this.favouritesService.removeFromFavourite(currentId, menuId).subscribe({
+      next: (favourites) => {
+        console.log('onRemoveFromFavourites()_favourites: ', favourites);
+        console.log(
+          'onRemoveFromFavourites()_this.favouritesService.menuItemIds(): ',
+          this.favouritesService.menuItemIds(),
+        );
+      },
+      error: (e) => {
+        console.error('onRemoveFromFavourites()_Error: ', e.message);
       },
     });
   }

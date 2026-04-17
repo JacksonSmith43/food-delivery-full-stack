@@ -21,7 +21,7 @@
             <img [src]="'/images/menus/' + m.foodImage" />
           </div>
           <div class="menu-item-favourite">
-            <button class="favourite-button" mat-icon-button (click)="onAddToFavourite(m.id)" tabIndex="0">
+            <button class="favourite-button" mat-icon-button (click)="onRemoveFromFavourites(m.id)" tabIndex="0">
               <mat-icon>favorite</mat-icon>
             </button>
           </div>

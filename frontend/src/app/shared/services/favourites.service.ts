@@ -8,12 +8,13 @@ export class FavouritesService {
   isFavourite = signal<boolean>(false);
   menuItemIds = signal<number[]>([]);
 
-  addToFavourite(userId: number, menuItemIds: number[]) {
+  addToFavourite(userId: number, menuItemIds: number) {
     console.log('addToFavourite().');
     return this.http.post(`/api/favourites/addToFavourites/${userId}`, menuItemIds);
   }
 
-  removeFromFavourite() {
+  removeFromFavourite(userId: number, menuItemIds: number) {
     console.log('removeFromFavourite().');
+    return this.http.post(`/api/favourites/removeFromFavourites/${userId}`, menuItemIds);
   }
 }
