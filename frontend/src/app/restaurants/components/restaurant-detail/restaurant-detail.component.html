@@ -41,6 +41,9 @@
             <mat-icon mat-icon-button fontIcon="add"></mat-icon>
           </button>
         </div>
+        @if (favouritesService.menuItemIdErrorMessages()[m.id]) {
+          <p class="error-message">{{ favouritesService.menuItemIdErrorMessages()[m.id] }}</p>
+        }
       </div>
     }
   </div>

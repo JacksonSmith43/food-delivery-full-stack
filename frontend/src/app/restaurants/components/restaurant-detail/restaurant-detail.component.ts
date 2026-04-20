@@ -128,7 +128,11 @@ export class RestaurantDetailComponent implements OnInit {
         console.log('onAddToFavourite()_this.favouritesService.menuItemIds(): ', this.favouritesService.menuItemIds());
       },
       error: (e) => {
-        console.error('onAddToFavourite()_Error: ', e.message);
+        console.error('onAddToFavourite()_Error: ', e);
+        this.favouritesService.menuItemIdErrorMessages.update((errors) => ({
+          ...errors, // Keeps the current entries.
+          [menuId]: e.error.code, // Adds new values.
+        }));
       },
     });
   }
@@ -150,7 +154,11 @@ export class RestaurantDetailComponent implements OnInit {
         );
       },
       error: (e) => {
-        console.error('onRemoveFromFavourites()_Error: ', e.message);
+        console.error('onRemoveFromFavourites()_Error: ', e);
+        this.favouritesService.menuItemIdErrorMessages.update((errors) => ({
+          ...errors, 
+          [menuId]: e.error.code, 
+        }));
       },
     });
   }

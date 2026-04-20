@@ -7,6 +7,8 @@ export class FavouritesService {
 
   isFavourite = signal<boolean>(false);
   menuItemIds = signal<number[]>([]);
+  errorMessage = signal<string>('');
+  menuItemIdErrorMessages = signal<Record<number, string>>({});
 
   addToFavourite(userId: number, menuItemIds: number) {
     console.log('addToFavourite().');

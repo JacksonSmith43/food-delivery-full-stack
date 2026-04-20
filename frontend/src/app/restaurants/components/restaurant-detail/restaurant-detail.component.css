@@ -78,6 +78,21 @@
   margin-left: 1rem;
 }
 
+.error-message,
+.success-message {
+  font-weight: 500;
+  font-size: medium;
+  text-align: center;
+}
+
+.error-message {
+  color: red;
+}
+
+.success-message {
+  color: green;
+}
+
 img {
   height: 8rem;
   border-radius: 1rem;

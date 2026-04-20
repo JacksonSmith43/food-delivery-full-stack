@@ -12,8 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class GlobalExceptionHandler {
         @ExceptionHandler(UserNotFoundException.class)
         // <String, Object>: code (the key) is a string and USER_NOT_FOUND is the value
-        // and an
-        // object because the message can be of any type.
+        // and an object because the message can be of any type.
         public ResponseEntity<Map<String, Object>> handleUserNotFound(UsernameNotFoundException exception) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of(
                                 "code", "USER_NOT_FOUND",
@@ -132,4 +131,27 @@ public class GlobalExceptionHandler {
                                 "message", exception.getMessage()));
         }
 
+        @ExceptionHandler(MenuItemDoesNotExistException.class)
+        public ResponseEntity<Map<String, Object>> handleMenuItemDoesNotExist(
+                        MenuItemDoesNotExistException exception) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of(
+                                "code", "MENU_ITEM_DOES_NOT_EXIST",
+                                "message", exception.getMessage()));
+        }
+
+        @ExceptionHandler(FavouriteAlreadyExistsException.class)
+        public ResponseEntity<Map<String, Object>> handleFavouriteAlreadyExists(
+                        FavouriteAlreadyExistsException exception) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).body(Map.of(
+                                "code", "FAVOURITE_ALREADY_EXISTS",
+                                "message", exception.getMessage()));
+        }
+
+        @ExceptionHandler(FavouriteDoesNotExistException.class)
+        public ResponseEntity<Map<String, Object>> handleFavouriteDoesNotExist(
+                        FavouriteDoesNotExistException exception) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of(
+                                "code", "FAVOURITE_DOES_NOT_EXIST",
+                                "message", exception.getMessage()));
+        }
 }
