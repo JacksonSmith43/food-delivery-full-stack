@@ -19,4 +19,10 @@ export class FavouritesService {
     console.log('removeFromFavourite().');
     return this.http.post(`/api/favourites/removeFromFavourites/${userId}`, menuItemIds);
   }
+
+  getFavouriteMenuItemIds(userId: number) {
+    console.log('FavouritesService_getFavouriteMenuItemIds().');
+
+    return this.http.get(`/api/favourites/${userId}`);
+  }
 }

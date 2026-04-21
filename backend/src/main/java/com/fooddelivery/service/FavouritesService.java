@@ -1,5 +1,7 @@
 package com.fooddelivery.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -71,5 +73,21 @@ public class FavouritesService {
 
         favouritesRepository.deleteByUserIdAndMenuItemsId(userId, menuItem.getId());
         return menuItemIds;
+    }
+
+    public List<Long> getFavouriteMenuItemIds(Long userId) {
+        System.out.println("FavouritesService_getFavouriteMenuItemIds().");
+
+        User user = userRepository.getReferenceById(userId);
+        if (user == null) {
+            throw new UserNotFoundException("User does not exist.");
+        }
+
+        return favouritesRepository.findAll().stream()
+                .filter(fav -> fav.getUser().getId().equals(userId))
+                .map(fav -> fav.getMenuItems().getId())
+                .peek(menuItemId -> System.out
+                        .println("FavouritesService_getFavouriteMenuItemIds()_menuItemId: " + menuItemId))
+                .toList();
     }
 }

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, computed, inject, OnInit } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 
 import { RestaurantsService } from '../../../shared/services/restaurants.service';
@@ -27,7 +27,9 @@ export class RestaurantDetailComponent implements OnInit {
   restaurant = this.restaurantService.restaurants;
   category = this.restaurantService.categories;
   cartSummary = this.cartService.cartSummary;
-  isFavourite = this.favouritesService.isFavourite;
+  menuItemIds = this.favouritesService.menuItemIds;
+
+  menuItemsIdsComputed = computed(() => this.menuItemIds());
 
   ngOnInit(): void {
     console.log('RestaurantDetailComponent_ngOnInit().');
@@ -42,6 +44,7 @@ export class RestaurantDetailComponent implements OnInit {
       next: (user) => {
         console.log('RestaurantDetailComponent_ngOnInit()_user: ', user);
         this.accountService.currentUserProfile.set(JSON.parse(user));
+        this.getFavouriteMenuItemIds();
       },
       error: (error) => {
         console.error('RestaurantDetailComponent_ngOnInit()_Error loading profile: ', error.error.message);
@@ -89,7 +92,6 @@ export class RestaurantDetailComponent implements OnInit {
       next: (cart) => {
         console.log('onAddToCart()_Item added to cart:', cart);
         this.cartService.refreshCart();
-        this.isFavourite.set(false);
       },
       error: (error) => console.error('onAddToCart()_Error adding item to cart:', error),
     });
@@ -103,7 +105,6 @@ export class RestaurantDetailComponent implements OnInit {
       next: (cart) => {
         console.log('onRemoveFromCart()_Item removed from cart:', cart);
         this.cartService.refreshCart();
-        this.isFavourite.set(false);
       },
       error: (error) => console.error('onRemoveFromCart()_Error removing item from cart:', error),
     });
@@ -117,15 +118,14 @@ export class RestaurantDetailComponent implements OnInit {
   onAddToFavourite(menuId: number) {
     console.log('onAddToFavourite().');
 
-    this.isFavourite.set(true);
     let currentId: number = this.accountService.currentUserProfile()!.id;
 
-    this.favouritesService.menuItemIds.update((ids) => [...ids, menuId]);
+    this.menuItemIds.update((ids) => [...ids, menuId]);
 
     this.favouritesService.addToFavourite(currentId, menuId).subscribe({
       next: (favourites) => {
         console.log('onAddToFavourite()_favourites: ', favourites);
-        console.log('onAddToFavourite()_this.favouritesService.menuItemIds(): ', this.favouritesService.menuItemIds());
+        console.log('onAddToFavourite()_this.menuItemIds(): ', this.menuItemIds());
       },
       error: (e) => {
         console.error('onAddToFavourite()_Error: ', e);
@@ -140,26 +140,44 @@ export class RestaurantDetailComponent implements OnInit {
   onRemoveFromFavourites(menuId: number) {
     console.log('onRemoveFromFavourites().');
 
-    this.isFavourite.set(false);
     let currentId: number = this.accountService.currentUserProfile()!.id;
 
-    this.favouritesService.menuItemIds.update((ids) => [...ids, menuId]);
+    this.menuItemIds.update((ids) => [...ids, menuId]);
 
     this.favouritesService.removeFromFavourite(currentId, menuId).subscribe({
       next: (favourites) => {
         console.log('onRemoveFromFavourites()_favourites: ', favourites);
-        console.log(
-          'onRemoveFromFavourites()_this.favouritesService.menuItemIds(): ',
-          this.favouritesService.menuItemIds(),
-        );
+        this.menuItemIds.update((fav) => fav.filter((rem) => rem !== menuId));
+        console.log('onRemoveFromFavourites()_this.menuItemIds(): ', this.menuItemIds());
       },
       error: (e) => {
         console.error('onRemoveFromFavourites()_Error: ', e);
         this.favouritesService.menuItemIdErrorMessages.update((errors) => ({
-          ...errors, 
-          [menuId]: e.error.code, 
+          ...errors,
+          [menuId]: e.error.code,
         }));
       },
     });
+  }
+
+  getFavouriteMenuItemIds(): number[] {
+    console.log('RestaurantDetailComponent_getFavouriteMenuItemIds().');
+
+    let userId = this.accountService.currentUserProfile()?.id;
+    console.log('RestaurantDetailComponent_getFavouriteMenuItemIds()_userId: ', userId);
+
+    this.favouritesService.getFavouriteMenuItemIds(userId!).subscribe({
+      next: (favourites) => {
+        console.log('RestaurantDetailComponent_getFavouriteMenuItemIds()_favourites:', favourites);
+        this.menuItemIds.update(() => favourites as number[]);
+
+        return favourites as number[];
+      },
+      error: (e) => {
+        console.error('RestaurantDetailComponent_getFavouriteMenuItemIds()_Error: ', e.error);
+        return [];
+      },
+    });
+    return [];
   }
 }

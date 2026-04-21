@@ -79,10 +79,10 @@ export class CartService {
   }
 
   getItemQuantity(menuItemId: number): number {
-    console.log('CartService_getItemQuantity().');
+    // console.log('CartService_getItemQuantity().');
 
     const currentCart = this.cart();
-    console.log('CartService_getItemQuantity()_currentCart: ', currentCart);
+    // console.log('CartService_getItemQuantity()_currentCart: ', currentCart);
 
     if (!currentCart) {
       return 0;

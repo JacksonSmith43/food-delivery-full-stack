@@ -21,9 +21,27 @@
             <img [src]="'/images/menus/' + m.foodImage" />
           </div>
           <div class="menu-item-favourite">
-            <button class="favourite-button" mat-icon-button (click)="onRemoveFromFavourites(m.id)" tabIndex="0">
-              <mat-icon>favorite</mat-icon>
-            </button>
+            @if (menuItemsIdsComputed().includes(m.id)) {
+              <button
+                class="favourite-button"
+                mat-icon-button
+                (click)="onRemoveFromFavourites(m.id)"
+                title="Click to remove from favourite."
+                tabIndex="0"
+              >
+                <mat-icon>favorite</mat-icon>
+              </button>
+            } @else {
+              <button
+                class="favourite-button"
+                mat-icon-button
+                (click)="onAddToFavourite(m.id)"
+                title="Click to add to favourite."
+                tabIndex="0"
+              >
+                <mat-icon>favorite_border</mat-icon>
+              </button>
+            }
           </div>
         </div>
         <div class="quantity-control">
