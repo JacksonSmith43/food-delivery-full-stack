@@ -37,6 +37,7 @@ public class OrderStatusSimulationService {
     // application is up. But it shares the same database and the same application
     // context, so it can read and update the same orders as the rest of the
     // application.
+    // TODO: For the delivery schedule to work, this needs to be uncommented.
     // @Scheduled(fixedDelay = 2000, timeUnit = TimeUnit.MILLISECONDS)
     public void advanceOpenOrderStatuses() {
         System.out.println("OrderStatusSimulationService_advanceOpenOrderStatuses().");

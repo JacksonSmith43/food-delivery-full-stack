@@ -10,6 +10,7 @@ import { AccountComponent } from './account/component/account.component';
 import { ProfileComponent } from './account/profile/component/profile/profile.component';
 import { OrdersComponent } from './account/orders/component/orders.component';
 import { MyAddressesComponent } from './account/my-addresses/my-addresses.component';
+import { FavouritesComponent } from './account/favourites/favourites.component';
 
 export const routes: Routes = [
   { path: 'register', component: RegisterComponent },
@@ -25,4 +26,5 @@ export const routes: Routes = [
   { path: 'cart', component: CartComponent },
   { path: 'orders', component: OrdersComponent },
   { path: 'myAddresses', component: MyAddressesComponent },
+  { path: 'favourites', component: FavouritesComponent },
 ];
