@@ -1,1 +1,8 @@
-<p>favourites.component works!</p>
+<div class="favourites-container">
+  @if (authService.authUser() !== undefined) {
+    
+
+  } @else {
+    <h2 class="login-warning">Login to see your favourites.</h2>
+  }
+</div>

@@ -48,6 +48,10 @@ button {
   cursor: pointer;
 }
 
+.login-warning {
+  margin-top: 4rem;
+}
+
 .addresses button {
   font-size: large;
   font-weight: 500;

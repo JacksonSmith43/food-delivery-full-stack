@@ -2,57 +2,60 @@
   <header>
     <h2>My Addresses</h2>
   </header>
-
-  <!-- Parent listens to child events:
+  @if (authService.authUser() !== undefined) {
+    <!-- Parent listens to child events:
       (confirmed) => run delete logic
       (closed)    => optional cleanup/logging -->
-  <app-popup (confirmed)="onPopupConfirmed()" (closed)="onPopupClosed()"></app-popup>
+    <app-popup (confirmed)="onPopupConfirmed()" (closed)="onPopupClosed()"></app-popup>
 
-  <div class="addresses" aria-label="My Addresses.">
-    <div class="address-list">
-      @for (address of sortedAddresses(); track address) {
-        <div class="address-line" tabindex="0">
-          <p>{{ address.label }} Address</p>
-          {{ formatAddress(address) }}
+    <div class="addresses" aria-label="My Addresses.">
+      <div class="address-list">
+        @for (address of sortedAddresses(); track address) {
+          <div class="address-line" tabindex="0">
+            <p>{{ address.label }} Address</p>
+            {{ formatAddress(address) }}
 
-          <div class="button-controls">
-            @if (address.id != null) {
+            <div class="button-controls">
+              @if (address.id != null) {
+                <button
+                  mat-raised-button
+                  class="delete-button"
+                  type="button"
+                  (click)="onDeleteAddress(address.id)"
+                  title="Delete address."
+                  aria-label="{{ address.label }} Address"
+                >
+                  <mat-icon>delete</mat-icon>
+                </button>
+              }
+
               <button
+                id="address-button"
                 mat-raised-button
-                class="delete-button"
                 type="button"
-                (click)="onDeleteAddress(address.id)"
-                title="Delete address."
-                aria-label="{{ address.label }} Address"
+                aria-label="Edit or add Address."
+                title="Edit or add address"
+                (click)="myAddressService.openDialog('address')"
               >
-                <mat-icon>delete</mat-icon>
+                <mat-icon>edit</mat-icon>
               </button>
-            }
-
-            <button
-              id="address-button"
-              mat-raised-button
-              type="button"
-              aria-label="Edit or add Address."
-              title="Edit or add address"
-              (click)="myAddressService.openDialog('address')"
-            >
-              <mat-icon>edit</mat-icon>
-            </button>
+            </div>
           </div>
-        </div>
-      }
+        }
 
-      <button
-        id="add-address-button"
-        mat-raised-button
-        type="button"
-        aria-label="Add Address."
-        title="Add address."
-        (click)="myAddressService.openDialog('address')"
-      >
-        <mat-icon class="add-button" tabIndex="0">add</mat-icon>
-      </button>
+        <button
+          id="add-address-button"
+          mat-raised-button
+          type="button"
+          aria-label="Add Address."
+          title="Add address."
+          (click)="myAddressService.openDialog('address')"
+        >
+          <mat-icon class="add-button" tabIndex="0">add</mat-icon>
+        </button>
+      </div>
     </div>
-  </div>
+  } @else {
+    <h2 class="login-warning">Login to see your addresses.</h2>
+  }
 </section>
