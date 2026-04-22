@@ -1,12 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 
+import { FavouriteMenuItemsType } from '../model/favourite-menu-items-type';
+
 @Injectable({ providedIn: 'root' })
 export class FavouritesService {
   http = inject(HttpClient);
 
-  isFavourite = signal<boolean>(false);
   menuItemIds = signal<number[]>([]);
+  favouriteMenuItems = signal<FavouriteMenuItemsType>({} as FavouriteMenuItemsType);
   errorMessage = signal<string>('');
   menuItemIdErrorMessages = signal<Record<number, string>>({});
 
@@ -24,5 +26,11 @@ export class FavouritesService {
     console.log('FavouritesService_getFavouriteMenuItemIds().');
 
     return this.http.get(`/api/favourites/${userId}`);
+  }
+
+  getFavouriteMenuItems(userId: number) {
+    console.log('FavouritesService_getFavouriteMenuItems().');
+
+    return this.http.get(`/api/allFavourites/${userId}`);
   }
 }
