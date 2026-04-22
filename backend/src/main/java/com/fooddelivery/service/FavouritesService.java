@@ -1,10 +1,12 @@
 package com.fooddelivery.service;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fooddelivery.dto.FavouriteResponseDTO;
 import com.fooddelivery.entity.Favourites;
 import com.fooddelivery.entity.MenuItem;
 import com.fooddelivery.entity.User;
@@ -89,5 +91,23 @@ public class FavouritesService {
                 .peek(menuItemId -> System.out
                         .println("FavouritesService_getFavouriteMenuItemIds()_menuItemId: " + menuItemId))
                 .toList();
+    }
+
+    public Stream<FavouriteResponseDTO> getFavouriteMenuItems(Long userId) {
+        System.out.println("FavouritesService_getFavouriteMenuItems().");
+
+        User user = userRepository.getReferenceById(userId);
+        if (user == null) {
+            throw new UserNotFoundException("User does not exist.");
+        }
+
+        return favouritesRepository.findAll().stream().filter(fav -> fav.getUser().getId().equals(userId))
+                .map(fav -> new FavouriteResponseDTO(fav.getMenuItems().getId(), fav.getMenuItems().getFoodName(),
+                        fav.getMenuItems().getFoodImage(), fav.getMenuItems().getPrice(),
+                        fav.getMenuItems().getRestaurant().getRestaurantName()))
+                .peek(favResponse -> System.out
+                        .println("FavouritesService_getFavouriteMenuItems()_favResponse: " + favResponse))
+                .toList().stream();
+
     }
 }

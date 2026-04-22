@@ -4,6 +4,7 @@ import { FavouritesService } from '../../shared/services/favourites.service';
 import { LocalStorageService } from '../../shared/services/local-storage.service';
 import { AuthService } from '../../auth/service/auth.service';
 import { AccountService } from '../service/account.service';
+import { FavouriteMenuItemsType } from '../../shared/model/favourite-menu-items-type';
 
 @Component({
   selector: 'app-favourites',
@@ -51,7 +52,7 @@ export class FavouritesComponent implements OnInit {
     this.favouritesService.getFavouriteMenuItems(userId!).subscribe({
       next: (favourites) => {
         console.log('FavouritesComponent_getFavouriteMenuItems()_favourites: ', favourites);
-        // this.favouriteMenuItems.update(...favourites);
+        this.favouriteMenuItems.update(() => favourites as FavouriteMenuItemsType[]);
       },
       error: (e) => {
         console.error('FavouritesComponent_getFavouriteMenuItems()_Error: ', e.error);

@@ -8,7 +8,7 @@ export class FavouritesService {
   http = inject(HttpClient);
 
   menuItemIds = signal<number[]>([]);
-  favouriteMenuItems = signal<FavouriteMenuItemsType>({} as FavouriteMenuItemsType);
+  favouriteMenuItems = signal<FavouriteMenuItemsType[]>([]);
   errorMessage = signal<string>('');
   menuItemIdErrorMessages = signal<Record<number, string>>({});
 

@@ -2,9 +2,12 @@
   @if (authService.authUser() !== undefined) {
     <h2>Favourite Menu Items</h2>
     <div class="favourite-menu-items">
-      <!-- @for(favourite of favouriteMenuItemsComputed(); track $index) {
-        <p>{{favourite.id}}</p>
-      } -->
+      @for (favourite of favouriteMenuItemsComputed(); track $index) {
+        <p>{{ favourite.favouriteId }}</p>
+        <p>{{ favourite.menuItemName }}</p>
+        <p>{{ favourite.menuItemImage }}</p>
+        <p>{{ favourite.price }}</p>
+      }
     </div>
   } @else {
     <h2 class="login-warning">Login to see your favourites.</h2>

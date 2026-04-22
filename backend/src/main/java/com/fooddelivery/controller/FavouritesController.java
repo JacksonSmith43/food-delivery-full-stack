@@ -1,6 +1,7 @@
 package com.fooddelivery.controller;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fooddelivery.dto.FavouriteResponseDTO;
 import com.fooddelivery.service.FavouritesService;
 
 @Controller
@@ -49,5 +51,14 @@ public class FavouritesController {
         System.out.println("FavouritesController_getFavouriteMenuItemIds()_menuIds: " + menuIds);
 
         return ResponseEntity.ok(menuIds);
+    }
+
+    @GetMapping("allFavourites/{userId}")
+    public ResponseEntity<Stream<FavouriteResponseDTO>> getFavouriteMenuItems(@PathVariable Long userId) {
+        System.out.println("FavouritesController_getFavouriteMenuItems().");
+
+        Stream<FavouriteResponseDTO> menuName = this.favouritesService.getFavouriteMenuItems(userId);
+
+        return ResponseEntity.ok(menuName);
     }
 }
