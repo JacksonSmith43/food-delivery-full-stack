@@ -113,6 +113,23 @@ p {
 
 .remove-button:focus,
 .add-button:focus,
-.favourite-button:focus {
+.favourite-button:focus,
+p:focus {
   outline: 0.25rem solid red;
+}
+
+/* Smartphones (from 576px). */
+@media only screen and (max-width: 576px) {
+  .restaurant-details {
+    margin: auto;
+  }
+
+  .menu-item {
+    margin: auto;
+    margin-top: 2rem;
+  }
+
+  img {
+    width: 8rem;
+  }
 }

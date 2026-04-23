@@ -11,13 +11,20 @@
   height: 8rem;
 }
 
-.categories-container {
+.categories-container figure {
   margin: 1.5rem 0.5rem;
+  padding: 2rem 0.5rem;
 
-  padding: 1rem 0.5rem;
   width: 9rem;
   height: 10rem;
+
   outline: 0.025rem solid gray;
+}
+
+.restaurant-container,
+.categories-container {
+  background-color: unset;
+  border: unset;
 }
 
 .all-restaurants-container {
@@ -26,17 +33,23 @@
   padding: 1rem 1rem;
 }
 
-.restaurant-container {
+.restaurant-container figure {
   text-align: center;
   margin: 1rem 1rem;
-  padding: 0rem 1rem;
+  padding: 1rem 1rem;
   width: 14rem;
   outline: 0.025rem solid gray;
 }
 
 img {
   padding-top: 1rem;
+  padding-bottom: 1rem;
   width: 12rem;
+}
+
+.categories-container:focus,
+.restaurant-container:focus {
+  outline: 0.25rem solid red;
 }
 
 /* Smartphones (from 576px). */

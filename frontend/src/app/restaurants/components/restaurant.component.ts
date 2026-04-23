@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 
 import { RestaurantsService } from '../../shared/services/restaurants.service';
 import { LocalStorageService } from '../../shared/services/local-storage.service';
@@ -10,7 +10,7 @@ import { AuthService } from '../../auth/service/auth.service';
 @Component({
   selector: 'app-restaurants',
   standalone: true,
-  imports: [RouterLink],
+  imports: [],
   templateUrl: './restaurants.component.html',
   styleUrl: './restaurants.component.css',
 })
@@ -19,6 +19,7 @@ export class RestaurantComponent implements OnInit {
   localStorageService = inject(LocalStorageService);
   navbarService = inject(NavBarService);
   authService = inject(AuthService);
+  router = inject(Router);
 
   restaurants = this.restaurantsService.restaurants;
   categories = this.restaurantsService.categories;
@@ -57,5 +58,6 @@ export class RestaurantComponent implements OnInit {
     console.log('onMenuClick().');
 
     this.restaurantsService.filterByRestaurantMenuItems(selectedRestaurant);
+    this.router.navigate(['/restaurant/' + selectedRestaurant.restaurantName]);
   }
 }

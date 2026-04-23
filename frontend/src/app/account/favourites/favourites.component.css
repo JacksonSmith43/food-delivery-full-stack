@@ -2,6 +2,31 @@
   text-align: center;
 }
 
+.favourite-menu-items-list {
+  margin-top: 3rem;
+  display: flex;
+}
+
+.favourite-menu-item {
+  font-size: medium;
+  outline: 0.25rem solid gray;
+  border-radius: 2rem;
+  margin: auto 1rem;
+  width: 20rem;
+}
+
+.favourite-menu-item img {
+  object-fit: cover;
+  border-radius: 3rem;
+  width: 85%;
+  margin: 1rem 0rem 1rem 0rem 1rem;
+  padding: 1rem 1rem 0rem 1rem;
+}
+
 .login-warning {
   margin-top: 4rem;
+}
+
+img:focus {
+  outline: 0.25rem solid red;
 }

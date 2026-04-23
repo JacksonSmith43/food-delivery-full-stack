@@ -1,7 +1,7 @@
 <div class="restaurants-detail-container">
   <div class="restaurant-details">
     <div class="restaurant-details-image">
-      <img [src]="'/images/restaurants/' + getCurrentRestaurantImage()" />
+      <img [src]="'/images/restaurants/' + getCurrentRestaurantImage()" [alt]="getCurrentRestaurantImage()" tabindex="0" />
     </div>
     <div class="restaurant-details-information">
       <p>{{ getCurrentCategory() }}</p>
@@ -18,7 +18,7 @@
             <p>Price: {{ m.price }} Euro</p>
           </div>
           <div class="menu-item-image">
-            <img [src]="'/images/menus/' + m.foodImage" />
+            <img [src]="'/images/menus/' + m.foodImage" [alt]="m.foodName" />
           </div>
           <div class="menu-item-favourite">
             @if (menuItemsIdsComputed().includes(m.id)) {
@@ -26,8 +26,7 @@
                 class="favourite-button"
                 mat-icon-button
                 (click)="onRemoveFromFavourites(m.id)"
-                title="Click to remove from favourite."
-                tabIndex="0"
+                [title]="'Click to remove' + m.foodName + 'from favourite.'"
               >
                 <mat-icon>favorite</mat-icon>
               </button>
@@ -36,8 +35,7 @@
                 class="favourite-button"
                 mat-icon-button
                 (click)="onAddToFavourite(m.id)"
-                title="Click to add to favourite."
-                tabIndex="0"
+                [title]="'Click to add' + m.foodName + 'to favourite.'"
               >
                 <mat-icon>favorite_border</mat-icon>
               </button>
@@ -49,13 +47,14 @@
             class="remove-button"
             (click)="onRemoveFromCart(m.id)"
             aria-hidden="false"
-            aria-label="Remove item from cart."
-            tabindex="0"
+            [attr.aria-label]="'Remove ' + m.foodName + ' from cart.'"
           >
             <mat-icon mat-icon-button fontIcon="remove"></mat-icon>
           </button>
-          <p class="item-quantity">{{ getItemQuantity(m.id) }}</p>
-          <button class="add-button" (click)="onAddToCart(m.id)" aria-hidden="false" aria-label="Add item to cart." tabindex="0">
+          <p class="item-quantity" [attr.aria-label]="'Quantity of ' + m.foodName + ': ' + getItemQuantity(m.id)" tabindex="0">
+            {{ getItemQuantity(m.id) }}
+          </p>
+          <button class="add-button" (click)="onAddToCart(m.id)" aria-hidden="false" [attr.aria-label]="'Add' + m.foodName + 'to cart.'">
             <mat-icon mat-icon-button fontIcon="add"></mat-icon>
           </button>
         </div>

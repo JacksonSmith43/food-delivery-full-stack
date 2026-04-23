@@ -1,12 +1,17 @@
 <div class="favourites-container">
   @if (authService.authUser() !== undefined) {
-    <h2>Favourite Menu Items</h2>
-    <div class="favourite-menu-items">
+    <h1>Favourites</h1>
+    <div class="favourite-menu-items-list">
       @for (favourite of favouriteMenuItemsComputed(); track $index) {
-        <p>{{ favourite.favouriteId }}</p>
-        <p>{{ favourite.menuItemName }}</p>
-        <p>{{ favourite.menuItemImage }}</p>
-        <p>{{ favourite.price }}</p>
+        <div class="favourite-menu-item">
+          <!-- <p>{{ favourite.favouriteId }}</p> -->
+          <figure>
+            <img [src]="'images/menus/' + favourite.menuItemImage" [alt]="favourite.menuItemName" tabindex="0" />
+            <figcaption>{{ favourite.menuItemName }}</figcaption>
+          </figure>
+          <p>{{ favourite.price }} Euro</p>
+          <p>{{ favourite.restaurantName }}</p>
+        </div>
       }
     </div>
   } @else {

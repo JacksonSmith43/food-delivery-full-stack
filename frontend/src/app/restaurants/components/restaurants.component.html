@@ -1,22 +1,22 @@
 <div class="food-category-container">
-    <!-- <p>Category</p> -->
-    @for (i of categories(); track i.id) {
-    <div class="categories-container" (click)="onCategoryClick(i)">
-        <img [src]="'/images/categories/' + i.categorieImage">
-        {{i.categorie}}
-    </div>
-
-    }
-
+  @for (i of categories(); track i.id) {
+    <button class="categories-container" [attr.aria-label]="i.categorie" (click)="onCategoryClick(i)">
+      <figure>
+        <img [src]="'/images/categories/' + i.categorieImage" [alt]="i.categorieImage" />
+        <figcaption>{{ i.categorie }}</figcaption>
+      </figure>
+    </button>
+  }
 </div>
 
 <div class="all-restaurants-container">
-    @for(i of restaurants(); track i.id){
-
-    <div class="restaurant-container" [routerLink]="['/restaurant/'+ i.restaurantName]" (click)="onRestaurantClick(i)">
+  @for (i of restaurants(); track i.id) {
+    <button class="restaurant-container" [attr.aria-label]="i.restaurantName" (click)="onRestaurantClick(i)">
+      <figure>
         <!-- With the img, link and script tag one can implicitly make a request to the server. -->
-        <img [src]="'/images/restaurants/' + i.imageName">
-        <p>{{i.restaurantName}}</p>
-    </div>
-    }
+        <img [src]="'/images/restaurants/' + i.imageName" [alt]="i.imageName" />
+        <figcaption>{{ i.restaurantName }}</figcaption>
+      </figure>
+    </button>
+  }
 </div>
