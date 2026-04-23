@@ -111,6 +111,10 @@ h2 {
     width: 6rem;
   }
 
+  .buy-button-container {
+    margin: auto auto;
+  }
+
   .mat-icon p {
     margin: 0rem 0.7rem 0rem 0rem;
   }
@@ -133,6 +137,10 @@ h2 {
     margin: 1rem auto;
     align-items: center;
   }
+
+  .buy-button-container {
+    margin: auto auto;
+  }
 }
 
 /* Tablets im Querformat (from 768px). */
@@ -144,5 +152,21 @@ h2 {
   .summary {
     margin: 1rem auto;
     align-items: center;
+  }
+
+  .buy-button-container {
+    margin: auto auto;
+  }
+}
+
+/* Laptops & Desktops (from 992px). */
+@media only screen and (min-width: 992px) {
+  .summary {
+    margin: 1rem auto;
+    align-items: center;
+  }
+
+  .buy-button-container {
+    margin: auto auto;
   }
 }
