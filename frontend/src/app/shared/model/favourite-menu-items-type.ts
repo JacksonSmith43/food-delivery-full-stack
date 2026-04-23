@@ -6,8 +6,5 @@ export interface FavouriteMenuItemsType {
   price: number;
 
   restaurantName: string;
-
-  // Add to cart button.
-  // toggleFavourite
 }
 [];

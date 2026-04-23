@@ -4,13 +4,26 @@
     <div class="favourite-menu-items-list">
       @for (favourite of favouriteMenuItemsComputed(); track $index) {
         <div class="favourite-menu-item">
-          <!-- <p>{{ favourite.favouriteId }}</p> -->
           <figure>
             <img [src]="'images/menus/' + favourite.menuItemImage" [alt]="favourite.menuItemName" tabindex="0" />
             <figcaption>{{ favourite.menuItemName }}</figcaption>
           </figure>
           <p>{{ favourite.price }} Euro</p>
           <p>{{ favourite.restaurantName }}</p>
+
+          <div class="favourite-button-container">
+            <button
+              class="favourite-button"
+              (click)="onRemoveFromFavourites(favourite.favouriteId)"
+              [title]="'Remove' + favourite.menuItemName + ' from favourites.'"
+            >
+              <mat-icon>favorite</mat-icon>
+            </button>
+          </div>
+
+          <div class="cart-control">
+            <button>Add to cart</button>
+          </div>
         </div>
       }
     </div>

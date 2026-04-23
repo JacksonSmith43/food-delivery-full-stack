@@ -11,8 +11,9 @@
   font-size: medium;
   outline: 0.25rem solid gray;
   border-radius: 2rem;
-  margin: auto 1rem;
   width: 20rem;
+  position: relative;
+  margin: 3rem 3rem 0rem 2rem;
 }
 
 .favourite-menu-item img {
@@ -23,11 +24,32 @@
   padding: 1rem 1rem 0rem 1rem;
 }
 
+.favourite-button-container {
+  display: flex;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
+.favourite-button {
+  color: red;
+}
+
+.unfavourite-button {
+  color: red;
+}
+
 .login-warning {
   margin-top: 4rem;
 }
 
-img:focus {
+button {
+  background-color: unset;
+  border: unset;
+}
+
+img:focus,
+button:focus {
   outline: 0.25rem solid red;
 }
 
@@ -42,20 +64,33 @@ img:focus {
   }
 
   .favourite-menu-item {
-    margin: 1rem auto;
+    margin: 2rem auto 1rem auto;
   }
 }
 
 /* Tablets & larger Smartphones (from 576px). */
 @media only screen and (min-width: 576px) {
+  .favourite-menu-items-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
   .favourite-menu-item {
-    margin: 1rem auto;
+    margin: 2rem 1rem 1rem 1rem;
+    width: 25%;
   }
 }
 
 /* Laptops & Desktops (from 992px). */
 @media only screen and (min-width: 992px) {
+  .favourite-menu-items-list {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
   .favourite-menu-item {
-    margin: 1rem auto;
+    margin: 2rem 1rem 1rem 1rem;
+    width: 25%;
   }
 }

@@ -1,4 +1,5 @@
 import { Component, computed, inject, OnInit } from '@angular/core';
+import { MatIcon } from '@angular/material/icon';
 
 import { FavouritesService } from '../../shared/services/favourites.service';
 import { LocalStorageService } from '../../shared/services/local-storage.service';
@@ -8,7 +9,7 @@ import { FavouriteMenuItemsType } from '../../shared/model/favourite-menu-items-
 
 @Component({
   selector: 'app-favourites',
-  imports: [],
+  imports: [MatIcon],
   templateUrl: './favourites.component.html',
   styleUrl: './favourites.component.css',
 })
@@ -18,7 +19,6 @@ export class FavouritesComponent implements OnInit {
   authService = inject(AuthService);
   accountService = inject(AccountService);
 
-  menuItemIds = this.favouritesService.menuItemIds;
   favouriteMenuItems = this.favouritesService.favouriteMenuItems;
 
   favouriteMenuItemsComputed = computed(() => this.favouriteMenuItems());
@@ -56,6 +56,30 @@ export class FavouritesComponent implements OnInit {
       },
       error: (e) => {
         console.error('FavouritesComponent_getFavouriteMenuItems()_Error: ', e.error);
+      },
+    });
+  }
+
+  onRemoveFromFavourites(favouriteId: number) {
+    console.log('FavouritesComponent_onRemoveFromFavourites().');
+
+    let currentId: number = this.accountService.currentUserProfile()!.id;
+
+    this.favouritesService.removeFromFavourite(currentId, favouriteId).subscribe({
+      next: (favourites) => {
+        console.log('FavouritesComponent_onRemoveFromFavourites()_favourites: ', favourites);
+        this.favouriteMenuItems.update((fav) => fav.filter((rem) => rem.favouriteId !== favouriteId));
+        console.log(
+          'FavouritesComponent_onRemoveFromFavourites()_this.favouriteMenuItems(): ',
+          this.favouriteMenuItems(),
+        );
+      },
+      error: (e) => {
+        console.error('FavouritesComponent_onRemoveFromFavourites()_Error: ', e);
+        this.favouritesService.menuItemIdErrorMessages.update((errors) => ({
+          ...errors,
+          [favouriteId]: e.error.code,
+        }));
       },
     });
   }

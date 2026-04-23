@@ -85,28 +85,29 @@ export class RestaurantDetailComponent implements OnInit {
   }
 
   onAddToCart(menuItemId: number) {
-    console.log('onAddToCart().');
-    console.log('onAddToCart()_menuItemId:', menuItemId);
+    console.log('RestaurantDetailComponent_onAddToCart().');
+    console.log('RestaurantDetailComponent_onAddToCart()_menuItemId:', menuItemId);
 
     this.cartService.addItemToCart(menuItemId, 1).subscribe({
       next: (cart) => {
-        console.log('onAddToCart()_Item added to cart:', cart);
+        console.log('RestaurantDetailComponent_onAddToCart()_Item added to cart:', cart);
         this.cartService.refreshCart();
       },
-      error: (error) => console.error('onAddToCart()_Error adding item to cart:', error),
+      error: (error) => console.error('RestaurantDetailComponent_onAddToCart()_Error adding item to cart:', error),
     });
   }
 
   onRemoveFromCart(menuItemId: number) {
-    console.log('onRemoveFromCart().');
-    console.log('onRemoveFromCart()_menuItemId:', menuItemId);
+    console.log('RestaurantDetailComponent_onRemoveFromCart().');
+    console.log('RestaurantDetailComponent_onRemoveFromCart()_menuItemId:', menuItemId);
 
     this.cartService.removeItemFromCart(menuItemId, 1).subscribe({
       next: (cart) => {
-        console.log('onRemoveFromCart()_Item removed from cart:', cart);
+        console.log('RestaurantDetailComponent_onRemoveFromCart()_Item removed from cart:', cart);
         this.cartService.refreshCart();
       },
-      error: (error) => console.error('onRemoveFromCart()_Error removing item from cart:', error),
+      error: (error) =>
+        console.error('RestaurantDetailComponent_onRemoveFromCart()_Error removing item from cart:', error),
     });
   }
 
