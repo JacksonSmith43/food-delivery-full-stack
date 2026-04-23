@@ -30,3 +30,32 @@
 img:focus {
   outline: 0.25rem solid red;
 }
+
+/* Smartphones (from 576px). */
+@media only screen and (max-width: 576px) {
+  .favourite-menu-item img {
+    width: 8rem;
+  }
+
+  .favourite-menu-items-list {
+    display: grid;
+  }
+
+  .favourite-menu-item {
+    margin: 1rem auto;
+  }
+}
+
+/* Tablets & larger Smartphones (from 576px). */
+@media only screen and (min-width: 576px) {
+  .favourite-menu-item {
+    margin: 1rem auto;
+  }
+}
+
+/* Laptops & Desktops (from 992px). */
+@media only screen and (min-width: 992px) {
+  .favourite-menu-item {
+    margin: 1rem auto;
+  }
+}
