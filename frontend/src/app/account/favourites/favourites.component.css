@@ -24,19 +24,32 @@
   padding: 1rem 1rem 0rem 1rem;
 }
 
-.favourite-button-container {
+.item-header {
   display: flex;
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 1rem 0 1rem;
 }
 
-.favourite-button {
-  color: red;
+.restaurant-name {
+  font-size: 0.75rem;
+  color: #888888;
+  letter-spacing: 0.5px;
 }
 
+.favourite-button,
 .unfavourite-button {
   color: red;
+}
+
+.quantity-control {
+  display: flex;
+  justify-content: center;
+}
+
+.add-button,
+.remove-button {
+  margin: auto 2rem;
 }
 
 .login-warning {
@@ -49,8 +62,13 @@ button {
 }
 
 img:focus,
-button:focus {
+button:focus,
+.item-quantity:focus {
   outline: 0.25rem solid red;
+}
+
+button:hover {
+  cursor: pointer;
 }
 
 /* Smartphones (from 576px). */

@@ -6,6 +6,7 @@ import { LocalStorageService } from '../../shared/services/local-storage.service
 import { AuthService } from '../../auth/service/auth.service';
 import { AccountService } from '../service/account.service';
 import { FavouriteMenuItemsType } from '../../shared/model/favourite-menu-items-type';
+import { CartService } from '../../shared/services/cart.service';
 
 @Component({
   selector: 'app-favourites',
@@ -18,6 +19,7 @@ export class FavouritesComponent implements OnInit {
   locaStorageService = inject(LocalStorageService);
   authService = inject(AuthService);
   accountService = inject(AccountService);
+  cartService = inject(CartService);
 
   favouriteMenuItems = this.favouritesService.favouriteMenuItems;
 
@@ -42,6 +44,8 @@ export class FavouritesComponent implements OnInit {
         },
       });
     }
+
+    this.cartService.refreshCart();
   }
 
   getFavouriteMenuItems() {
@@ -82,5 +86,36 @@ export class FavouritesComponent implements OnInit {
         }));
       },
     });
+  }
+
+  onAddToCart(menuItemId: number) {
+    console.log('FavouritesComponent_onAddToCart().');
+    console.log('FavouritesComponent_onAddToCart()_menuItemId:', menuItemId);
+
+    this.cartService.addItemToCart(menuItemId, 1).subscribe({
+      next: (cart) => {
+        console.log('FavouritesComponent_onAddToCart()_Item added to cart:', cart);
+        this.cartService.refreshCart();
+      },
+      error: (error) => console.error('FavouritesComponent_onAddToCart()_Error adding item to cart:', error),
+    });
+  }
+
+  onRemoveFromCart(menuItemId: number) {
+    console.log('FavouritesComponent_onRemoveFromCart().');
+    console.log('FavouritesComponent_onRemoveFromCart()_menuItemId:', menuItemId);
+
+    this.cartService.removeItemFromCart(menuItemId, 1).subscribe({
+      next: (cart) => {
+        console.log('FavouritesComponent_onRemoveFromCart()_Item removed from cart:', cart);
+        this.cartService.refreshCart();
+      },
+      error: (error) => console.error('FavouritesComponent_onRemoveFromCart()_Error removing item from cart:', error),
+    });
+  }
+
+  getItemQuantity(menuItemId: number): number {
+    console.log('getItemQuantity().');
+    return this.cartService.getItemQuantity(menuItemId);
   }
 }

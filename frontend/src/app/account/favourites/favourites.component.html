@@ -4,25 +4,47 @@
     <div class="favourite-menu-items-list">
       @for (favourite of favouriteMenuItemsComputed(); track $index) {
         <div class="favourite-menu-item">
+          <div class="item-header">
+            <p class="restaurant-name">{{ favourite.restaurantName }}</p>
+            <div class="favourite-button-container">
+              <button
+                class="favourite-button"
+                (click)="onRemoveFromFavourites(favourite.favouriteId)"
+                [title]="'Remove' + favourite.menuItemName + ' from favourites.'"
+              >
+                <mat-icon>favorite</mat-icon>
+              </button>
+            </div>
+          </div>
+
           <figure>
-            <img [src]="'images/menus/' + favourite.menuItemImage" [alt]="favourite.menuItemName" tabindex="0" />
+            <img [src]="'images/menus/' + favourite.menuItemImage" [alt]="favourite.menuItemName" />
             <figcaption>{{ favourite.menuItemName }}</figcaption>
           </figure>
           <p>{{ favourite.price }} Euro</p>
-          <p>{{ favourite.restaurantName }}</p>
 
-          <div class="favourite-button-container">
+          <div class="quantity-control">
             <button
-              class="favourite-button"
-              (click)="onRemoveFromFavourites(favourite.favouriteId)"
-              [title]="'Remove' + favourite.menuItemName + ' from favourites.'"
+              class="remove-button"
+              (click)="onRemoveFromCart(favourite.favouriteId)"
+              aria-hidden="false"
+              [attr.aria-label]="'Remove ' + favourite.menuItemName"
+              [title]="'Remove ' + favourite.menuItemName + ' from cart.'"
             >
-              <mat-icon>favorite</mat-icon>
+              <mat-icon mat-icon-button fontIcon="remove"></mat-icon>
             </button>
-          </div>
-
-          <div class="cart-control">
-            <button>Add to cart</button>
+            <p class="item-quantity" [attr.aria-label]="'Quantity of ' + favourite.menuItemName" tabindex="0">
+              {{ getItemQuantity(favourite.favouriteId) }}
+            </p>
+            <button
+              class="add-button"
+              (click)="onAddToCart(favourite.favouriteId)"
+              aria-hidden="false"
+              [attr.aria-label]="'Add ' + favourite.menuItemName"
+              [title]="'Add ' + favourite.menuItemName + ' to cart.'"
+            >
+              <mat-icon mat-icon-button fontIcon="add"></mat-icon>
+            </button>
           </div>
         </div>
       }
