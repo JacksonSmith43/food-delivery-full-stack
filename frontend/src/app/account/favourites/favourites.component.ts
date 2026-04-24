@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnInit } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 
 import { FavouritesService } from '../../shared/services/favourites.service';
@@ -21,6 +21,9 @@ export class FavouritesComponent implements OnInit {
   accountService = inject(AccountService);
   cartService = inject(CartService);
 
+  networkError = signal<string>('');
+  errorMessage = signal<string>('');
+
   favouriteMenuItems = this.favouritesService.favouriteMenuItems;
 
   favouriteMenuItemsComputed = computed(() => this.favouriteMenuItems());
@@ -41,6 +44,11 @@ export class FavouritesComponent implements OnInit {
         },
         error: (error) => {
           console.error('FavouritesComponent_ngOnInit()_Error loading profile: ', error.error.message);
+          if (error.status === 0) {
+            this.networkError.set('Unable to load user profile. Please check your network connection and try again.');
+          } else {
+            this.errorMessage.set(error.statusText);
+          }
         },
       });
     }
@@ -60,6 +68,14 @@ export class FavouritesComponent implements OnInit {
       },
       error: (e) => {
         console.error('FavouritesComponent_getFavouriteMenuItems()_Error: ', e.error);
+        // Network error (e.g., server is down or no internet connection). status code 0 always means that the server is unreachable.
+        if (e.status === 0) {
+          this.networkError.set(
+            'Unable to load favourite menu items. Please check your network connection and try again.',
+          );
+        } else {
+          this.errorMessage.set(e.message);
+        }
       },
     });
   }
@@ -80,6 +96,14 @@ export class FavouritesComponent implements OnInit {
       },
       error: (e) => {
         console.error('FavouritesComponent_onRemoveFromFavourites()_Error: ', e);
+        if (e.status === 0) {
+          this.networkError.set(
+            'Unable to remove favourite menu item. Please check your network connection and try again.',
+          );
+        } else {
+          this.errorMessage.set(e.message);
+        }
+
         this.favouritesService.menuItemIdErrorMessages.update((errors) => ({
           ...errors,
           [favouriteId]: e.error.code,
@@ -97,7 +121,14 @@ export class FavouritesComponent implements OnInit {
         console.log('FavouritesComponent_onAddToCart()_Item added to cart:', cart);
         this.cartService.refreshCart();
       },
-      error: (error) => console.error('FavouritesComponent_onAddToCart()_Error adding item to cart:', error),
+      error: (error) => {
+        console.error('FavouritesComponent_onAddToCart()_Error adding item to cart:', error);
+        if (error.status === 0) {
+          this.networkError.set('Unable to add item to cart. Please check your network connection and try again.');
+        } else {
+          this.errorMessage.set(error.message);
+        }
+      },
     });
   }
 
@@ -110,7 +141,14 @@ export class FavouritesComponent implements OnInit {
         console.log('FavouritesComponent_onRemoveFromCart()_Item removed from cart:', cart);
         this.cartService.refreshCart();
       },
-      error: (error) => console.error('FavouritesComponent_onRemoveFromCart()_Error removing item from cart:', error),
+      error: (error) => {
+        console.error('FavouritesComponent_onRemoveFromCart()_Error removing item from cart:', error);
+        if (error.status === 0) {
+          this.networkError.set('Unable to remove item from cart. Please check your network connection and try again.');
+        } else {
+          this.errorMessage.set(error.message);
+        }
+      },
     });
   }
 

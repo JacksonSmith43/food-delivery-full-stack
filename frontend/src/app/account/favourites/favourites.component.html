@@ -30,6 +30,7 @@
               aria-hidden="false"
               [attr.aria-label]="'Remove ' + favourite.menuItemName"
               [title]="'Remove ' + favourite.menuItemName + ' from cart.'"
+              [disabled]="getItemQuantity(favourite.favouriteId) === 0"
             >
               <mat-icon mat-icon-button fontIcon="remove"></mat-icon>
             </button>
@@ -48,6 +49,16 @@
           </div>
         </div>
       }
+
+      <div>
+        @if (favouriteMenuItemsComputed().length === 0) {
+          <p class="no-quantity">No favourites have been added.</p>
+        }
+
+        @if (networkError()) {
+          <p class="error-message">{{ networkError() }}</p>
+        }
+      </div>
     </div>
   } @else {
     <h2 class="login-warning">Login to see your favourites.</h2>

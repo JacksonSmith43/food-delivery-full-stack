@@ -52,8 +52,20 @@
   margin: auto 2rem;
 }
 
+.no-quantity {
+  font-size: large;
+}
+
 .login-warning {
   margin-top: 4rem;
+}
+
+.error-message {
+  font-weight: 500;
+  margin-top: 4rem;
+  font-size: medium;
+  text-align: center;
+  color: red;
 }
 
 button {
