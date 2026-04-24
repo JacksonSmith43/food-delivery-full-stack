@@ -40,6 +40,10 @@ export class RestaurantComponent implements OnInit {
     if (restaurants && restaurants.length > 0) {
       this.restaurants.set(restaurants);
       console.log('Restaurant_ngOnInit()_restaurants: ', restaurants);
+
+      const uniqueCategories = this.restaurantsService.getUniqueCategories(restaurants);
+      this.restaurantsService.categories.set(uniqueCategories);
+      console.log('RestaurantComponent_ngOnInit()_uniqueCategories: ', uniqueCategories);
     } else {
       this.navbarService.getAllRestaurants();
     }
