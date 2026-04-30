@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import com.fooddelivery.entity.MenuItem;
 import com.fooddelivery.entity.Restaurants;
+import com.fooddelivery.entity.MenuItem.DietaryLabels;
 import com.fooddelivery.repository.MenuItemRepository;
 import com.fooddelivery.repository.RestaurantRepository;
 
@@ -36,89 +37,101 @@ public class MenuInitialiser {
 
                         // Creates MenuItems.
                         // Vegan.
-                        MenuItem chiliCheezeBurgerMenü = new MenuItem("Chili Cheeze Burger Menü",
+                        MenuItem chiliCheezeBurgerMenü = new MenuItem(
+                                        "Chili Cheeze Burger Menü",
                                         "Chili Cheeze + Farm Fries",
-                                        new BigDecimal("12.36"), "chiliCheezeBurgerMenü.webp");
+                                        new BigDecimal("12.36"),
+                                        "chiliCheezeBurgerMenü.webp",
+                                        DietaryLabels.VEGAN, DietaryLabels.VEGETARIAN);
                         MenuItem swingBurgerMenü = new MenuItem("Swing Burger Menü", "Swing Burger + Farm Fries",
                                         new BigDecimal("11.28"),
-                                        "swingBurgerMenü.webp");
+                                        "swingBurgerMenü.webp", DietaryLabels.VEGAN, DietaryLabels.VEGETARIAN);
                         MenuItem sixerNuggets = new MenuItem("6er Nuggets", "Chick'n Nuggets (plant based)",
                                         new BigDecimal("6.20"),
-                                        "sixerNuggets.webp");
+                                        "sixerNuggets.webp", DietaryLabels.VEGAN, DietaryLabels.VEGETARIAN);
                         MenuItem avocadoChicknPlanty = new MenuItem("Avocado Chick'n Planty",
                                         "Chipotle Sauce, Salat, Chick'n Patty (plant based), Tomate, Zwiebeln, Guacamole im Planty Bun",
-                                        new BigDecimal("8.95"), "avocadoChicknPlanty.webp");
+                                        new BigDecimal("8.95"), "avocadoChicknPlanty.webp", DietaryLabels.VEGAN,
+                                        DietaryLabels.VEGETARIAN);
 
                         // Pizza.
                         MenuItem salamiPizza = new MenuItem("Salami Pizza", "Rindersalami", new BigDecimal("11.90"),
-                                        "salamiPizza.webp");
+                                        "salamiPizza.webp", DietaryLabels.HALAL);
                         MenuItem funghiPizza = new MenuItem("Funghi Pizza", "Frische Champignons ",
                                         new BigDecimal("10.90"),
-                                        "funghiPizza.webp");
+                                        "funghiPizza.webp", DietaryLabels.VEGETARIAN);
                         MenuItem alTonnoPizza = new MenuItem("Al Tonno Pizza", "Thunfisch, Zwiebel, Oliven",
                                         new BigDecimal("13.90"),
-                                        "alTonnoPizza.webp");
+                                        "alTonnoPizza.webp", DietaryLabels.HALAL);
 
                         // Indian.
                         MenuItem butterChicken = new MenuItem("Butter Chicken",
                                         "Gegrillte Hühnerstücke mit Butter und Tomatensauce", new BigDecimal("14.90"),
-                                        "butterChicken.webp");
+                                        "butterChicken.webp", DietaryLabels.HALAL, DietaryLabels.GLUTEN_FREE);
                         MenuItem chickenTikkaMasalaPikant = new MenuItem("Chicken Tikka Masala (Pikant)",
                                         "Gegrillte Hühnerstücke, in würzigem Curry", new BigDecimal("14.90"),
-                                        "chickenTikkaMasalaPikant.webp");
+                                        "chickenTikkaMasalaPikant.webp", DietaryLabels.HALAL,
+                                        DietaryLabels.GLUTEN_FREE);
                         MenuItem linsensuppeVegan = new MenuItem("Linsensuppe (Vegan)",
                                         "Eine wärmende Mahlzeit für kalte Tage. Die Linsensuppe von Großmutters Rezept ist eine kräftige und gesunde Suppe mit viel Gemüse und würzigem Speck.",
-                                        new BigDecimal("4.50"), "linsensuppeVegan.png");
+                                        new BigDecimal("4.50"), "linsensuppeVegan.png", DietaryLabels.VEGAN,
+                                        DietaryLabels.VEGETARIAN, DietaryLabels.GLUTEN_FREE);
                         MenuItem vegetarischesBiryaniVegan = new MenuItem("Vegetarisches Biryani (Vegan)",
                                         "Basmatireis mit gemischten Gemüsesorten", new BigDecimal("13.90"),
-                                        "vegetarischesBiryaniVegan.webp");
+                                        "vegetarischesBiryaniVegan.webp", DietaryLabels.VEGAN,
+                                        DietaryLabels.VEGETARIAN, DietaryLabels.GLUTEN_FREE);
 
                         // Italian.
                         MenuItem pastaAlfredo = new MenuItem("Pasta Alfredo",
                                         "Obers, DOP (Grana Padano) Käse und Knoblauch.",
-                                        new BigDecimal("10.71"), "pastaAlfredo.webp");
+                                        new BigDecimal("10.71"), "pastaAlfredo.webp", DietaryLabels.VEGETARIAN);
                         MenuItem pastaCarbonara = new MenuItem("Pasta Carbonara",
                                         "Obers, Rind Speck, Zwiebel und Eigelb.", new BigDecimal("13.41"),
-                                        "pastaCarbonara.webp");
+                                        "pastaCarbonara.webp", DietaryLabels.HALAL);
                         MenuItem pinsaVegana = new MenuItem("Pinsa Vegana", "Thunfisch, Zwiebel, Oliven",
                                         new BigDecimal("10.90"),
-                                        "pinsaVegana.webp");
+                                        "pinsaVegana.webp", DietaryLabels.VEGAN, DietaryLabels.VEGETARIAN);
 
                         // Chinese.
                         MenuItem nudelnMitKnusprigemHuhn = new MenuItem("Nudeln mit knusprigem Huhn",
                                         "Nudeln mit knusprigem Huhn",
-                                        new BigDecimal("11.50"), "nudelnMitKnusprigemHuhn.webp");
+                                        new BigDecimal("11.50"), "nudelnMitKnusprigemHuhn.webp",
+                                        DietaryLabels.GLUTEN_FREE);
                         MenuItem nudelnMitGemüse = new MenuItem("Nudeln mit Gemüse", "Nudeln mit Gemüse",
                                         new BigDecimal("9.50"),
-                                        "nudelnMitGemüse.webp");
+                                        "nudelnMitGemüse.webp", DietaryLabels.VEGAN, DietaryLabels.VEGETARIAN);
                         MenuItem reisMitKnusprigerEnteCola = new MenuItem("Reis mit knuspriger Ente & Cola 0,33l",
                                         "Der perfekte Sattmacher. Unser Reis ist vielseitig verwendbar, leicht verdaulich und reich an Kohlenhydraten. Ideal als Beilage oder Basis für Gerichte.",
-                                        new BigDecimal("13.50"), "reisMitKnusprigerEnteCola.webp");
+                                        new BigDecimal("13.50"), "reisMitKnusprigerEnteCola.webp",
+                                        DietaryLabels.GLUTEN_FREE);
                         MenuItem avocadosalat = new MenuItem("Avocadosalat", "Avocadosalat", new BigDecimal("7.20"),
-                                        "avocadosalat.webp");
+                                        "avocadosalat.webp", DietaryLabels.VEGAN, DietaryLabels.VEGETARIAN,
+                                        DietaryLabels.GLUTEN_FREE);
 
                         // Burgers.
                         MenuItem doubleCheeseburgerMenü = new MenuItem("Double Cheeseburger Menü",
                                         "Double Cheesburger mit einem Drink und Fries", new BigDecimal("14.32"),
-                                        "doubleCheeseburgerMenü.webp");
+                                        "doubleCheeseburgerMenü.webp", DietaryLabels.HEARTATTACK_WAITING_TO_HAPPEN);
                         MenuItem doubleBaconJam = new MenuItem("Double Bacon Jam",
                                         "Mit Senf Mayo, Essiggurken, Beef Bacon Jam und Zwiebel.",
                                         new BigDecimal("11.90"),
-                                        "doubleBaconJam.webp");
+                                        "doubleBaconJam.webp", DietaryLabels.HEARTATTACK_WAITING_TO_HAPPEN);
                         MenuItem halloumiBurger = new MenuItem("Halloumi Burger",
                                         "Mit Kräuterpesto, Essiggurken, Aioli und Salatmix.", new BigDecimal("11.90"),
-                                        "halloumiBurger.webp");
+                                        "halloumiBurger.webp", DietaryLabels.VEGETARIAN, DietaryLabels.NUT_FREE);
 
                         // Thai.
                         MenuItem phadThaiNationalgericht = new MenuItem("Phad Thai (Nationalgericht)",
                                         "Gebratene Reisnudeln mit Ei, Thaibärlauch & Erdnuss", new BigDecimal("12.80"),
-                                        "phadThaiNationalgericht.webp");
+                                        "phadThaiNationalgericht.webp", DietaryLabels.GLUTEN_FREE);
                         MenuItem somTam = new MenuItem("Som Tam", "Papaya Salat mit Erdnuss", new BigDecimal("7.50"),
-                                        "somTam.webp");
+                                        "somTam.webp", DietaryLabels.VEGAN, DietaryLabels.VEGETARIAN,
+                                        DietaryLabels.GLUTEN_FREE);
                         MenuItem geangKhiaoWan = new MenuItem("Geang Khiao Wan",
                                         "Grünes Thai Curry mit Fisolen, Bambussprossen, Kokosmilch dazu Reis",
                                         new BigDecimal("13.80"),
-                                        "geangKhiaoWan.webp");
+                                        "geangKhiaoWan.webp", DietaryLabels.VEGAN, DietaryLabels.VEGETARIAN,
+                                        DietaryLabels.GLUTEN_FREE);
 
                         // Get restaurants from the database.
                         Restaurants fantasticFeast = restaurantRepository

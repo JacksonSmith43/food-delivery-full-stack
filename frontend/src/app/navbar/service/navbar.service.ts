@@ -20,8 +20,8 @@ export class NavBarService {
         this.restaurantsService.restaurants.set(restaurants);
 
         let menuItems = restaurants.flatMap((m) => m.menuItems);
-        console.log('onMenuClick()_menuItems: ', menuItems);
-         this.restaurantsService.menuItems.set(menuItems);
+        console.log('NavBarService_getAllRestaurants()_menuItems: ', menuItems);
+        this.restaurantsService.menuItems.set(menuItems);
 
         console.log('NavBarService_getAllRestaurants()_restaurants: ', restaurants);
 

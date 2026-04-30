@@ -10,6 +10,7 @@ export interface MenuItemsType {
   description: string;
   price: number;
   foodImage: string;
+  dietaryLabels: string[];
 }
 
 export interface RestaurantType {

@@ -1,3 +1,7 @@
+.food-filter-list {
+  margin: 2rem 2rem;
+}
+
 .food-category-container {
   display: flex;
   flex-wrap: wrap;

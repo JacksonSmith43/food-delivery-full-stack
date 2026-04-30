@@ -1,3 +1,21 @@
+<div class="food-filter-container">
+  <mat-chip-listbox
+    class="food-filter-list"
+    (change)="onFilterDietaryChange($event)"
+    aria-label="Select a food label."
+    aria-describedby="In order to choose a filter option, navigate using arrow keys and press enter/space."
+  >
+    @for (label of filteredDietaryLabelByRestaurants(); track $index) {
+      <mat-chip-option
+        [attr.aria-label]="label[1] + ' restaurants have been found for' + label[0] + ' food.' | titlecase"
+        [title]="label[1] + ' restaurants have been found for ' + label[0] + ' food.' | titlecase"
+        [value]="label[0] | uppercase"
+        >{{ `${(label[0] | titlecase)} (${label[1]})` }}
+      </mat-chip-option>
+    }
+  </mat-chip-listbox>
+</div>
+
 <div class="food-category-container">
   @for (i of categories(); track i.id) {
     <button class="categories-container" [attr.aria-label]="i.categorie" (click)="onCategoryClick(i)">

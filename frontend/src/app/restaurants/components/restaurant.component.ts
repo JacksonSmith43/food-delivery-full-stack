@@ -1,5 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { MatChipListboxChange, MatChipsModule } from '@angular/material/chips';
+import { TitleCasePipe, UpperCasePipe } from '@angular/common';
 
 import { RestaurantsService } from '../../shared/services/restaurants.service';
 import { LocalStorageService } from '../../shared/services/local-storage.service';
@@ -10,7 +12,7 @@ import { AuthService } from '../../auth/service/auth.service';
 @Component({
   selector: 'app-restaurants',
   standalone: true,
-  imports: [],
+  imports: [MatChipsModule, TitleCasePipe, UpperCasePipe],
   templateUrl: './restaurants.component.html',
   styleUrl: './restaurants.component.css',
 })
@@ -24,6 +26,7 @@ export class RestaurantComponent implements OnInit {
   restaurants = this.restaurantsService.restaurants;
   categories = this.restaurantsService.categories;
   menuItems = this.restaurantsService.menuItems;
+  filteredDietaryLabelByRestaurants = this.restaurantsService.filteredDietaryLabelByRestaurants;
 
   ngOnInit(): void {
     console.log('Restaurant_ngOnInit().');
@@ -47,6 +50,8 @@ export class RestaurantComponent implements OnInit {
     } else {
       this.navbarService.getAllRestaurants();
     }
+    this.restaurantsService.countDietaryLabels();
+    this.navbarService.getAllRestaurants();
   }
 
   onCategoryClick(category: CategoryType) {
@@ -63,5 +68,13 @@ export class RestaurantComponent implements OnInit {
 
     this.restaurantsService.filterByRestaurantMenuItems(selectedRestaurant);
     this.router.navigate(['/restaurant/' + selectedRestaurant.restaurantName]);
+  }
+
+  onFilterDietaryChange(event: MatChipListboxChange): RestaurantType[] {
+    console.log('RestaurantComponent_onFilterDietaryChange().');
+    console.log('RestaurantComponent_onFilterDietaryChange()_value: ', event.value);
+
+    let value: string = event.value;
+    return this.restaurantsService.filterDietaryLabelByRestaurants(value);
   }
 }
