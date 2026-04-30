@@ -12,11 +12,14 @@ export class RestaurantsService {
   http = inject(HttpClient);
   localStorageService = inject(LocalStorageService);
 
-  restaurants = signal<RestaurantType[]>([]);
+  // This only gets used to get all images and to get filtered but not changed.
+  allRestaurants = signal<RestaurantType[]>([]);
   plz = signal<string>('');
   categories = signal<CategoryType[]>([]);
   menuItems = signal<MenuItemsType[]>([]);
   filteredDietaryLabelByRestaurants = signal<Map<string, number>>(new Map([[' ', 0]]));
+  // This is used for filtering the restaurants using the allRestaurants as a filter and this then gets displayed.
+  filteredRestaurants = signal<RestaurantType[]>([]);
 
   getAllRestaurants(): Observable<RestaurantType[]> {
     console.log('RestaurantsService_getAllRestaurants().');
@@ -61,10 +64,10 @@ export class RestaurantsService {
   filterByRestaurantMenuItems(selectedRestaurant: RestaurantType): void {
     console.log('filterByRestaurantMenuItems().');
 
-    this.restaurants.set([selectedRestaurant]);
+    this.filteredRestaurants.set([selectedRestaurant]);
     console.log('filterByRestaurantMenuItems()_selectedRestaurant: ', selectedRestaurant.restaurantName);
 
-    let menuItems = this.restaurants().flatMap((r) => r.menuItems);
+    let menuItems = this.allRestaurants().flatMap((r) => r.menuItems);
 
     this.localStorageService.saveToLocalStorage('chosenRestaurant', [selectedRestaurant]);
     this.localStorageService.saveToLocalStorage('menuItemsofChosenRestaurant', menuItems);
@@ -76,13 +79,13 @@ export class RestaurantsService {
     console.log('RestaurantsService_filterDietaryLabelByRestaurants().');
 
     // Filters the menuItems to the corresponding label that was selected.
-    let filterByDietaryLabels = this.restaurants().flatMap((restaurant) =>
+    let filterByDietaryLabels = this.allRestaurants().flatMap((restaurant) =>
       restaurant.menuItems.filter((label) => label.dietaryLabels.includes(value.toUpperCase())),
     );
     console.log('RestaurantsService_filterDietaryLabelByRestaurants()_filterByDietaryLabels: ', filterByDietaryLabels);
 
     // Filters the restaurants to the corresponding label that was selected.
-    let filteredRestaurantsByDietaryLabels: RestaurantType[] = this.restaurants().filter((restaurant) =>
+    let filteredRestaurantsByDietaryLabels: RestaurantType[] = this.allRestaurants().filter((restaurant) =>
       restaurant.menuItems.some((label) => label.dietaryLabels.includes(value.toUpperCase())),
     );
     console.log(
@@ -90,7 +93,7 @@ export class RestaurantsService {
       filteredRestaurantsByDietaryLabels,
     );
 
-    this.restaurants.set(filteredRestaurantsByDietaryLabels);
+    this.filteredRestaurants.set(filteredRestaurantsByDietaryLabels);
     return filteredRestaurantsByDietaryLabels;
   }
 
@@ -100,7 +103,7 @@ export class RestaurantsService {
 
     let mapped = new Map<string, number>();
 
-    this.restaurants().flatMap((restaurant) => {
+    this.allRestaurants().flatMap((restaurant) => {
       restaurant.menuItems.map((menu) => {
         menu.dietaryLabels.forEach((label) => {
           // Example: map.set('VEGAN', 5);

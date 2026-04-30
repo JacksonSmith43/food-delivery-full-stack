@@ -1,11 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 
 import { RestaurantsService } from '../shared/services/restaurants.service';
@@ -55,10 +49,7 @@ export class SearchRestaurant {
       console.log('showRestaurantsWithCorrespondingEnteredPostcodes()_restaurants: ', restaurants);
 
       let restaurantsWithinPlz = restaurants.filter((r) => r.plz === enteredPlz);
-      console.log(
-        'showRestaurantsWithCorrespondingEnteredPostcodes()_restaurantsWithinPlz: ',
-        restaurantsWithinPlz,
-      );
+      console.log('showRestaurantsWithCorrespondingEnteredPostcodes()_restaurantsWithinPlz: ', restaurantsWithinPlz);
 
       // Checks if the PLZ exists after filtering the API results.
       if (restaurantsWithinPlz.length > 0) {
@@ -73,7 +64,7 @@ export class SearchRestaurant {
         }, 1000);
       }
 
-      this.restaurantsService.restaurants.set(restaurantsWithinPlz);
+      this.restaurantsService.allRestaurants.set(restaurantsWithinPlz);
     });
   }
 

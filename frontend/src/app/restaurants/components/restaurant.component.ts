@@ -23,14 +23,15 @@ export class RestaurantComponent implements OnInit {
   authService = inject(AuthService);
   router = inject(Router);
 
-  restaurants = this.restaurantsService.restaurants;
+  allRestaurants = this.restaurantsService.allRestaurants;
   categories = this.restaurantsService.categories;
   menuItems = this.restaurantsService.menuItems;
   filteredDietaryLabelByRestaurants = this.restaurantsService.filteredDietaryLabelByRestaurants;
+  filteredRestaurants = this.restaurantsService.filteredRestaurants;
 
   ngOnInit(): void {
     console.log('Restaurant_ngOnInit().');
-    console.log('Restaurant_ngOnInit()_this.restaurants().', this.restaurants());
+    console.log('Restaurant_ngOnInit()_this.allRestaurants().', this.allRestaurants());
 
     let userCredentials = this.localStorageService.getUserCredentials();
 
@@ -41,7 +42,8 @@ export class RestaurantComponent implements OnInit {
     let restaurants: RestaurantType[] = this.localStorageService.getRestaurants('restaurants');
 
     if (restaurants && restaurants.length > 0) {
-      this.restaurants.set(restaurants);
+      this.allRestaurants.set(restaurants);
+      this.filteredRestaurants.set(restaurants);
       console.log('Restaurant_ngOnInit()_restaurants: ', restaurants);
 
       const uniqueCategories = this.restaurantsService.getUniqueCategories(restaurants);
@@ -59,7 +61,7 @@ export class RestaurantComponent implements OnInit {
 
     this.restaurantsService.getAllRestaurants().subscribe((restaurants) => {
       const filtered = this.restaurantsService.filterByCategory(restaurants, category);
-      this.restaurantsService.restaurants.set(filtered);
+      this.restaurantsService.filteredRestaurants.set(filtered);
     });
   }
 
@@ -75,6 +77,12 @@ export class RestaurantComponent implements OnInit {
     console.log('RestaurantComponent_onFilterDietaryChange()_value: ', event.value);
 
     let value: string = event.value;
+
+    // When all chips have been deselected, the value will be undefined. Then all restaurants should be visible again.
+    if (value === undefined) {
+      this.filteredRestaurants.set(this.allRestaurants());
+    }
+
     return this.restaurantsService.filterDietaryLabelByRestaurants(value);
   }
 }

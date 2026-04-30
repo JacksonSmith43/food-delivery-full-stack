@@ -17,7 +17,7 @@ export class NavBarService {
       next: (restaurants) => {
         console.log('NavBarService_getAllRestaurants()_next.');
         this.localStorageService.saveToLocalStorage('restaurants', restaurants as any);
-        this.restaurantsService.restaurants.set(restaurants);
+        this.restaurantsService.allRestaurants.set(restaurants);
 
         let menuItems = restaurants.flatMap((m) => m.menuItems);
         console.log('NavBarService_getAllRestaurants()_menuItems: ', menuItems);

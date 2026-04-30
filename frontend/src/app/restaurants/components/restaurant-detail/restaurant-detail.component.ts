@@ -24,7 +24,7 @@ export class RestaurantDetailComponent implements OnInit {
   accountService = inject(AccountService);
 
   menuItems = this.restaurantService.menuItems;
-  restaurant = this.restaurantService.restaurants;
+  allRestaurants = this.restaurantService.allRestaurants;
   category = this.restaurantService.categories;
   cartSummary = this.cartService.cartSummary;
   menuItemIds = this.favouritesService.menuItemIds;
@@ -58,22 +58,22 @@ export class RestaurantDetailComponent implements OnInit {
     console.log('RestaurantDetailComponent_ngOnInit()_restaurant: ', restaurant);
 
     this.menuItems.set(menuItems);
-    this.restaurant.set(restaurant);
+    this.allRestaurants.set(restaurant);
 
     this.cartService.refreshCart();
   }
 
   getCurrentRestaurant(): string[] {
-    return this.restaurant().map((r) => r.restaurantName);
+    return this.allRestaurants().map((r) => r.restaurantName);
   }
 
   getCurrentRestaurantImage(): string[] {
-    return this.restaurant().map((r) => r.imageName);
+    return this.allRestaurants().map((r) => r.imageName);
   }
 
   getCurrentCategory() {
     console.log('getCurrentCategory().');
-    let category = this.restaurant()
+    let category = this.allRestaurants()
       .flatMap((c) => c.categories)
       .map((c) => c.categorie)
       .join(', '); // It combines multiple categories into a single string separated by commas.

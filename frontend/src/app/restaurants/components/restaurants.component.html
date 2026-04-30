@@ -28,7 +28,7 @@
 </div>
 
 <div class="all-restaurants-container">
-  @for (i of restaurants(); track i.id) {
+  @for (i of filteredRestaurants(); track i.id) {
     <button class="restaurant-container" [attr.aria-label]="i.restaurantName" (click)="onRestaurantClick(i)">
       <figure>
         <!-- With the img, link and script tag one can implicitly make a request to the server. -->
