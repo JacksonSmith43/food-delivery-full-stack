@@ -13,23 +13,26 @@
     } @else {
       <div class="orders-grid" role="list" aria-label="orders list">
         @for (order of orders(); track order.orderId) {
-          <article class="order-card" role="listitem" aria-label="Order {{ order.orderId }}">
+          <article class="order-card" role="listitem" [aria-label]="'Order: ' + order.orderId">
             <div class="card-top">
               <div>
                 <p class="order-id">Order #{{ order.orderId }}</p>
                 <p class="order-date">{{ order.createdAt | date: 'dd.MM.yyyy, HH:mm' }}</p>
               </div>
-              <span class="status-badge {{ getStatusClass(order.status) }}" aria-label="Status {{ formatStatus(order.status.toString()) }}">
+              <span
+                class="status-badge {{ getStatusClass(order.status) }}"
+                [aria-label]="'Status: ' + formatStatus(order.status.toString())"
+              >
                 {{ formatStatus(order.status.toString()) }}
               </span>
             </div>
 
             <div class="order-meta">
-              <div class="meta-box">
+              <div class="meta-box" [aria-label]="order.totalAmount + ' items.'">
                 <span>Items</span>
                 <strong>{{ order.totalAmount }}</strong>
               </div>
-              <div class="meta-box">
+              <div class="meta-box" [aria-label]="order.totalCost + ' euro.'">
                 <span>Total</span>
                 <strong>{{ order.totalCost }} EUR</strong>
               </div>
@@ -56,7 +59,7 @@
                 @for (item of order.orderItems; track $index) {
                   <div class="item-row" role="listitem">
                     <span class="item-name">{{ item.menuItemNameSnapshot }}</span>
-                    <span class="item-qty">x{{ item.quantity }}</span>
+                    <span class="item-qty" [aria-label]="item.quantity + ' items.'">x{{ item.quantity }}</span>
                     <span class="item-price">{{ item.price }} EUR</span>
                   </div>
                 }

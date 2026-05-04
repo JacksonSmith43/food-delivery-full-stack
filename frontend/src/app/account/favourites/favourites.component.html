@@ -10,7 +10,7 @@
               <button
                 class="favourite-button"
                 (click)="onRemoveFromFavourites(favourite.favouriteId)"
-                [title]="'Remove' + favourite.menuItemName + ' from favourites.'"
+                [title]="'Remove ' + favourite.menuItemName + ' from favourites.'"
               >
                 <mat-icon>favorite</mat-icon>
               </button>
@@ -34,7 +34,7 @@
             >
               <mat-icon mat-icon-button fontIcon="remove"></mat-icon>
             </button>
-            <p class="item-quantity" [attr.aria-label]="'Quantity of ' + favourite.menuItemName" tabindex="0">
+            <p class="item-quantity" [attr.aria-label]="'Quantity: ' + getItemQuantity(favourite.favouriteId)" tabindex="0">
               {{ getItemQuantity(favourite.favouriteId) }}
             </p>
             <button

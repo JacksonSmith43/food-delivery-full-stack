@@ -1,8 +1,9 @@
 import { Component, inject, Inject, signal } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatAnchor } from '@angular/material/button';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
+import { A11yModule } from "@angular/cdk/a11y";
 
 import { AuthType } from '../../../../auth/model/auth-user-type';
 import { ProfileComponent } from '../profile/profile.component';
@@ -13,7 +14,7 @@ import { ValidatorsService } from '../../../../shared/services/validators.servic
 @Component({
   selector: 'app-profile-modal',
   standalone: true,
-  imports: [MatAnchor, ReactiveFormsModule, MatSelectModule],
+  imports: [MatAnchor, ReactiveFormsModule, MatSelectModule, A11yModule, MatDialogModule],
   templateUrl: './profile-modal.component.html',
   styleUrl: './profile-modal.component.css',
 })

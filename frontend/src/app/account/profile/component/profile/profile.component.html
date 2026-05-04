@@ -10,7 +10,7 @@
       title="Click to change your email address."
     >
       <label for="email">Email address</label>
-      <button id="email" mat-raised-button aria-label="Email address.">
+      <button id="email" mat-raised-button>
         {{ this.authService.authUser()?.email }}
       </button>
     </div>
@@ -25,7 +25,7 @@
       <label for="password">Password</label>
       <div class="password-button-container">
         @for (i of getPasswordLength(); track $index) {
-          <button id="password" mat-raised-button aria-label="Masked Password.">*</button>
+          <button id="password" mat-raised-button>*</button>
         }
       </div>
     </div>
@@ -38,7 +38,7 @@
       title="Click to change your phone number."
     >
       <label for="phone-number">Phone number</label>
-      <button id="phone-number" mat-raised-button aria-label="Phone number.">
+      <button id="phone-number" mat-raised-button>
         {{ currentUserProfile()?.phoneNumber }}
       </button>
     </div>

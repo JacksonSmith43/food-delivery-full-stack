@@ -7,10 +7,11 @@
   >
     @for (label of filteredDietaryLabelByRestaurants(); track $index) {
       <mat-chip-option
-        [attr.aria-label]="label[1] + ' restaurants have been found for' + label[0] + ' food.' | titlecase"
-        [title]="label[1] + ' restaurants have been found for ' + label[0] + ' food.' | titlecase"
+        class="food-filter-item"
+        [aria-label]="label[1] + ' restaurants have been found for ' + label[0].toString().split('_').join(' ') + ' food.'"
+        [title]="label[1] + ' restaurants have been found for ' + label[0].toString().split('_').join(' ') + ' food.' | titlecase"
         [value]="label[0] | uppercase"
-        >{{ `${(label[0] | titlecase)} (${label[1]})` }}
+        >{{ `${(label[0].toString().split('_').join(' ') | titlecase)} (${label[1]})` }}
       </mat-chip-option>
     }
   </mat-chip-listbox>
@@ -18,7 +19,7 @@
 
 <div class="food-category-container">
   @for (i of categories(); track i.id) {
-    <button class="categories-container" [attr.aria-label]="i.categorie" (click)="onCategoryClick(i)">
+    <button class="categories-container" [attr.aria-label]="'Select ' + i.categorie + ' category.'" (click)="onCategoryClick(i)">
       <figure>
         <img [src]="'/images/categories/' + i.categorieImage" [alt]="i.categorieImage" />
         <figcaption>{{ i.categorie }}</figcaption>
@@ -29,7 +30,7 @@
 
 <div class="all-restaurants-container">
   @for (i of filteredRestaurants(); track i.id) {
-    <button class="restaurant-container" [attr.aria-label]="i.restaurantName" (click)="onRestaurantClick(i)">
+    <button class="restaurant-container" [attr.aria-label]="'Select ' + i.restaurantName + ' restaurant.'" (click)="onRestaurantClick(i)">
       <figure>
         <!-- With the img, link and script tag one can implicitly make a request to the server. -->
         <img [src]="'/images/restaurants/' + i.imageName" [alt]="i.imageName" />

@@ -12,13 +12,22 @@
           <div class="mat-icon">
             <mat-icon
               aria-hidden="false"
-              aria-label="Remove item from cart."
+              [attr.aria-label]="'Remove ' + cart.menuItem.foodName + ' from cart.'"
+              [title]="'Remove ' + cart.menuItem.foodName + ' from cart.'"
               fontIcon="remove"
               (click)="onRemoveFromCart(cart.menuItem.id)"
+              tabindex="0"
             ></mat-icon>
-            <p>{{ cart.quantity }}</p>
+            <p class="quantity" [attr.aria-label]="'Quantity: ' + cart.quantity" tabindex="0">{{ cart.quantity }}</p>
 
-            <mat-icon aria-hidden="false" aria-label="Add item to cart." fontIcon="add" (click)="onAddToCart(cart.menuItem.id)"></mat-icon>
+            <mat-icon
+              aria-hidden="false"
+              [attr.aria-label]="'Add ' + cart.menuItem.foodName + ' to cart.'"
+              [title]="'Add ' + cart.menuItem.foodName + ' to cart.'"
+              fontIcon="add"
+              (click)="onAddToCart(cart.menuItem.id)"
+              tabindex="0"
+            ></mat-icon>
           </div>
         </div>
       }

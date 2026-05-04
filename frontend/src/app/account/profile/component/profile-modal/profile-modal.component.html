@@ -1,12 +1,16 @@
-<div class="profile-modal-container">
+<div
+  class="profile-modal-container"
+  [aria-label]="'Enter your new ' + selectedFormField()"
+  aria-modal="true"
+  cdkTrapFocusAutoCapture
+  cdkTrapFocus
+>
   @if (selectedFormField() === 'email') {
     <form [formGroup]="emailForm" (ngSubmit)="onChangeEmail()">
       <div class="email-view">
         <label for="email">Email-Address</label>
-        <input id="email" type="email" placeholder="michael@gmail.com" [formControl]="email" />
-        <button type="submit" matButton="elevated" [disabled]="emailForm.invalid">
-          Change email address
-        </button>
+        <input id="email" type="email" placeholder="For example: michael@gmail.com" [formControl]="email" />
+        <button type="submit" matButton="elevated" [disabled]="emailForm.invalid">Change email address</button>
 
         @if (this.email.invalid && (this.email.touched || this.email.dirty)) {
           @if (this.email.hasError('required') || this.emailForm.controls.email.hasError('email')) {
@@ -27,17 +31,14 @@
         <input
           id="old-password"
           type="password"
-          placeholder="dHsleFo(9)?"
+          placeholder="For example: dHsleFo(9)?"
           minlength="6"
           maxlength="30"
           title="Has to contain at least 6 characters until maximum 30."
           [formControl]="currentPassword"
         />
 
-        @if (
-          this.currentPassword.invalid &&
-          (this.currentPassword.touched || this.currentPassword.dirty)
-        ) {
+        @if (this.currentPassword.invalid && (this.currentPassword.touched || this.currentPassword.dirty)) {
           @if (
             this.currentPassword.hasError('required') ||
             this.currentPassword.hasError('minlength') ||
@@ -78,14 +79,14 @@
         }
       </div>
     </form>
-  }  @else if (selectedFormField() === 'phoneNumber') {
+  } @else if (selectedFormField() === 'phoneNumber') {
     <form [formGroup]="phoneNumberForm" (ngSubmit)="onChangePhoneNumber()">
       <div class="phone-number-view">
         <label for="phoneNumber">Phone Number *</label>
         <input
           id="phoneNumber"
           type="tel"
-          placeholder="012345678"
+          placeholder="For example: 012345678"
           minlength="3"
           maxlength="20"
           title="Has to contain at least 3 numbers until maximum 20."
@@ -93,20 +94,12 @@
         />
 
         @if (phoneNumber.invalid && (phoneNumber.touched || phoneNumber.dirty)) {
-          @if (
-            phoneNumber.hasError('required') ||
-            phoneNumber.hasError('minlength') ||
-            phoneNumber.hasError('maxlength')
-          ) {
-            <mat-error class="error-message">{{
-              validatorsService.phoneNumberIsInvalid
-            }}</mat-error>
+          @if (phoneNumber.hasError('required') || phoneNumber.hasError('minlength') || phoneNumber.hasError('maxlength')) {
+            <mat-error class="error-message">{{ validatorsService.phoneNumberIsInvalid }}</mat-error>
           }
         }
 
-        <button matButton="elevated" [disabled]="phoneNumberForm.invalid">
-          Change Phone Number
-        </button>
+        <button matButton="elevated" [disabled]="phoneNumberForm.invalid">Change Phone Number</button>
 
         @if (isValidChange()) {
           <p class="success-message">{{ successMessage() }}</p>

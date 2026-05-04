@@ -69,7 +69,9 @@ img {
   width: 8rem;
 }
 
-button:focus {
+button:focus,
+mat-icon:focus,
+.quantity:focus {
   outline: 0.24rem red solid;
 }
 

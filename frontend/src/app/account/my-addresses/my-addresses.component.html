@@ -23,7 +23,7 @@
                   type="button"
                   (click)="onDeleteAddress(address.id)"
                   title="Delete address."
-                  aria-label="{{ address.label }} Address"
+                  [aria-label]="address.label + ' Address'"
                 >
                   <mat-icon>delete</mat-icon>
                 </button>
