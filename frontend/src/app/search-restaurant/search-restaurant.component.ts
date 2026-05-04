@@ -64,7 +64,7 @@ export class SearchRestaurant {
         }, 1000);
       }
 
-      this.restaurantsService.allRestaurants.set(restaurantsWithinPlz);
+      this.restaurantsService.filteredRestaurants.set(restaurantsWithinPlz);
     });
   }
 
