@@ -67,7 +67,9 @@ export class RestaurantsService {
     this.filteredRestaurants.set([selectedRestaurant]);
     console.log('filterByRestaurantMenuItems()_selectedRestaurant: ', selectedRestaurant.restaurantName);
 
-    let menuItems = this.allRestaurants().flatMap((r) => r.menuItems);
+    let menuItems = this.allRestaurants().flatMap((r) =>
+      r.restaurantName.includes(selectedRestaurant.restaurantName) ? r.menuItems : [],
+    );
 
     this.localStorageService.saveToLocalStorage('chosenRestaurant', [selectedRestaurant]);
     this.localStorageService.saveToLocalStorage('menuItemsofChosenRestaurant', menuItems);
