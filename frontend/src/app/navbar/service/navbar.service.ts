@@ -10,6 +10,9 @@ export class NavBarService {
   private restaurantsService = inject(RestaurantsService);
   private localStorageService = inject(LocalStorageService);
 
+  filteredRestaurants = this.restaurantsService.filteredRestaurants;
+  filteredDietaryLabelByRestaurants = this.restaurantsService.filteredDietaryLabelByRestaurants;
+
   getAllRestaurants() {
     console.log('NavBarService_getAllRestaurants().');
 
@@ -24,6 +27,9 @@ export class NavBarService {
         this.restaurantsService.menuItems.set(menuItems);
 
         console.log('NavBarService_getAllRestaurants()_restaurants: ', restaurants);
+        this.filteredRestaurants.set(restaurants);
+
+        this.restaurantsService.countDietaryLabels();
 
         const uniqueCategories = this.restaurantsService.getUniqueCategories(restaurants);
 

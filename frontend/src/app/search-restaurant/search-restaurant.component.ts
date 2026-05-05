@@ -1,26 +1,32 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { Router } from '@angular/router';
 
 import { RestaurantsService } from '../shared/services/restaurants.service';
 import { NavBarService } from '../navbar/service/navbar.service';
-import { RestaurantComponent } from '../restaurants/components/restaurant.component';
+import { LocalStorageService } from '../shared/services/local-storage.service';
 
 @Component({
   selector: 'app-search-restaurant',
-  imports: [FormsModule, MatButtonModule, ReactiveFormsModule, RestaurantComponent],
+  imports: [FormsModule, MatButtonModule, ReactiveFormsModule],
   templateUrl: './search-restaurant.component.html',
   styleUrl: './search-restaurant.component.css',
 })
 export class SearchRestaurant {
   restaurantsService = inject(RestaurantsService);
   navbarService = inject(NavBarService);
+  locaStorageService = inject(LocalStorageService);
+  router = inject(Router);
 
   plzExists = signal<boolean>(false);
   successfullSubmission = signal<boolean>(false);
 
   form = new FormGroup({
-    plz: new FormControl('', [Validators.required, Validators.min(1), Validators.max(23)]),
+    plz: new FormControl('', {
+      nonNullable: true,
+      validators: [Validators.required, Validators.min(1), Validators.max(23)],
+    }),
   });
 
   onSubmit() {
@@ -61,10 +67,12 @@ export class SearchRestaurant {
         setTimeout(() => {
           this.form.controls.plz.reset();
           this.plzExists.set(true);
-        }, 1000);
+        }, 3000);
       }
 
+      this.locaStorageService.saveToLocalStorage('restaurants', restaurantsWithinPlz);
       this.restaurantsService.filteredRestaurants.set(restaurantsWithinPlz);
+      this.router.navigate(['/restaurants/' + enteredPlz]);
     });
   }
 

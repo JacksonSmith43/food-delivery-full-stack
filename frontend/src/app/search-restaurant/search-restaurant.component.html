@@ -14,11 +14,9 @@
   </form>
 
   @if (!plzExists() && successfullSubmission()) {
-    <p class="error-message">Postcode does not exist.</p>
+    <p class="error-message">A Restaurant does not exist for that postalcode.</p>
   }
   @if (form.controls.plz.invalid && (form.controls.plz.dirty || form.controls.plz.touched)) {
     <p class="error-message">{{ plzErrorMessages }}</p>
   }
-
-  <app-restaurants></app-restaurants>
 </div>

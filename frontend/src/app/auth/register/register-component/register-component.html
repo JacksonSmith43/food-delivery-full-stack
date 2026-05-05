@@ -1,20 +1,10 @@
 <div class="registration-container">
-  <form [formGroup]="registerForm" (ngSubmit)="onSubmit(emailInput.value, passwordInput.value)" ()>
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit(emailInput.value, passwordInput.value)">
     <h2>Registration</h2>
     <label for="email">Email address</label>
-    <input
-      id="email"
-      type="email"
-      placeholder="joradan@gmail.com"
-      required
-      [formControl]="registerForm.controls.email"
-      #emailInput
-    />
+    <input id="email" type="email" placeholder="joradan@gmail.com" required [formControl]="registerForm.controls.email" #emailInput />
 
-    @if (
-      registerForm.controls.email.invalid &&
-      (registerForm.controls.email.dirty || registerForm.controls.email.touched)
-    ) {
+    @if (registerForm.controls.email.invalid && (registerForm.controls.email.dirty || registerForm.controls.email.touched)) {
       @if (registerForm.controls.email.hasError('required')) {
         <p class="error-message">{{ emailIsInvalid }}</p>
       }
@@ -35,10 +25,7 @@
       #passwordInput
     />
 
-    @if (
-      registerForm.controls.password.invalid &&
-      (registerForm.controls.password.dirty || registerForm.controls.password.touched)
-    ) {
+    @if (registerForm.controls.password.invalid && (registerForm.controls.password.dirty || registerForm.controls.password.touched)) {
       @if (registerForm.controls.password.hasError('required')) {
         <p class="error-message">{{ passwordIsInvalid }}</p>
       }

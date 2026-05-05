@@ -20,6 +20,7 @@ export const routes: Routes = [
   { path: '', component: SearchRestaurant },
 
   { path: 'allRestaurants', component: RestaurantComponent },
+  { path: 'restaurants/:plz', component: RestaurantComponent },
   { path: 'restaurant/:restaurantName', component: RestaurantDetailComponent },
   { path: 'account', component: AccountComponent },
   { path: 'profile', component: ProfileComponent },

@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatChipListboxChange, MatChipsModule } from '@angular/material/chips';
 import { TitleCasePipe, UpperCasePipe } from '@angular/common';
 
@@ -22,6 +22,7 @@ export class RestaurantComponent implements OnInit {
   navbarService = inject(NavBarService);
   authService = inject(AuthService);
   router = inject(Router);
+  route = inject(ActivatedRoute);
 
   allRestaurants = this.restaurantsService.allRestaurants;
   categories = this.restaurantsService.categories;
@@ -29,9 +30,18 @@ export class RestaurantComponent implements OnInit {
   filteredDietaryLabelByRestaurants = this.restaurantsService.filteredDietaryLabelByRestaurants;
   filteredRestaurants = this.restaurantsService.filteredRestaurants;
 
+  enteredPlz = '';
+
   ngOnInit(): void {
     console.log('Restaurant_ngOnInit().');
-    console.log('Restaurant_ngOnInit()_this.allRestaurants().', this.allRestaurants());
+
+    // TODO: This will be required, in order to filter the plz here.
+    this.route.params.subscribe((params) => {
+      this.enteredPlz = params['plz'];
+      console.log('Restaurant_ngOnInit()_this.enteredPlz: ', this.enteredPlz);
+    });
+
+    console.log('Restaurant_ngOnInit()_this.filteredRestaurants().', this.filteredRestaurants());
 
     let userCredentials = this.localStorageService.getUserCredentials();
 
@@ -49,20 +59,25 @@ export class RestaurantComponent implements OnInit {
       const uniqueCategories = this.restaurantsService.getUniqueCategories(restaurants);
       this.restaurantsService.categories.set(uniqueCategories);
       console.log('RestaurantComponent_ngOnInit()_uniqueCategories: ', uniqueCategories);
-    } else {
-      this.navbarService.getAllRestaurants();
     }
+
     this.restaurantsService.countDietaryLabels();
-    this.navbarService.getAllRestaurants();
   }
 
   onCategoryClick(category: CategoryType) {
     console.log('onCategoryClick().');
 
-    this.restaurantsService.getAllRestaurants().subscribe((restaurants) => {
-      const filtered = this.restaurantsService.filterByCategory(restaurants, category);
-      this.restaurantsService.filteredRestaurants.set(filtered);
-    });
+    if (this.filteredRestaurants().length === 0) {
+      this.restaurantsService.getAllRestaurants().subscribe((restaurants) => {
+        const filtered = this.restaurantsService.filterByCategory(restaurants, category);
+        this.restaurantsService.filteredRestaurants.set(filtered);
+      });
+    } else {
+      this.filteredRestaurants().forEach((restaurants) => {
+        const filtered = this.restaurantsService.filterByCategory([restaurants], category);
+        this.restaurantsService.filteredRestaurants.set(filtered);
+      });
+    }
   }
 
   onRestaurantClick(selectedRestaurant: RestaurantType) {

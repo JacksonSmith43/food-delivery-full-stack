@@ -105,7 +105,7 @@ export class RestaurantsService {
 
     let mapped = new Map<string, number>();
 
-    this.allRestaurants().flatMap((restaurant) => {
+    this.filteredRestaurants().flatMap((restaurant) => {
       restaurant.menuItems.map((menu) => {
         menu.dietaryLabels.forEach((label) => {
           // Example: map.set('VEGAN', 5);
