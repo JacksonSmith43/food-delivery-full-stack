@@ -35,8 +35,9 @@ export class RestaurantComponent implements OnInit {
   ngOnInit(): void {
     console.log('Restaurant_ngOnInit().');
 
-    // TODO: This will be required, in order to filter the plz here.
+    // This is required, in order to filter the plz in this component. This extracts the plz from the URL and saves it in the enteredPlz variable.
     this.route.params.subscribe((params) => {
+      // plz has to match the name that is in app.routes: path: 'restaurants/:plz'
       this.enteredPlz = params['plz'];
       console.log('Restaurant_ngOnInit()_this.enteredPlz: ', this.enteredPlz);
     });
@@ -93,9 +94,12 @@ export class RestaurantComponent implements OnInit {
 
     let value: string = event.value;
 
-    // When all chips have been deselected, the value will be undefined. Then all restaurants should be visible again.
+    // When all chips have been deselected, the value will be undefined. Then all restaurants should be visible again, within that postalcode.
     if (value === undefined) {
-      this.filteredRestaurants.set(this.allRestaurants());
+      this.filteredRestaurants.set([
+        ...(this.enteredPlz ? this.allRestaurants().filter((r) => r.plz === this.enteredPlz) : this.allRestaurants()),
+      ]);
+      return this.filteredRestaurants();
     }
 
     return this.restaurantsService.filterDietaryLabelByRestaurants(value);
