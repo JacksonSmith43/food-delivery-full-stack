@@ -61,6 +61,11 @@ export class SearchRestaurant {
       if (restaurantsWithinPlz.length > 0) {
         this.plzExists.set(true);
         this.form.controls.plz.reset();
+        
+        this.locaStorageService.saveToLocalStorage('restaurants', restaurantsWithinPlz);
+        this.restaurantsService.filteredRestaurants.set(restaurantsWithinPlz);
+        this.router.navigate(['/restaurants/' + enteredPlz]);
+      
       } else {
         this.plzExists.set(false);
 
@@ -69,10 +74,6 @@ export class SearchRestaurant {
           this.plzExists.set(true);
         }, 3000);
       }
-
-      this.locaStorageService.saveToLocalStorage('restaurants', restaurantsWithinPlz);
-      this.restaurantsService.filteredRestaurants.set(restaurantsWithinPlz);
-      this.router.navigate(['/restaurants/' + enteredPlz]);
     });
   }
 
