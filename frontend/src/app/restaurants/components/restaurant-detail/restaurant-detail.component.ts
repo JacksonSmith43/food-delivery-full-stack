@@ -1,5 +1,6 @@
 import { Component, computed, inject, OnInit } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
+import { Router } from '@angular/router';
 
 import { RestaurantsService } from '../../../shared/services/restaurants.service';
 import { LocalStorageService } from '../../../shared/services/local-storage.service';
@@ -22,6 +23,8 @@ export class RestaurantDetailComponent implements OnInit {
   authService = inject(AuthService);
   favouritesService = inject(FavouritesService);
   accountService = inject(AccountService);
+  
+  router = inject(Router);
 
   menuItems = this.restaurantService.menuItems;
   allRestaurants = this.restaurantService.allRestaurants;
@@ -38,18 +41,18 @@ export class RestaurantDetailComponent implements OnInit {
 
     if (userCredentials) {
       this.authService.authUser.set(userCredentials);
-    }
 
-    this.accountService.getUserProfile(userCredentials.email).subscribe({
-      next: (user) => {
-        console.log('RestaurantDetailComponent_ngOnInit()_user: ', user);
-        this.accountService.currentUserProfile.set(JSON.parse(user));
-        this.getFavouriteMenuItemIds();
-      },
-      error: (error) => {
-        console.error('RestaurantDetailComponent_ngOnInit()_Error loading profile: ', error.error.message);
-      },
-    });
+      this.accountService.getUserProfile(userCredentials.email).subscribe({
+        next: (user) => {
+          console.log('RestaurantDetailComponent_ngOnInit()_user: ', user);
+          this.accountService.currentUserProfile.set(JSON.parse(user));
+          this.getFavouriteMenuItemIds();
+        },
+        error: (error) => {
+          console.error('RestaurantDetailComponent_ngOnInit()_Error loading profile: ', error.error.message);
+        },
+      });
+    }
 
     let menuItems = this.localStorageService.getMenuItems('menuItemsofChosenRestaurant');
     let restaurant = this.localStorageService.getCurrentRestaurant('chosenRestaurant');
@@ -88,6 +91,13 @@ export class RestaurantDetailComponent implements OnInit {
     console.log('RestaurantDetailComponent_onAddToCart().');
     console.log('RestaurantDetailComponent_onAddToCart()_menuItemId:', menuItemId);
 
+    if (!this.authService.authUser()) {
+      console.log('RestaurantDetailComponent_onAddToCart()_this.router.url :', this.router.url);
+
+      // Redirects to the login page. The URL would look like this: http://localhost:4200/login?returnUrl=%2Frestaurant%2FLast%2520Resort%2520Diner
+      this.router.navigate(['/login'], { queryParams: { returnUrl: this.router.url } });
+    }
+
     this.cartService.addItemToCart(menuItemId, 1).subscribe({
       next: (cart) => {
         console.log('RestaurantDetailComponent_onAddToCart()_Item added to cart:', cart);
@@ -100,6 +110,12 @@ export class RestaurantDetailComponent implements OnInit {
   onRemoveFromCart(menuItemId: number) {
     console.log('RestaurantDetailComponent_onRemoveFromCart().');
     console.log('RestaurantDetailComponent_onRemoveFromCart()_menuItemId:', menuItemId);
+
+    if (!this.authService.authUser()) {
+      console.log('RestaurantDetailComponent_onRemoveFromCart()_this.router.url :', this.router.url);
+
+      this.router.navigate(['/login'], { queryParams: { returnUrl: this.router.url } });
+    }
 
     this.cartService.removeItemFromCart(menuItemId, 1).subscribe({
       next: (cart) => {
@@ -118,6 +134,17 @@ export class RestaurantDetailComponent implements OnInit {
 
   onAddToFavourite(menuId: number) {
     console.log('onAddToFavourite().');
+
+    if (!this.authService.authUser()) {
+      console.log('RestaurantDetailComponent_onAddToFavourite()_this.router.url :', this.router.url);
+
+      this.router.navigate(['/login'], { queryParams: { returnUrl: this.router.url } });
+    }
+
+    console.log(
+      'RestaurantDetailComponent_onAddToFavourite()_this.authService.authUser() :',
+      this.authService.authUser(),
+    );
 
     let currentId: number = this.accountService.currentUserProfile()!.id;
 
@@ -140,6 +167,12 @@ export class RestaurantDetailComponent implements OnInit {
 
   onRemoveFromFavourites(menuId: number) {
     console.log('onRemoveFromFavourites().');
+
+    if (!this.authService.authUser()) {
+      console.log('RestaurantDetailComponent_onRemoveFromFavourites()_this.router.url :', this.router.url);
+
+      this.router.navigate(['/login'], { queryParams: { returnUrl: this.router.url } });
+    }
 
     let currentId: number = this.accountService.currentUserProfile()!.id;
 
