@@ -56,6 +56,8 @@ export class RestaurantsService {
 
   filterByCategory(restaurants: RestaurantType[], selectedCategory: CategoryType): RestaurantType[] {
     console.log('filterByCategory().');
+    console.log('filterByCategory()_restaurants: ', restaurants);
+    console.log('filterByCategory()_selectedCategory: ', selectedCategory);
 
     // Only when the selected category matches the restaurant's category will the filter return true.
     return restaurants.filter((r) => r.categories.some((c) => c.categorie === selectedCategory.categorie));

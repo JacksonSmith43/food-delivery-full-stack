@@ -67,18 +67,19 @@ export class RestaurantComponent implements OnInit {
 
   onCategoryClick(category: CategoryType) {
     console.log('onCategoryClick().');
+    console.log('onCategoryClick()_this.enteredPlz: ', this.enteredPlz);
 
-    if (this.filteredRestaurants().length === 0) {
-      this.restaurantsService.getAllRestaurants().subscribe((restaurants) => {
-        const filtered = this.restaurantsService.filterByCategory(restaurants, category);
-        this.restaurantsService.filteredRestaurants.set(filtered);
-      });
-    } else {
-      this.filteredRestaurants().forEach((restaurants) => {
-        const filtered = this.restaurantsService.filterByCategory([restaurants], category);
-        this.restaurantsService.filteredRestaurants.set(filtered);
-      });
-    }
+    let filteredCategories = this.allRestaurants().map((restaurants) => {
+      let filter = this.enteredPlz
+        ? this.restaurantsService
+            .filterByCategory([restaurants], category)
+            .filter((restaurant) => restaurant.plz === this.enteredPlz)
+        : this.restaurantsService.filterByCategory([restaurants], category);
+
+      return filter;
+    });
+    let filteredCategoriesFlattened = filteredCategories.flatMap((restaurant) => restaurant);
+    this.filteredRestaurants.set(filteredCategoriesFlattened);
   }
 
   onRestaurantClick(selectedRestaurant: RestaurantType) {

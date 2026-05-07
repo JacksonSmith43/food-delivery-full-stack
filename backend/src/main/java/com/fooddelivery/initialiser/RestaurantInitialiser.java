@@ -52,7 +52,6 @@ public class RestaurantInitialiser {
             }
 
             if (burger != null) {
-                getFat.getCategories().add(burger);
                 lastResort.getCategories().add(burger);
                 getFat.getCategories().add(burger);
                 fatFace.getCategories().add(burger);
