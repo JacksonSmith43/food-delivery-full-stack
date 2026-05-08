@@ -14,12 +14,14 @@ export class RestaurantsService {
 
   // This only gets used to get all images and to get filtered but not changed.
   allRestaurants = signal<RestaurantType[]>([]);
+  // This is used for filtering the restaurants using the allRestaurants as a filter and this then gets displayed.
+  filteredRestaurants = signal<RestaurantType[]>([]);
+  filteredDietaryLabelByRestaurants = signal<Map<string, number>>(new Map([[' ', 0]]));
   plz = signal<string>('');
   categories = signal<CategoryType[]>([]);
   menuItems = signal<MenuItemsType[]>([]);
-  filteredDietaryLabelByRestaurants = signal<Map<string, number>>(new Map([[' ', 0]]));
-  // This is used for filtering the restaurants using the allRestaurants as a filter and this then gets displayed.
-  filteredRestaurants = signal<RestaurantType[]>([]);
+  filteredMenuItems = signal<MenuItemsType[]>([]);
+  filteredDietaryLabelByMenuItem = signal<Map<string, number>>(new Map([[' ', 0]]));
 
   getAllRestaurants(): Observable<RestaurantType[]> {
     console.log('RestaurantsService_getAllRestaurants().');
@@ -102,8 +104,8 @@ export class RestaurantsService {
   }
 
   // This method counts how many times each dietary label appears across all restaurants and their menu items.
-  countDietaryLabels(): void {
-    console.log('RestaurantsService_countDietaryLabels().');
+  countDietaryLabelsForRestaurants(): void {
+    console.log('RestaurantsService_countDietaryLabelsForRestaurants().');
 
     let mapped = new Map<string, number>();
 
@@ -128,11 +130,41 @@ export class RestaurantsService {
       });
     });
 
-    let mappedArray = Array.from(mapped.entries());
-    console.log('RestaurantsService_countDietaryLabels()_mapped: ', mapped);
-    console.log('RestaurantsService_countDietaryLabels()_mappedArray: ', mappedArray);
+    console.log('RestaurantsService_countDietaryLabelsForRestaurants()_mapped: ', mapped);
 
     // This displays the labels.
     this.filteredDietaryLabelByRestaurants.set(new Map(mapped));
+  }
+
+  filterDietaryLabelByMenuItem(value: string): MenuItemsType[] {
+    console.log('RestaurantsService_filterDietaryLabelByMenuItem().');
+    console.log('RestaurantsService_filterDietaryLabelByMenuItem()_this.menuItems(): ', this.menuItems());
+
+    // Filters the menuItems to the corresponding label that was selected.
+    let filterByDietaryLabels: MenuItemsType[] = this.menuItems().filter((menuItem) =>
+      menuItem.dietaryLabels.includes(value.toUpperCase()),
+    );
+
+    this.filteredMenuItems.set(filterByDietaryLabels);
+    console.log('RestaurantsService_filterDietaryLabelByMenuItem()_filterByDietaryLabels: ', filterByDietaryLabels);
+
+    return filterByDietaryLabels;
+  }
+
+  countDietaryLabelsForMenuItems(): void {
+    console.log('RestaurantsService_countDietaryLabels().');
+
+    let mapped = new Map<string, number>();
+
+    this.filteredMenuItems().map((menuItem) => {
+      menuItem.dietaryLabels.forEach((label) => {
+        mapped.set(label, (mapped.get(label) ?? 0) + 1);
+      });
+    });
+
+    console.log('RestaurantsService_countDietaryLabelsForMenuItems()_mapped: ', mapped);
+
+    // This displays the labels.
+    this.filteredDietaryLabelByMenuItem.set(new Map(mapped));
   }
 }

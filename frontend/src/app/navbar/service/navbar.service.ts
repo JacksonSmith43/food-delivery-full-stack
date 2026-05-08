@@ -11,7 +11,6 @@ export class NavBarService {
   private localStorageService = inject(LocalStorageService);
 
   filteredRestaurants = this.restaurantsService.filteredRestaurants;
-  filteredDietaryLabelByRestaurants = this.restaurantsService.filteredDietaryLabelByRestaurants;
 
   getAllRestaurants() {
     console.log('NavBarService_getAllRestaurants().');
@@ -29,7 +28,9 @@ export class NavBarService {
         console.log('NavBarService_getAllRestaurants()_restaurants: ', restaurants);
         this.filteredRestaurants.set(restaurants);
 
-        this.restaurantsService.countDietaryLabels();
+        // This ensures that the dietary labels are counted and set in the signals, so that they can be displayed in the restaurant and restaurant detail component. This is required, because otherwise the count would be 0 and not displayed in the UI.
+        this.restaurantsService.countDietaryLabelsForRestaurants();
+        this.restaurantsService.countDietaryLabelsForMenuItems();
 
         const uniqueCategories = this.restaurantsService.getUniqueCategories(restaurants);
 

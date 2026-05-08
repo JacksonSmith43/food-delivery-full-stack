@@ -62,7 +62,7 @@ export class RestaurantComponent implements OnInit {
       console.log('RestaurantComponent_ngOnInit()_uniqueCategories: ', uniqueCategories);
     }
 
-    this.restaurantsService.countDietaryLabels();
+    this.restaurantsService.countDietaryLabelsForRestaurants();
   }
 
   onCategoryClick(category: CategoryType) {

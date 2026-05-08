@@ -9,8 +9,27 @@
     </div>
   </div>
 
+  <div class="food-filter-container">
+    <mat-chip-listbox
+      class="food-filter-list"
+      (change)="onFilterDietaryChange($event)"
+      aria-label="Select a food label."
+      aria-describedby="In order to choose a filter option, navigate using arrow keys and press enter/space."
+    >
+      @for (label of filteredDietaryLabelByMenuItem(); track $index) {
+        <mat-chip-option
+          class="food-filter-item"
+          [aria-label]="label[1] + ' food items have been found for ' + label[0].toString().split('_').join(' ')"
+          [title]="label[1] + ' food items have been found for ' + label[0].toString().split('_').join(' ') | titlecase"
+          [value]="label[0] | uppercase"
+          >{{ `${(label[0].toString().split('_').join(' ') | titlecase)} (${label[1]})` }}
+        </mat-chip-option>
+      }
+    </mat-chip-listbox>
+  </div>
+
   <div class="menu-item-container">
-    @for (m of menuItems(); track m.id) {
+    @for (m of filteredMenuItems(); track m.id) {
       <div class="menu-item">
         <div class="menu-item-menu">
           <div class="menu-item-details">
@@ -26,7 +45,7 @@
                 class="favourite-button"
                 mat-icon-button
                 (click)="onRemoveFromFavourites(m.id)"
-                [title]="'Click to remove' + m.foodName + 'from favourite.'"
+                [title]="'Click to remove ' + m.foodName + ' from favourite.'"
               >
                 <mat-icon>favorite</mat-icon>
               </button>
@@ -35,7 +54,7 @@
                 class="favourite-button"
                 mat-icon-button
                 (click)="onAddToFavourite(m.id)"
-                [title]="'Click to add' + m.foodName + 'to favourite.'"
+                [title]="'Click to add ' + m.foodName + ' to favourite.'"
               >
                 <mat-icon>favorite_border</mat-icon>
               </button>

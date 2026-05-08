@@ -1,6 +1,8 @@
 import { Component, computed, inject, OnInit } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { Router } from '@angular/router';
+import { MatChipListboxChange, MatChipsModule } from '@angular/material/chips';
+import { TitleCasePipe, UpperCasePipe } from '@angular/common';
 
 import { RestaurantsService } from '../../../shared/services/restaurants.service';
 import { LocalStorageService } from '../../../shared/services/local-storage.service';
@@ -8,11 +10,12 @@ import { CartService } from '../../../shared/services/cart.service';
 import { AuthService } from '../../../auth/service/auth.service';
 import { FavouritesService } from '../../../shared/services/favourites.service';
 import { AccountService } from '../../../account/service/account.service';
+import { MenuItemsType } from '../../../shared/model/restaurants-type.module';
 
 @Component({
   selector: 'app-restaurant-detail',
   standalone: true,
-  imports: [MatIcon],
+  imports: [MatIcon, MatChipsModule, UpperCasePipe, TitleCasePipe],
   templateUrl: './restaurant-detail.component.html',
   styleUrl: './restaurant-detail.component.css',
 })
@@ -23,14 +26,17 @@ export class RestaurantDetailComponent implements OnInit {
   authService = inject(AuthService);
   favouritesService = inject(FavouritesService);
   accountService = inject(AccountService);
-  
+
   router = inject(Router);
 
-  menuItems = this.restaurantService.menuItems;
   allRestaurants = this.restaurantService.allRestaurants;
+  filteredRestaurants = this.restaurantService.filteredRestaurants;
   category = this.restaurantService.categories;
   cartSummary = this.cartService.cartSummary;
   menuItemIds = this.favouritesService.menuItemIds;
+  menuItems = this.restaurantService.menuItems;
+  filteredMenuItems = this.restaurantService.filteredMenuItems;
+  filteredDietaryLabelByMenuItem = this.restaurantService.filteredDietaryLabelByMenuItem;
 
   menuItemsIdsComputed = computed(() => this.menuItemIds());
 
@@ -61,9 +67,11 @@ export class RestaurantDetailComponent implements OnInit {
     console.log('RestaurantDetailComponent_ngOnInit()_restaurant: ', restaurant);
 
     this.menuItems.set(menuItems);
+    this.filteredMenuItems.set(menuItems);
     this.allRestaurants.set(restaurant);
 
     this.cartService.refreshCart();
+    this.restaurantService.countDietaryLabelsForMenuItems();
   }
 
   getCurrentRestaurant(): string[] {
@@ -213,5 +221,20 @@ export class RestaurantDetailComponent implements OnInit {
       },
     });
     return [];
+  }
+
+  onFilterDietaryChange(event: MatChipListboxChange): MenuItemsType[] {
+    console.log('RestaurantDetailComponent_onFilterDietaryChange().');
+    console.log('RestaurantDetailComponent_onFilterDietaryChange()_value: ', event.value);
+
+    let value: string = event.value;
+
+    // When all chips have been deselected, the value will be undefined. Then all menuItems should be visible again.
+    if (value === undefined) {
+      this.filteredMenuItems.set([...this.menuItems()]);
+      return this.filteredMenuItems();
+    }
+
+    return this.restaurantService.filterDietaryLabelByMenuItem(value);
   }
 }
