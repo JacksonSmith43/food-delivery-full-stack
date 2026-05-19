@@ -19,7 +19,7 @@ public class RestaurantsService {
         List<Restaurants> restaurants = restaurantRepository.findAll();
 
         if (restaurants.isEmpty()) {
-            List.of();
+            return List.of();
         }
 
         System.out.println("RestaurantsService_getRestaurantImages_restaurants: " + restaurants);

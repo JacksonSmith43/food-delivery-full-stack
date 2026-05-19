@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.List;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -58,6 +59,7 @@ public class RestaurantControllerTest {
     // Hat Mock eine eigene Datenbank / Tabelle?: Keine Datenbank — nur eine HashMap
     // im RAM.
     @Test
+    @DisplayName("Controller_getRestaurantImages() should return a list of restaurants") 
     void testGetRestaurantImages() {
         // Given. Input.
         // Erstelle eine Beispiel-Liste, die der Mock zurückgeben soll.
