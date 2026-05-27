@@ -33,6 +33,7 @@ public class RestaurantIntegrationTest {
     // from previous tests.
     @BeforeEach
     void setup() {
+        restaurantRepository.deleteAll();
         Restaurants restaurant = new Restaurants("Test Restaurant", "test.png", "10");
         restaurantRepository.save(restaurant);
     }
