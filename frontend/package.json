@@ -6,7 +6,9 @@
     "start": "ng serve --proxy-config proxy.conf.json --live-reload --hmr=false --poll 1000",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "vitest": "vitest",
+    "vitest:ui": "vitest --ui --open"
   },
   "prettier": {
     "printWidth": 120,
@@ -40,9 +42,10 @@
     "@angular/build": "^21.0.4",
     "@angular/cli": "^21.0.4",
     "@angular/compiler-cli": "^21.0.0",
+    "@vitest/ui": "^4.1.7",
     "jsdom": "^27.1.0",
     "prettier": "^3.8.1",
     "typescript": "~5.9.2",
-    "vitest": "^4.0.8"
+    "vitest": "^4.1.7"
   }
 }
