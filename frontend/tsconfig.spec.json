@@ -6,7 +6,8 @@
     "rootDir": "./src",
     "outDir": "./out-tsc/spec",
     "types": [
-      "vitest/globals"
+      "vitest/globals",
+      "vite/client" /* For example this allows access to Vite's client-side types. ?raw can be used to import raw content as a string. */
     ]
   },
   "include": [
