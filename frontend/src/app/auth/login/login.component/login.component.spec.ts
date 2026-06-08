@@ -2,6 +2,7 @@ import { ɵresolveComponentResources as resolveComponentResources, signal } from
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { describe, expect, it } from 'vitest';
 import { ActivatedRoute, Router } from '@angular/router';
+import { of } from 'rxjs';
 import template from './login.component.html?raw';
 
 import { LoginComponent } from './login.component';
@@ -128,5 +129,32 @@ describe('LoginComponent', () => {
     component.onSubmit('', '');
 
     expect(authService.loginUser).not.toHaveBeenCalled();
+  });
+
+  it('submits valid form and resets it afterwards', async () => {
+    // This does not run the real AuthService.loginUser() method.
+    // It only tells the mock what it should return when the component calls loginUser(...).
+    // `of('ok')` creates a fake successful Observable, so the component enters the `next` path in `onLogin()`.
+    authService.loginUser.mockReturnValue(of('ok'));
+
+    await createComponent();
+
+    component.loginForm.setValue({
+      email: 'admin@gmx.at',
+      password: 'easy123',
+    });
+
+    expect(component.loginForm.valid).toBe(true);
+
+    // This runs the real component method.
+    // Inside `onSubmit()`, the real component code still calls `this.onLogin(...)` and later resets the form.
+    // The only fake part is the service response returned by the mocked authService.loginUser(...).
+    component.onSubmit('admin@gmx.at', 'easy123');
+
+    // This proves that the component tried to start the login process with the expected credentials.
+    expect(authService.loginUser).toHaveBeenCalledWith('admin@gmx.at', 'easy123');
+
+    // This proves that the real component code reached `this.loginForm.reset()` after the valid submit.
+    expect(component.loginForm.getRawValue()).toEqual({ email: null, password: null });
   });
 });
