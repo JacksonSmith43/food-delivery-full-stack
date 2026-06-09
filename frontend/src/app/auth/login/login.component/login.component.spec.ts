@@ -2,7 +2,7 @@ import { ɵresolveComponentResources as resolveComponentResources, signal } from
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { describe, expect, it } from 'vitest';
 import { ActivatedRoute, Router } from '@angular/router';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import template from './login.component.html?raw';
 
 import { LoginComponent } from './login.component';
@@ -156,5 +156,41 @@ describe('LoginComponent', () => {
 
     // This proves that the real component code reached `this.loginForm.reset()` after the valid submit.
     expect(component.loginForm.getRawValue()).toEqual({ email: null, password: null });
+  });
+
+  it('shows an error message for invalid login credentials', async () => {
+    // This fake response simulates a backend rejection.
+    // The form input itself is still valid, but the server says the credentials are wrong.
+    authService.loginUser.mockReturnValue(
+      throwError(() => ({
+        error: JSON.stringify({ code: 'INVALID_CREDENTIALS' }),
+      })),
+    );
+
+    await createComponent();
+
+    // We use syntactically valid values here on purpose.
+    // If we used invalid values, `onSubmit()` would stop earlier at `if (this.loginForm.invalid) return;`
+    // and the component would never call `loginUser(...)`.
+    component.loginForm.setValue({
+      email: 'admin@gmx.at',
+      password: 'easy123',
+    });
+
+    // The form is valid on the client side, so the component is allowed to try the login request.
+    expect(component.loginForm.valid).toBe(true);
+
+    // We pass the same values into `onSubmit(...)` because this test is about a failed backend login,
+    // not about client-side form validation.
+    component.onSubmit('admin@gmx.at', 'easy123');
+
+    // This expectation must match the same credentials we set above, because these are the values
+    // the component forwards to the mocked AuthService.
+    expect(authService.loginUser).toHaveBeenCalledWith('admin@gmx.at', 'easy123');
+
+    // When the Observable goes into the `error` branch, the component clears authUser
+    // and stores the backend error code in `errorMessage`.
+    expect(authService.authUser()).toBeUndefined();
+    expect(authService.errorMessage()).toBe('INVALID_CREDENTIALS');
   });
 });
