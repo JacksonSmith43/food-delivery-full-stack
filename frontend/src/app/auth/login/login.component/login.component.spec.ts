@@ -193,4 +193,35 @@ describe('LoginComponent', () => {
     expect(authService.authUser()).toBeUndefined();
     expect(authService.errorMessage()).toBe('INVALID_CREDENTIALS');
   });
+
+  it('does not submit when the email format is invalid', async () => {
+    await createComponent();
+
+    component.loginForm.setValue({
+      email: 'not-an-email',
+      password: 'easy123',
+    });
+
+    // Because the email format is invalid, the form should be invalid and show an email error.
+    expect(component.loginForm.controls.email.hasError('email')).toBe(true);
+    // Therefore, the submit should not even be attempted, and the loginUser method should not be called at all.
+    component.onSubmit('not-an-email', 'easy123');
+
+    expect(authService.loginUser).not.toHaveBeenCalled();
+  });
+
+  it('does not submit when the password is too short', async () => {
+    await createComponent();
+
+    component.loginForm.setValue({
+      email: 'admin@gmx.at',
+      password: '123',
+    });
+
+    expect(component.loginForm.controls.password.hasError('minlength')).toBe(true);
+
+    component.onSubmit('admin@gmx.at', '123');
+    // Makes sure the component does not even try to call the loginUser method when the form is invalid. This proves that the client-side validation works and prevents unnecessary backend calls.
+    expect(authService.loginUser).not.toHaveBeenCalled();
+  });
 });
