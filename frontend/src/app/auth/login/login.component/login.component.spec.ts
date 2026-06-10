@@ -3,8 +3,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { describe, expect, it } from 'vitest';
 import { ActivatedRoute, Router } from '@angular/router';
 import { of, throwError } from 'rxjs';
-import template from './login.component.html?raw';
 
+import template from './login.component.html?raw';
 import { LoginComponent } from './login.component';
 import { AuthType } from '../../model/auth-user-type';
 import { AuthService } from '../../service/auth.service';
