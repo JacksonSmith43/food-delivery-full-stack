@@ -5,11 +5,13 @@ import { RegisterComponent } from './register-component';
 import { AuthType } from '../../model/auth-user-type';
 import template from './register-component.html?raw';
 import { AuthService } from '../../service/auth.service';
+import { of } from 'rxjs';
 
 type AuthServiceMock = {
   registerUser: ReturnType<typeof vi.fn>;
   errorMessage: ReturnType<typeof signal<string>>;
   successMessage: ReturnType<typeof signal<string>>;
+  isValid: ReturnType<typeof signal<boolean>>;
   authService: ReturnType<typeof signal<AuthType | undefined>>;
 };
 
@@ -23,6 +25,7 @@ describe('RegisterComponent', () => {
     registerUser: vi.fn(),
     errorMessage: signal('error'),
     successMessage: signal('success'),
+    isValid: signal(false),
     authService: signal<AuthType | undefined>(undefined),
   });
 
@@ -56,8 +59,39 @@ describe('RegisterComponent', () => {
   // `beforeEach(...)` runs before every single test.
   beforeEach(() => {
     // Reset Angular's testing state so every test starts clean.
-    TestBed.resetTestEnvironment();
+    TestBed.resetTestingModule();
     // Create fresh mocks for each test.
     authService = createAuthServiceMock();
+  });
+
+  it('does not submit when the registration form is invalid', async () => {
+    await createComponent();
+
+    expect(component.registerForm.invalid).toBe(true);
+
+    component.onSubmit('', '');
+
+    expect(authService.registerUser).not.toHaveBeenCalled();
+  });
+
+  it('submits registration form successfully and resets it', async () => {
+    authService.registerUser.mockReturnValue(of('ok'));
+    await createComponent();
+
+    component.registerForm.setValue({
+      email: 'admin@gmx.at',
+      password: 'easy123',
+    });
+
+    expect(component.registerForm.valid).toBe(true);
+
+    component.onSubmit('admin@gmx.at', 'easy123');
+
+    expect(authService.registerUser).toHaveBeenCalledWith('admin@gmx.at', 'easy123');
+    expect(authService.successMessage()).toBe('Successful registration.');
+    expect(authService.errorMessage()).toBe('');
+    expect(authService.isValid()).toBe(true);
+    // Resets the form.
+    expect(component.registerForm.getRawValue()).toEqual({ email: null, password: null });
   });
 });
