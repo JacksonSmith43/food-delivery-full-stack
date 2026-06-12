@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { signal, ɵresolveComponentResources as resolveComponentResources } from '@angular/core';
+import { of, throwError } from 'rxjs';
 
 import { RegisterComponent } from './register-component';
 import { AuthType } from '../../model/auth-user-type';
 import template from './register-component.html?raw';
 import { AuthService } from '../../service/auth.service';
-import { of } from 'rxjs';
 
 type AuthServiceMock = {
   registerUser: ReturnType<typeof vi.fn>;
@@ -93,5 +93,26 @@ describe('RegisterComponent', () => {
     expect(authService.isValid()).toBe(true);
     // Resets the form.
     expect(component.registerForm.getRawValue()).toEqual({ email: null, password: null });
+  });
+
+  it('does not successfully register with backend error', async () => {
+    authService.registerUser.mockReturnValue(
+      throwError(() => ({
+        error: JSON.stringify({ code: 'error' }),
+      })),
+    );
+
+    await createComponent();
+
+    component.registerForm.setValue({
+      email: 'admin@gmx.at',
+      password: 'easy123',
+    });
+
+    expect(component.registerForm.valid).toBe(true);
+    component.onSubmit('admin@gmx.at', 'easy123');
+
+    expect(authService.registerUser).toHaveBeenCalledWith('admin@gmx.at', 'easy123');
+    expect(authService.errorMessage()).toBe('error');
   });
 });
