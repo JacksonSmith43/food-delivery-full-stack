@@ -5,7 +5,6 @@ import { SearchRestaurant } from './search-restaurant.component';
 import { CategoryType, MenuItemsType, RestaurantType } from '../shared/model/restaurants-type.module';
 import template from './search-restaurant.component.html?raw';
 import { RestaurantsService } from '../shared/services/restaurants.service';
-import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { LocalStorageService } from '../shared/services/local-storage.service';
 
 type RestaurantServiceMock = {
@@ -28,7 +27,7 @@ type RestaurantServiceMock = {
   countDietaryLabelsForMenuItems: ReturnType<typeof vi.fn>;
 };
 
-type LocaStorageServiceMock = {
+type LocalStorageServiceMock = {
   getRestaurants: ReturnType<typeof vi.fn>;
   getCurrentRestaurant: ReturnType<typeof vi.fn>;
   getMenuItems: ReturnType<typeof vi.fn>;
@@ -41,7 +40,7 @@ describe('SearchRestaurantComponent', () => {
   let component: SearchRestaurant;
 
   let restaurantService: RestaurantServiceMock;
-  let locaStorageService: LocaStorageServiceMock;
+  let localStorageService: LocalStorageServiceMock;
 
   const createRestaurantServiceMock = (): RestaurantServiceMock => ({
     allRestaurants: signal([]),
@@ -63,7 +62,7 @@ describe('SearchRestaurantComponent', () => {
     countDietaryLabelsForMenuItems: vi.fn(),
   });
 
-  const createKocalStorageServiceMock = (): LocaStorageServiceMock => ({
+  const createLocalStorageServiceMock = (): LocalStorageServiceMock => ({
     getRestaurants: vi.fn(),
     getCurrentRestaurant: vi.fn(),
     getMenuItems: vi.fn(),
@@ -80,14 +79,14 @@ describe('SearchRestaurantComponent', () => {
         return Promise.resolve('');
       }
 
-      return Promise.reject(new Error(`Unexpcted component resource: ${url}`));
+      return Promise.reject(new Error(`Unexpected component resource: ${url}`));
     });
 
     await TestBed.configureTestingModule({
       imports: [SearchRestaurant],
       providers: [
         { provide: RestaurantsService, useValue: restaurantService },
-        { provide: LocalStorageService, useValue: locaStorageService },
+        { provide: LocalStorageService, useValue: localStorageService },
       ],
     }).compileComponents();
 
@@ -99,6 +98,15 @@ describe('SearchRestaurantComponent', () => {
   beforeEach(() => {
     TestBed.resetTestingModule();
     restaurantService = createRestaurantServiceMock();
-    locaStorageService = createKocalStorageServiceMock();
+    localStorageService = createLocalStorageServiceMock();
+  });
+
+  it('should not return a valid plz form and should reset it', async () => {
+    await createComponent();
+
+    expect(component.form.controls.plz.invalid).toBe(true);
+    component.onSubmit();
+    expect(component.successfullSubmission()).toBe(false);
+    expect(component.form.controls.plz.value).toBe('');
   });
 });
