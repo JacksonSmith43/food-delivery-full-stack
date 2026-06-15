@@ -1,11 +1,14 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { signal, ɵresolveComponentResources as resolveComponentResources } from '@angular/core';
+import { of } from 'rxjs';
 
 import { SearchRestaurant } from './search-restaurant.component';
 import { CategoryType, MenuItemsType, RestaurantType } from '../shared/model/restaurants-type.module';
 import template from './search-restaurant.component.html?raw';
 import { RestaurantsService } from '../shared/services/restaurants.service';
 import { LocalStorageService } from '../shared/services/local-storage.service';
+import { NavBarService } from '../navbar/service/navbar.service';
+import { Router } from '@angular/router';
 
 type RestaurantServiceMock = {
   allRestaurants: ReturnType<typeof signal<RestaurantType[]>>;
@@ -35,12 +38,17 @@ type LocalStorageServiceMock = {
   getUserCredentials: ReturnType<typeof vi.fn>;
 };
 
+type RouterMock = {
+  navigate: ReturnType<typeof vi.fn>;
+};
+
 describe('SearchRestaurantComponent', () => {
   let fixture: ComponentFixture<SearchRestaurant>;
   let component: SearchRestaurant;
 
   let restaurantService: RestaurantServiceMock;
   let localStorageService: LocalStorageServiceMock;
+  let router: RouterMock;
 
   const createRestaurantServiceMock = (): RestaurantServiceMock => ({
     allRestaurants: signal([]),
@@ -70,6 +78,10 @@ describe('SearchRestaurantComponent', () => {
     getUserCredentials: vi.fn(),
   });
 
+  const createRouterMock = (): RouterMock => ({
+    navigate: vi.fn(),
+  });
+
   const createComponent = async () => {
     await resolveComponentResources((url) => {
       if (url.endsWith('search-restaurant.component.html')) {
@@ -87,6 +99,8 @@ describe('SearchRestaurantComponent', () => {
       providers: [
         { provide: RestaurantsService, useValue: restaurantService },
         { provide: LocalStorageService, useValue: localStorageService },
+        { provide: Router, useValue: router },
+        { provide: NavBarService, useValue: {} },
       ],
     }).compileComponents();
 
@@ -99,14 +113,41 @@ describe('SearchRestaurantComponent', () => {
     TestBed.resetTestingModule();
     restaurantService = createRestaurantServiceMock();
     localStorageService = createLocalStorageServiceMock();
+    router = createRouterMock();
   });
 
-  it('should not return a valid plz form and should reset it', async () => {
+  it('should not submit when the form is invalid', async () => {
     await createComponent();
 
     expect(component.form.controls.plz.invalid).toBe(true);
     component.onSubmit();
     expect(component.successfullSubmission()).toBe(false);
     expect(component.form.controls.plz.value).toBe('');
+  });
+
+  it('should search restaurants for a valid plz', async () => {
+    restaurantService.getAllRestaurants.mockReturnValue(
+      of([{ plz: '10' } as RestaurantType, { plz: '20' } as RestaurantType]),
+    );
+
+    await createComponent();
+    const showRestaurantSpy = vi.spyOn(component, 'showRestaurantsWithCorrespondingEnteredPostcodes');
+
+    component.form.controls.plz.setValue('20');
+
+    expect(component.form.controls.plz.valid).toBe(true);
+    component.onSubmit();
+
+    expect(component.successfullSubmission()).toBe(true);
+    expect(restaurantService.plz()).toBe('20');
+    expect(showRestaurantSpy).toHaveBeenCalled();
+    expect(restaurantService.getAllRestaurants).toHaveBeenCalled();
+    expect(component.plzExists()).toBe(true);
+    expect(component.form.controls.plz.value).toBe('');
+
+    expect(localStorageService.saveToLocalStorage).toHaveBeenCalledWith('restaurants', [
+      { plz: '20' } as RestaurantType,
+    ]);
+    expect(router.navigate).toHaveBeenCalledWith(['/restaurants/20']);
   });
 });
