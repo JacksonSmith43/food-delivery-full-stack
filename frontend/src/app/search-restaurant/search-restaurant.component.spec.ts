@@ -141,6 +141,7 @@ describe('SearchRestaurantComponent', () => {
     expect(component.successfullSubmission()).toBe(true);
     expect(restaurantService.plz()).toBe('20');
     expect(showRestaurantSpy).toHaveBeenCalled();
+
     expect(restaurantService.getAllRestaurants).toHaveBeenCalled();
     expect(component.plzExists()).toBe(true);
     expect(component.form.controls.plz.value).toBe('');
@@ -149,5 +150,24 @@ describe('SearchRestaurantComponent', () => {
       { plz: '20' } as RestaurantType,
     ]);
     expect(router.navigate).toHaveBeenCalledWith(['/restaurants/20']);
+  });
+
+  it('should set plzExists to false when no restaurant matches the entered plz', async () => {
+    restaurantService.getAllRestaurants.mockReturnValue(of([{ plz: '10' } as RestaurantType]));
+
+    await createComponent();
+    const showRestaurantSpy = vi.spyOn(component, 'showRestaurantsWithCorrespondingEnteredPostcodes');
+
+    component.form.controls.plz.setValue('20');
+    expect(component.form.controls.plz.valid).toBe(true);
+
+    component.onSubmit();
+
+    expect(component.successfullSubmission()).toBe(true);
+    expect(restaurantService.plz()).toBe('20');
+    expect(showRestaurantSpy).toHaveBeenCalled();
+
+    expect(restaurantService.getAllRestaurants).toHaveBeenCalled();
+    expect(component.plzExists()).toBe(false);
   });
 });
