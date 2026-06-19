@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { signal, ɵresolveComponentResources as resolveComponentResources } from '@angular/core';
 import { of } from 'rxjs';
+import { Router } from '@angular/router';
 
 import { SearchRestaurant } from './search-restaurant.component';
 import { CategoryType, MenuItemsType, RestaurantType } from '../shared/model/restaurants-type.module';
@@ -8,7 +9,6 @@ import template from './search-restaurant.component.html?raw';
 import { RestaurantsService } from '../shared/services/restaurants.service';
 import { LocalStorageService } from '../shared/services/local-storage.service';
 import { NavBarService } from '../navbar/service/navbar.service';
-import { Router } from '@angular/router';
 
 type RestaurantServiceMock = {
   allRestaurants: ReturnType<typeof signal<RestaurantType[]>>;

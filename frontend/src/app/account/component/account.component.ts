@@ -1,9 +1,9 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 
 import { AuthService } from '../../auth/service/auth.service'; 
 import { LocalStorageService } from '../../shared/services/local-storage.service'; 
-import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
   selector: 'app-account',

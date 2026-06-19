@@ -1,10 +1,16 @@
 import { signal, ɵresolveComponentResources as resolveComponentResources } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { of } from 'rxjs';
 
 import { CartComponent } from './cart.component';
 import { CartSummaryType, CartType } from '../../shared/model/cart-type';
 import template from './cart.component.html?raw';
 import { CartService } from '../../shared/services/cart.service';
+import { AuthService } from '../../auth/service/auth.service';
+import { AuthType } from '../../auth/model/auth-user-type';
+import { UserProfileType } from '../../account/profile/modal/user-profile-type';
+import { AccountService } from '../../account/service/account.service';
+import { LocalStorageService } from '../../shared/services/local-storage.service';
 
 type CartServiceMock = {
   cart: ReturnType<typeof signal<CartType | null>>;
@@ -23,11 +29,43 @@ type CartServiceMock = {
   checkoutCart: ReturnType<typeof vi.fn>;
 };
 
+type AuthServiceMock = {
+  successMessage: ReturnType<typeof signal<string>>;
+  errorMessage: ReturnType<typeof signal<string>>;
+  authUser: ReturnType<typeof signal<AuthType | undefined>>;
+  isValid: ReturnType<typeof signal<boolean>>;
+
+  registerUser: ReturnType<typeof vi.fn>;
+  loginUser: ReturnType<typeof vi.fn>;
+};
+
+type AccountServiceMock = {
+  selectedFormField: ReturnType<typeof signal<string>>;
+  currentUserProfile: ReturnType<typeof signal<UserProfileType | null>>;
+
+  changeEmailAddress: ReturnType<typeof vi.fn>;
+  changePassword: ReturnType<typeof vi.fn>;
+  getUserProfile: ReturnType<typeof vi.fn>;
+  changePhoneNumber: ReturnType<typeof vi.fn>;
+  openDialog: ReturnType<typeof vi.fn>;
+};
+
+type LocalStorageServiceMock = {
+  getRestaurants: ReturnType<typeof vi.fn>;
+  getCurrentRestaurant: ReturnType<typeof vi.fn>;
+  getMenuItems: ReturnType<typeof vi.fn>;
+  saveToLocalStorage: ReturnType<typeof vi.fn>;
+  getUserCredentials: ReturnType<typeof vi.fn>;
+};
+
 describe('CartComponent', () => {
   let fixture: ComponentFixture<CartComponent>;
   let component: CartComponent;
 
   let cartService: CartServiceMock;
+  let authService: AuthServiceMock;
+  let accountService: AccountServiceMock;
+  let localStorageService: LocalStorageServiceMock;
 
   const createCartServiceMock = (): CartServiceMock => ({
     cart: signal<CartType | null>(null),
@@ -45,13 +83,48 @@ describe('CartComponent', () => {
     checkoutCart: vi.fn(),
   });
 
+  const createAuthServiceMock = (): AuthServiceMock => ({
+    successMessage: signal(''),
+    errorMessage: signal(''),
+    authUser: signal<AuthType | undefined>({ email: '', password: '' }),
+    isValid: signal(false),
+
+    registerUser: vi.fn(),
+    loginUser: vi.fn(),
+  });
+
+  const createAccountServiceMock = (): AccountServiceMock => ({
+    selectedFormField: signal(''),
+    currentUserProfile: signal({ id: 0, email: '', phoneNumber: '', address: [], defaultAddressId: 0 }),
+
+    changeEmailAddress: vi.fn(),
+    changePassword: vi.fn(),
+    getUserProfile: vi.fn(),
+    changePhoneNumber: vi.fn(),
+    openDialog: vi.fn(),
+  });
+
+  const createLocalStorageServiceMock = (): LocalStorageServiceMock => ({
+    getRestaurants: vi.fn(),
+    getCurrentRestaurant: vi.fn(),
+    getMenuItems: vi.fn(),
+    saveToLocalStorage: vi.fn(),
+    getUserCredentials: vi.fn(),
+  });
+
   const createComponent = async () => {
     await resolveComponentResources((url) => {
       if (url.endsWith('cart.component.html')) {
         return Promise.resolve(template);
       }
 
-      if (url.endsWith('cart.component.css')) {
+      if (
+        url.endsWith('cart.component.css') ||
+        url.endsWith('profile-modal.component.html') ||
+        url.endsWith('profile-modal.component.css') ||
+        url.endsWith('profile.component.html') ||
+        url.endsWith('profile.component.css')
+      ) {
         return Promise.resolve('');
       }
 
@@ -60,7 +133,12 @@ describe('CartComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [CartComponent],
-      providers: [{ provide: CartService, useValue: cartService }],
+      providers: [
+        { provide: CartService, useValue: cartService },
+        { provide: AuthService, useValue: authService },
+        { provide: AccountService, useValue: accountService },
+        { provide: LocalStorageService, useValue: localStorageService },
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(CartComponent);
@@ -72,5 +150,70 @@ describe('CartComponent', () => {
     TestBed.resetTestingModule();
 
     cartService = createCartServiceMock();
+    authService = createAuthServiceMock();
+    accountService = createAccountServiceMock();
+    localStorageService = createLocalStorageServiceMock();
+  });
+
+  it('should refresh the cart and load the user profile on init when user credentials exist', async () => {
+    localStorageService.getUserCredentials.mockReturnValue({
+      email: 'test@gmx.at',
+      password: 'secret',
+    });
+
+    accountService.getUserProfile.mockReturnValue(
+      of(
+        JSON.stringify({
+          id: 1,
+          email: 'test@gmx.at',
+          phoneNumber: '01234567',
+          address: [
+            {
+              id: 1,
+              label: 'Home',
+              streetName: 'Teststreet 20',
+              postalCode: 20,
+              city: 'Vienna',
+              country: 'Austria',
+            },
+          ],
+          defaultAddressId: 1,
+        }),
+      ),
+    );
+
+    await createComponent();
+
+    expect(cartService.refreshCart).toHaveBeenCalled();
+    expect(authService.authUser()).toEqual({
+      email: 'test@gmx.at',
+      password: 'secret',
+    });
+    expect(accountService.getUserProfile).toHaveBeenCalledWith('test@gmx.at');
+    expect(accountService.currentUserProfile()).toEqual({
+      id: 1,
+      email: 'test@gmx.at',
+      phoneNumber: '01234567',
+      address: [
+        {
+          id: 1,
+          label: 'Home',
+          streetName: 'Teststreet 20',
+          postalCode: 20,
+          city: 'Vienna',
+          country: 'Austria',
+        },
+      ],
+      defaultAddressId: 1,
+    });
+  });
+
+  it('should only refresh the cart on init when no user credentials exist', async () => {
+    localStorageService.getUserCredentials.mockReturnValue(undefined);
+
+    await createComponent();
+
+    expect(cartService.refreshCart).toHaveBeenCalled();
+    expect(accountService.getUserProfile).not.toHaveBeenCalled();
   });
 });
