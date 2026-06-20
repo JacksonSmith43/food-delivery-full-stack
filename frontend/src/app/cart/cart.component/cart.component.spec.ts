@@ -236,4 +236,44 @@ describe('CartComponent', () => {
     expect(cartService.removeItemFromCart).toHaveBeenCalledWith(2, 1);
     expect(cartService.refreshCart).toHaveBeenCalled();
   });
+
+  it('should checkout cart and set items/states to their signals after a timeout', async () => {
+    // Replace real timers so the test can control when the delayed reset runs.
+    // vi.useFakeTimers() is not saying that a timer will necessarily be used. It replaces the real timer APIs (setTimeout, setInterval) with controllable test timers. From this point on, your test doesn't actually wait 2 seconds; instead, Vitest just notes: "a timer was scheduled here".
+    vi.useFakeTimers();
+
+    // Seed the cart state first so the timeout has meaningful data to clear.
+    cartService.cart.set({
+      id: 1,
+      sessionId: 'session-1',
+      cartItems: [{ id: 1, menuItem: 1, quantity: 1 } as any],
+    });
+
+    // Seed the summary state for the same reason.
+    cartService.cartSummary.set({ totalQuantity: 1, totalCost: 3, itemCount: 1 });
+
+    cartService.checkoutCart.mockReturnValue(of({ ok: true }));
+
+    await createComponent();
+
+    component.onCheckout();
+
+    // These values are updated immediately in the success branch.
+    expect(component.successMessage()).toBe('Checkout successful.');
+    expect(component.isSuccessful()).toBe(true);
+
+    // Fast-forward virtual time so the callback inside setTimeout(2000) runs now.
+    // vi.advanceTimersByTime(2000) is saying: "advance the virtual clock by 2000 milliseconds, and execute any timers that are due in that time". So if there was a setTimeout(..., 2000) scheduled, it will run immediately when this line executes, without actually waiting 2 seconds in real time.
+    vi.advanceTimersByTime(2000);
+
+    // These assertions belong after the timer because the reset is delayed.
+    expect(component.successMessage()).toBe('');
+    expect(component.isSuccessful()).toBe(false);
+    expect(component.cart()).toEqual({ id: 0, sessionId: '', cartItems: [] });
+    expect(component.cartSummary()).toEqual({ totalQuantity: 0, totalCost: 0, itemCount: 0 });
+
+    // Restore normal timer behaviour for the tests that run after this one.
+    // vi.useRealTimers() does not stop the timer in the strict sense, but rather switches back to normal runtime behaviour after the test, so that later tests do not continue to run with fake timers.
+    vi.useRealTimers();
+  });
 });
