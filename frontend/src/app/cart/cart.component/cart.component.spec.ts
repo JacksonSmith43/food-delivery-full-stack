@@ -1,6 +1,6 @@
 import { signal, ɵresolveComponentResources as resolveComponentResources } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 
 import { CartComponent } from './cart.component';
 import { CartSummaryType, CartType } from '../../shared/model/cart-type';
@@ -275,5 +275,20 @@ describe('CartComponent', () => {
     // Restore normal timer behaviour for the tests that run after this one.
     // vi.useRealTimers() does not stop the timer in the strict sense, but rather switches back to normal runtime behaviour after the test, so that later tests do not continue to run with fake timers.
     vi.useRealTimers();
+  });
+
+  it('should use the fallback error message when checkout fails without a message', async () => {
+    cartService.checkoutCart.mockReturnValue(
+      throwError(() => ({
+        error: JSON.stringify({}),
+      })),
+    );
+
+    await createComponent();
+
+    component.onCheckout();
+
+    expect(component.errorMessage()).toEqual('Checkout failed. Please try again.');
+    expect(component.isSuccessful()).toBe(false);
   });
 });
