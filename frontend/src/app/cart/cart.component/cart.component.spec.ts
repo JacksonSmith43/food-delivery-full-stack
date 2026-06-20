@@ -216,4 +216,24 @@ describe('CartComponent', () => {
     expect(cartService.refreshCart).toHaveBeenCalled();
     expect(accountService.getUserProfile).not.toHaveBeenCalled();
   });
+
+  it('should add an item to the cart then refresh the cart', async () => {
+    cartService.addItemToCart.mockReturnValue(of({ menuItemId: 1, quantity: 1 }));
+
+    await createComponent();
+    component.onAddToCart(1);
+
+    expect(cartService.addItemToCart).toHaveBeenCalledWith(1, 1);
+    expect(cartService.refreshCart).toHaveBeenCalled();
+  });
+
+  it('should remove an item from the cart then refresh it', async () => {
+    cartService.removeItemFromCart.mockReturnValue(of(2, 1));
+
+    await createComponent();
+    component.onRemoveFromCart(2);
+
+    expect(cartService.removeItemFromCart).toHaveBeenCalledWith(2, 1);
+    expect(cartService.refreshCart).toHaveBeenCalled();
+  });
 });
