@@ -116,58 +116,62 @@ describe('SearchRestaurantComponent', () => {
     router = createRouterMock();
   });
 
-  it('should not submit when the form is invalid', async () => {
-    await createComponent();
+  describe('onSubmit', () => {
+    it('should not submit when the form is invalid', async () => {
+      await createComponent();
 
-    expect(component.form.controls.plz.invalid).toBe(true);
-    component.onSubmit();
-    expect(component.successfullSubmission()).toBe(false);
-    expect(component.form.controls.plz.value).toBe('');
+      expect(component.form.controls.plz.invalid).toBe(true);
+      component.onSubmit();
+      expect(component.successfullSubmission()).toBe(false);
+      expect(component.form.controls.plz.value).toBe('');
+    });
   });
 
-  it('should search restaurants for a valid plz', async () => {
-    restaurantService.getAllRestaurants.mockReturnValue(
-      of([{ plz: '10' } as RestaurantType, { plz: '20' } as RestaurantType]),
-    );
+  describe('showRestaurantsWithCorrespondingEnteredPostcodes', () => {
+    it('should search restaurants for a valid plz', async () => {
+      restaurantService.getAllRestaurants.mockReturnValue(
+        of([{ plz: '10' } as RestaurantType, { plz: '20' } as RestaurantType]),
+      );
 
-    await createComponent();
-    const showRestaurantSpy = vi.spyOn(component, 'showRestaurantsWithCorrespondingEnteredPostcodes');
+      await createComponent();
+      const showRestaurantSpy = vi.spyOn(component, 'showRestaurantsWithCorrespondingEnteredPostcodes');
 
-    component.form.controls.plz.setValue('20');
+      component.form.controls.plz.setValue('20');
 
-    expect(component.form.controls.plz.valid).toBe(true);
-    component.onSubmit();
+      expect(component.form.controls.plz.valid).toBe(true);
+      component.onSubmit();
 
-    expect(component.successfullSubmission()).toBe(true);
-    expect(restaurantService.plz()).toBe('20');
-    expect(showRestaurantSpy).toHaveBeenCalled();
+      expect(component.successfullSubmission()).toBe(true);
+      expect(restaurantService.plz()).toBe('20');
+      expect(showRestaurantSpy).toHaveBeenCalled();
 
-    expect(restaurantService.getAllRestaurants).toHaveBeenCalled();
-    expect(component.plzExists()).toBe(true);
-    expect(component.form.controls.plz.value).toBe('');
+      expect(restaurantService.getAllRestaurants).toHaveBeenCalled();
+      expect(component.plzExists()).toBe(true);
+      expect(component.form.controls.plz.value).toBe('');
 
-    expect(localStorageService.saveToLocalStorage).toHaveBeenCalledWith('restaurants', [
-      { plz: '20' } as RestaurantType,
-    ]);
-    expect(router.navigate).toHaveBeenCalledWith(['/restaurants/20']);
-  });
+      expect(localStorageService.saveToLocalStorage).toHaveBeenCalledWith('restaurants', [
+        { plz: '20' } as RestaurantType,
+      ]);
+      expect(router.navigate).toHaveBeenCalledWith(['/restaurants/20']);
+    });
 
-  it('should set plzExists to false when no restaurant matches the entered plz', async () => {
-    restaurantService.getAllRestaurants.mockReturnValue(of([{ plz: '10' } as RestaurantType]));
+    it('should set plzExists to false when no restaurant matches the entered plz', async () => {
+      restaurantService.getAllRestaurants.mockReturnValue(of([{ plz: '10' } as RestaurantType]));
 
-    await createComponent();
-    const showRestaurantSpy = vi.spyOn(component, 'showRestaurantsWithCorrespondingEnteredPostcodes');
+      await createComponent();
+      const showRestaurantSpy = vi.spyOn(component, 'showRestaurantsWithCorrespondingEnteredPostcodes');
 
-    component.form.controls.plz.setValue('20');
-    expect(component.form.controls.plz.valid).toBe(true);
+      component.form.controls.plz.setValue('20');
+      expect(component.form.controls.plz.valid).toBe(true);
 
-    component.onSubmit();
+      component.onSubmit();
 
-    expect(component.successfullSubmission()).toBe(true);
-    expect(restaurantService.plz()).toBe('20');
-    expect(showRestaurantSpy).toHaveBeenCalled();
+      expect(component.successfullSubmission()).toBe(true);
+      expect(restaurantService.plz()).toBe('20');
+      expect(showRestaurantSpy).toHaveBeenCalled();
 
-    expect(restaurantService.getAllRestaurants).toHaveBeenCalled();
-    expect(component.plzExists()).toBe(false);
+      expect(restaurantService.getAllRestaurants).toHaveBeenCalled();
+      expect(component.plzExists()).toBe(false);
+    });
   });
 });

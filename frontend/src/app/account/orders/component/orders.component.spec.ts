@@ -76,10 +76,42 @@ describe('OrdersComponent', () => {
     locaStorageService = createLocaStorageServiceMock();
   });
 
-  it('should load orders when the correct credentials are inputed', async () => {
-    locaStorageService.getUserCredentials.mockReturnValue({ email: 'admin@gmx.at', password: '1234567' });
-    orderService.getOrders.mockReturnValue(
-      of([
+  describe('ngOnInit', () => {
+    it('should load orders when the correct credentials are inputed', async () => {
+      locaStorageService.getUserCredentials.mockReturnValue({ email: 'admin@gmx.at', password: '1234567' });
+      orderService.getOrders.mockReturnValue(
+        of([
+          {
+            orderId: 1,
+            totalAmount: 2,
+            totalCost: 4,
+            status: 'PLACED',
+            createdAt: '2023-06-22',
+            paymentMethod: '',
+            paymentStatus: '',
+            deliverySnapshot: {
+              name: 'Tester',
+              userId: 1,
+              phoneNumber: '01234567',
+              label: 'Home',
+              streetName: 'Teststreet',
+              postalCode: 20,
+              city: 'Vienna',
+              country: 'Austria',
+            },
+            quantity: 2,
+            price: 4,
+            menuItemNameSnapshot: 'Grilled Chicken',
+          },
+        ]),
+      );
+
+      await createComponent();
+
+      expect(locaStorageService.getUserCredentials).toHaveBeenCalled();
+      expect(authService.authUser()).toEqual({ email: 'admin@gmx.at', password: '1234567' });
+      expect(orderService.getOrders).toHaveBeenCalledWith('admin@gmx.at');
+      expect(component.orders()).toEqual([
         {
           orderId: 1,
           totalAmount: 2,
@@ -102,61 +134,31 @@ describe('OrdersComponent', () => {
           price: 4,
           menuItemNameSnapshot: 'Grilled Chicken',
         },
-      ]),
-    );
+      ]);
+    });
 
-    await createComponent();
+    it('should return an empty order signal when credentials are not inputed', async () => {
+      locaStorageService.getUserCredentials.mockReturnValue(null);
 
-    expect(locaStorageService.getUserCredentials).toHaveBeenCalled();
-    expect(authService.authUser()).toEqual({ email: 'admin@gmx.at', password: '1234567' });
-    expect(orderService.getOrders).toHaveBeenCalledWith('admin@gmx.at');
-    expect(component.orders()).toEqual([
-      {
-        orderId: 1,
-        totalAmount: 2,
-        totalCost: 4,
-        status: 'PLACED',
-        createdAt: '2023-06-22',
-        paymentMethod: '',
-        paymentStatus: '',
-        deliverySnapshot: {
-          name: 'Tester',
-          userId: 1,
-          phoneNumber: '01234567',
-          label: 'Home',
-          streetName: 'Teststreet',
-          postalCode: 20,
-          city: 'Vienna',
-          country: 'Austria',
-        },
-        quantity: 2,
-        price: 4,
-        menuItemNameSnapshot: 'Grilled Chicken',
-      },
-    ]);
-  });
+      await createComponent();
 
-  it('should return an empty order signal when credentials are not inputed', async () => {
-    locaStorageService.getUserCredentials.mockReturnValue(null);
+      expect(orderService.getOrders).not.toHaveBeenCalled();
+      expect(component.orders()).toEqual([]);
+    });
 
-    await createComponent();
+    it('should have valid credentials and fail order response', async () => {
+      locaStorageService.getUserCredentials.mockReturnValue({ email: 'admin@gmx.at', password: '01234567' });
+      orderService.getOrders.mockReturnValue(
+        throwError(() => ({
+          error: 'Error',
+        })),
+      );
 
-    expect(orderService.getOrders).not.toHaveBeenCalled();
-    expect(component.orders()).toEqual([]);
-  });
+      await createComponent();
 
-  it('should have valid credentials and fail order response', async () => {
-    locaStorageService.getUserCredentials.mockReturnValue({ email: 'admin@gmx.at', password: '01234567' });
-    orderService.getOrders.mockReturnValue(
-      throwError(() => ({
-        error: 'Error',
-      })),
-    );
-
-    await createComponent();
-
-    expect(authService.authUser()).toEqual({ email: 'admin@gmx.at', password: '01234567' });
-    expect(orderService.getOrders).toHaveBeenCalledWith('admin@gmx.at');
-    expect(component.orders()).toEqual([]);
+      expect(authService.authUser()).toEqual({ email: 'admin@gmx.at', password: '01234567' });
+      expect(orderService.getOrders).toHaveBeenCalledWith('admin@gmx.at');
+      expect(component.orders()).toEqual([]);
+    });
   });
 });
