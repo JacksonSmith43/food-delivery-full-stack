@@ -11,6 +11,7 @@ import { ProfileComponent } from './account/profile/component/profile/profile.co
 import { OrdersComponent } from './account/orders/component/orders.component';
 import { MyAddressesComponent } from './account/my-addresses/my-addresses.component';
 import { FavouritesComponent } from './account/favourites/favourites.component';
+import { authGuard } from './auth/auth.guard';
 
 export const routes: Routes = [
   { path: 'register', component: RegisterComponent },
@@ -22,10 +23,10 @@ export const routes: Routes = [
   { path: 'allRestaurants', component: RestaurantComponent },
   { path: 'restaurants/:plz', component: RestaurantComponent },
   { path: 'restaurant/:restaurantName', component: RestaurantDetailComponent },
-  { path: 'account', component: AccountComponent },
-  { path: 'profile', component: ProfileComponent },
-  { path: 'cart', component: CartComponent },
-  { path: 'orders', component: OrdersComponent },
-  { path: 'myAddresses', component: MyAddressesComponent },
-  { path: 'favourites', component: FavouritesComponent },
+  { path: 'account', component: AccountComponent, canActivate: [authGuard] },
+  { path: 'profile', component: ProfileComponent, canActivate: [authGuard] },
+  { path: 'cart', component: CartComponent, canActivate: [authGuard] },
+  { path: 'orders', component: OrdersComponent, canActivate: [authGuard] },
+  { path: 'myAddresses', component: MyAddressesComponent, canActivate: [authGuard] },
+  { path: 'favourites', component: FavouritesComponent, canActivate: [authGuard] },
 ];

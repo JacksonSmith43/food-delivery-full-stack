@@ -31,6 +31,8 @@ export class Navbar {
 
     this.authService.authUser.set(undefined);
     sessionStorage.removeItem('userCredentials');
+    sessionStorage.removeItem('userEmail');
+
     this.successMessage.set('Logout successful.');
     this.authService.errorMessage.set('');
 

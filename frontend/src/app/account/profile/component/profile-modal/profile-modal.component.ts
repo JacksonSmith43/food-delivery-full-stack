@@ -3,7 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { MatAnchor } from '@angular/material/button';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
-import { A11yModule } from "@angular/cdk/a11y";
+import { A11yModule } from '@angular/cdk/a11y';
 
 import { AuthType } from '../../../../auth/model/auth-user-type';
 import { ProfileComponent } from '../profile/profile.component';
@@ -73,7 +73,8 @@ export class ProfileModalComponent {
             const authUserData = this.authService.authUser();
             if (authUserData) {
               this.authService.authUser.set({ ...authUserData, email: newEmail! });
-              sessionStorage.setItem('userCredentials', JSON.stringify(this.authService.authUser()));
+              // sessionStorage.setItem('userCredentials', JSON.stringify(this.authService.authUser()));
+              sessionStorage.setItem('userEmail', authUserData.email);
             }
 
             setTimeout(() => {

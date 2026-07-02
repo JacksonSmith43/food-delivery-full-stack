@@ -73,9 +73,14 @@ export class LocalStorageService {
     }
   }
 
+  saveUserToLocalStorage(key: 'userEmail', email: string) {
+    console.log('saveUserToLocalStorage().');
+    sessionStorage.setItem(key, JSON.stringify(email)); // sessionStorage: Clears when tab/browser closes.
+  }
+
   getUserCredentials(): AuthType {
     console.log('getUserCredentials().');
-    
+
     let userCredentials = sessionStorage.getItem('userCredentials');
     console.log('getUserCredentials()_userCredentials', userCredentials);
 

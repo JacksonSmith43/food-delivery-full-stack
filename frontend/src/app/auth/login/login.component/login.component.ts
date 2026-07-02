@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { AuthService } from '../../service/auth.service';
 import { AuthType } from '../../model/auth-user-type';
+import { LocalStorageService } from '../../../shared/services/local-storage.service';
 
 @Component({
   selector: 'app-login',
@@ -16,6 +17,7 @@ export class LoginComponent implements OnInit {
   authService = inject(AuthService);
   router = inject(Router);
   route = inject(ActivatedRoute);
+  localStorageService = inject(LocalStorageService);
 
   loginForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -48,6 +50,8 @@ export class LoginComponent implements OnInit {
     this.authService.loginUser(registerForm.email, registerForm.password).subscribe({
       next: (user) => {
         console.log('onLogin()_next_user: ', user);
+        this.localStorageService.saveUserToLocalStorage('userEmail', registerForm.email);
+
         // The user will either be redirected to the account page or to the page they were trying to access before being redirected to the login page.
         const returnUrl = this.route.snapshot.queryParams['returnUrl'] ?? 'account';
         this.router.navigateByUrl(returnUrl);
