@@ -72,14 +72,13 @@ public class Cart {
 
     public BigDecimal getTotalCost() {
         return cartItems.stream()
-                .map(CartItem::getItemTotalPrice)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+                .map(item -> item != null ? item.getItemTotalPrice() : BigDecimal.ZERO)
+                .reduce(BigDecimal.ZERO, (a, b) -> a.add(b));
     }
 
     public Integer getTotalQuantity() {
         return cartItems.stream()
-                // :: is the same as item => item.getQuantity().
-                .mapToInt(CartItem::getQuantity)
+                .mapToInt(item -> item != null ? item.getQuantity() : 0)
                 .sum();
     }
 

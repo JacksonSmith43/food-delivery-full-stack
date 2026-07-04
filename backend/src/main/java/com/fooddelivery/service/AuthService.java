@@ -2,7 +2,6 @@ package com.fooddelivery.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fooddelivery.entity.User;
@@ -15,13 +14,17 @@ import com.fooddelivery.repository.UserRepository;
 
 @Service
 public class AuthService {
-    @Autowired
-    private UserRepository authRepository;
+
+    private final UserRepository userRepository;
+
+    public AuthService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     public void registration(String email, String password) {
         System.out.println("AuthService()_registration().");
 
-        User existingUser = authRepository.getByEmail(email);
+        User existingUser = userRepository.getByEmail(email);
         System.out.println("AuthService()_registration(): existingUser: " + existingUser);
 
         if (existingUser != null) {
@@ -31,7 +34,7 @@ public class AuthService {
         }
 
         User auth = new User(email, password);
-        authRepository.save(auth);
+        userRepository.save(auth);
         System.out.println("AuthService()_registration(): Registration successful.");
     }
 
@@ -43,14 +46,14 @@ public class AuthService {
         }
 
         // Gets the current user (email, password, and id).
-        User authUser = authRepository.getByEmail(currentEmail);
+        User authUser = userRepository.getByEmail(currentEmail);
 
         if (authUser == null) {
             System.out.println("AuthService_changeEmail()_User does not exist.");
             throw new EmailDoesNotExistException("User does not exist.");
         }
 
-        User newUser = authRepository.getByEmail(newEmail);
+        User newUser = userRepository.getByEmail(newEmail);
 
         // Checks whether the new email has been used by another user. The user is
         // allowed to reuse the current email. Another user is not allowed to do that.
@@ -61,7 +64,7 @@ public class AuthService {
 
         // Change the email address, even if it stays the same.
         authUser.setEmail(newEmail);
-        authRepository.save(authUser);
+        userRepository.save(authUser);
 
         System.out.println("AuthService()_changeEmail(): Email address changed successfully.");
     }
@@ -71,7 +74,7 @@ public class AuthService {
 
         // Gets the user that has that email address (in an object along with password
         // and id) and not only gets the email address.
-        User user = authRepository.getByEmail(email);
+        User user = userRepository.getByEmail(email);
 
         if (user == null) {
             System.out.println("AuthService_changePassword()_User not found.");
@@ -89,18 +92,18 @@ public class AuthService {
         }
 
         user.setPassword(newPassword);
-        authRepository.save(user);
+        userRepository.save(user);
     }
 
     public boolean emailExists(String email) {
         System.out.println("AuthService()_emailExists().");
-        return !authRepository.findByEmail(email).isEmpty();
+        return !userRepository.findByEmail(email).isEmpty();
     }
 
     public void checksCurrentPasswordIsValid(String email, String currentPassword) {
         System.out.println("checksCurrentPassword().");
 
-        List<User> users = authRepository.findByEmail(email);
+        List<User> users = userRepository.findByEmail(email);
 
         if (!users.get(0).getPassword().equals(currentPassword)) {
             throw new IncorrectCurrentPasswordException("Incorrect password.");

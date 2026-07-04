@@ -1,6 +1,5 @@
 package com.fooddelivery.initialiser;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
@@ -16,10 +15,14 @@ import jakarta.annotation.PostConstruct;
 @Component
 @DependsOn("categoriesInitialiser")
 public class RestaurantInitialiser {
-    @Autowired
-    private RestaurantRepository restaurantRepository;
-    @Autowired
-    private CategoriesRepository categoriesRepository;
+
+    private final RestaurantRepository restaurantRepository;
+    private final CategoriesRepository categoriesRepository;
+
+    public RestaurantInitialiser(RestaurantRepository restaurantRepository, CategoriesRepository categoriesRepository) {
+        this.restaurantRepository = restaurantRepository;
+        this.categoriesRepository = categoriesRepository;
+    }
 
     @PostConstruct
     public void init() {

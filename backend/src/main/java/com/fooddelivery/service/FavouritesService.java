@@ -3,7 +3,6 @@ package com.fooddelivery.service;
 import java.util.List;
 import java.util.stream.Stream;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fooddelivery.dto.FavouriteResponseDTO;
@@ -14,20 +13,24 @@ import com.fooddelivery.exception.FavouriteAlreadyExistsException;
 import com.fooddelivery.exception.FavouriteDoesNotExistException;
 import com.fooddelivery.exception.MenuItemDoesNotExistException;
 import com.fooddelivery.exception.UserNotFoundException;
+
 import com.fooddelivery.repository.FavouritesRepository;
 import com.fooddelivery.repository.MenuItemRepository;
 import com.fooddelivery.repository.UserRepository;
 
 @Service
 public class FavouritesService {
-    @Autowired
-    private FavouritesRepository favouritesRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+    private final FavouritesRepository favouritesRepository;
+    private final UserRepository userRepository;
+    private final MenuItemRepository menuItemRepository;
 
-    @Autowired
-    private MenuItemRepository menuItemRepository;
+    public FavouritesService(FavouritesRepository favouritesRepository, UserRepository userRepository,
+            MenuItemRepository menuItemRepository) {
+        this.favouritesRepository = favouritesRepository;
+        this.userRepository = userRepository;
+        this.menuItemRepository = menuItemRepository;
+    }
 
     public Long addFavourites(Long userId, Long menuItemIds) {
         System.out.println("FavouritesService_addFavourites().");

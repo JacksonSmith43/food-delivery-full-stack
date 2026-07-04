@@ -1,6 +1,5 @@
 package com.fooddelivery.initialiser;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
@@ -13,8 +12,11 @@ import jakarta.annotation.PostConstruct;
 @Component
 public class CategoriesInitialiser {
 
-    @Autowired
-    private CategoriesRepository categoriesRepository;
+    private final CategoriesRepository categoriesRepository;
+
+    public CategoriesInitialiser(CategoriesRepository categoriesRepository) {
+        this.categoriesRepository = categoriesRepository;
+    }
 
     @PostConstruct
     public void init() {

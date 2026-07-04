@@ -7,21 +7,22 @@ import com.fooddelivery.repository.CartItemRepository;
 import com.fooddelivery.repository.CartRepository;
 import com.fooddelivery.repository.MenuItemRepository;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CartService {
 
-    @Autowired
-    private CartRepository cartRepository;
+    private final CartRepository cartRepository;
+    private final CartItemRepository cartItemRepository;
+    private final MenuItemRepository menuItemRepository;
 
-    @Autowired
-    private CartItemRepository cartItemRepository;
-
-    @Autowired
-    private MenuItemRepository menuItemRepository;
+    public CartService(CartRepository cartRepository, CartItemRepository cartItemRepository,
+            MenuItemRepository menuItemRepository) {
+        this.cartRepository = cartRepository;
+        this.cartItemRepository = cartItemRepository;
+        this.menuItemRepository = menuItemRepository;
+    }
 
     public Cart getOrCreateCart(String sessionId) {
         System.out.println("getOrCreateCart().");
@@ -73,11 +74,11 @@ public class CartService {
         int newQuantity = cartItem.getQuantity() - quantity;
 
         if (newQuantity <= 0) {
-            // Remove item completely. 
+            // Remove item completely.
             cart.removeCartItem(cartItem);
             cartItemRepository.delete(cartItem);
         } else {
-            // Decrease quantity. 
+            // Decrease quantity.
             cartItem.setQuantity(newQuantity);
             cartItemRepository.save(cartItem);
         }
@@ -85,7 +86,7 @@ public class CartService {
         return cartRepository.save(cart);
     }
 
-    // Get cart by session ID. 
+    // Get cart by session ID.
     public Cart getCart(String sessionId) {
         System.out.println("getCart().");
         return getOrCreateCart(sessionId);

@@ -3,7 +3,6 @@ package com.fooddelivery.controller;
 import java.util.List;
 import java.util.stream.Stream;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -22,8 +21,11 @@ import com.fooddelivery.service.FavouritesService;
 @RequestMapping("/api/")
 @CrossOrigin(origins = "http://localhost:4200")
 public class FavouritesController {
-    @Autowired
-    private FavouritesService favouritesService;
+    private final FavouritesService favouritesService;
+
+    FavouritesController(FavouritesService favouritesService) {
+        this.favouritesService = favouritesService;
+    }
 
     @PostMapping("favourites/addToFavourites/{userId}")
     public ResponseEntity<Long> addFavourites(@PathVariable Long userId, @RequestBody Long menuItemId) {

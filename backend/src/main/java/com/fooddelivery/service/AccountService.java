@@ -2,7 +2,6 @@ package com.fooddelivery.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fooddelivery.dto.AddressDTO;
@@ -21,13 +20,12 @@ import com.fooddelivery.repository.UserRepository;
 
 @Service
 public class AccountService {
-    @Autowired
     private AddressRepository addressRepository;
-    @Autowired
     private UserRepository userRepository;
 
-    AccountService(AddressRepository addressRepository) {
+    AccountService(AddressRepository addressRepository, UserRepository userRepository) {
         this.addressRepository = addressRepository;
+        this.userRepository = userRepository;
     }
 
     public UserProfileResponseDTO getUserProfile(String email) {

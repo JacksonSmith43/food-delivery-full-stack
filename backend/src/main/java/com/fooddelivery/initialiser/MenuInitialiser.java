@@ -2,7 +2,6 @@ package com.fooddelivery.initialiser;
 
 import java.math.BigDecimal;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
@@ -15,18 +14,21 @@ import com.fooddelivery.repository.RestaurantRepository;
 
 import jakarta.annotation.PostConstruct;
 
-@Profile("!test") // This prevents the test profile from using this initialiser data. 
+@Profile("!test") // This prevents the test profile from using this initialiser data.
 @Component
 // MenuInitialiser knows where restaurantInitialiser is, because Spring
 // automatically creates Bean names based off of class names, with the first
 // letter being lower case.
 @DependsOn("restaurantInitialiser") // @DependsOn() is an alternative to Order().
 public class MenuInitialiser {
-        @Autowired
-        private MenuItemRepository menuItemRepository;
 
-        @Autowired
-        RestaurantRepository restaurantRepository;
+        private final MenuItemRepository menuItemRepository;
+        private final RestaurantRepository restaurantRepository;
+
+        public MenuInitialiser(MenuItemRepository menuItemRepository, RestaurantRepository restaurantRepository) {
+                this.menuItemRepository = menuItemRepository;
+                this.restaurantRepository = restaurantRepository;
+        }
 
         @PostConstruct
         public void init() {

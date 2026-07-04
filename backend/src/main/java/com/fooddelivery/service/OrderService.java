@@ -3,7 +3,6 @@ package com.fooddelivery.service;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fooddelivery.dto.AddressDTO;
@@ -25,13 +24,17 @@ import jakarta.transaction.Transactional;
 
 @Service
 public class OrderService {
-    @Autowired
     private OrderRepository orderRepository;
-    @Autowired
     private UserRepository userRepository;
-
-    @Autowired
     private CartRepository cartRepository;
+
+    public OrderService(OrderRepository orderRepository,
+            UserRepository userRepository,
+            CartRepository cartRepository) {
+        this.orderRepository = orderRepository;
+        this.userRepository = userRepository;
+        this.cartRepository = cartRepository;
+    }
 
     public void createOrder(CheckoutCartDTO checkoutCartDto, Long userId, String sessionId) {
         System.out.println("OrderService_createOrder().");
