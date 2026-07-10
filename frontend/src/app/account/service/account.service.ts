@@ -20,18 +20,17 @@ export class AccountService {
 
   constructor(public dialog: MatDialog) {} // MatDialog opens dialogs/modals.
 
-  changeEmailAddress(currentEmail: string, newEmail: string) {
+  changeEmailAddress(newEmail: string) {
     console.log('changeEmailAddress().');
-    return this.http.post(`/api/auth/emailChange/${currentEmail}`, newEmail, {
+    return this.http.post(`/api/auth/emailChange`, newEmail, {
       responseType: 'text',
     });
   }
 
-  changePassword(currentPassword: string, newPassword: string, email: string) {
+  changePassword(currentPassword: string, newPassword: string) {
     console.log('changePassword().');
 
     const body = {
-      email,
       currentPassword,
       newPassword,
     };
@@ -41,14 +40,14 @@ export class AccountService {
     });
   }
 
-  getUserProfile(email: string): Observable<string> {
-    return this.http.get(`/api/user/account/profile/${email}`, { responseType: 'text' });
+  getCurrentUserProfile(): Observable<UserProfileType> {
+    return this.http.get<UserProfileType>(`/api/user/account/profile/me`);
   }
 
-  changePhoneNumber(email: string, phoneNumber: string) {
+  changePhoneNumber(phoneNumber: string) {
     console.log('changePhoneNumber().');
 
-    return this.http.post(`/api/user/account/profile/changePhoneNumber/${email}`, phoneNumber, {
+    return this.http.post(`/api/user/account/profile/changePhoneNumber`, phoneNumber, {
       responseType: 'text',
     });
   }

@@ -16,15 +16,11 @@ export class RegisterComponent {
 
   errorMessage = this.authService.errorMessage;
   successMessage = this.authService.successMessage;
-  isValid = this.authService.isValid;
+  isRegistrationSuccessful = this.authService.isRegistrationSuccessful;
 
   registerForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
-    password: new FormControl('', [
-      Validators.required,
-      Validators.minLength(6),
-      Validators.maxLength(30),
-    ]),
+    password: new FormControl('', [Validators.required, Validators.minLength(6), Validators.maxLength(30)]),
   });
 
   onSubmit(emailInput: string, passwordInput: string) {
@@ -49,12 +45,12 @@ export class RegisterComponent {
       next: (user) => {
         console.log('onRegister()_next_user: ', user);
         this.successMessage.set('Successful registration.');
-        this.isValid.set(true);
+        this.isRegistrationSuccessful.set(true);
         this.errorMessage.set('');
 
         setTimeout(() => {
           this.successMessage.set('');
-          this.isValid.set(false);
+          this.isRegistrationSuccessful.set(false);
         }, 2000);
       },
       error: (e) => {

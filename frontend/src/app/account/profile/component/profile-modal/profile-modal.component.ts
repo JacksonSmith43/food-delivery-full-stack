@@ -62,19 +62,14 @@ export class ProfileModalComponent {
         let newEmail = this.validatorsService.emailForm.value.email;
         this.selectedFormField.set('email');
 
-        let currentEmail = this.authService.authUser()?.email;
-
-        this.accountService.changeEmailAddress(currentEmail!, newEmail!).subscribe({
+        this.accountService.changeEmailAddress(newEmail!).subscribe({
           next: (response) => {
-            console.log('changeEmailAddress()_Response: ', response);
             this.successMessage.set('Your Email address has successfully been changed.');
             this.isValidChange.set(true);
 
             const authUserData = this.authService.authUser();
             if (authUserData) {
               this.authService.authUser.set({ ...authUserData, email: newEmail! });
-              // sessionStorage.setItem('userCredentials', JSON.stringify(this.authService.authUser()));
-              sessionStorage.setItem('userEmail', authUserData.email);
             }
 
             setTimeout(() => {
@@ -103,19 +98,16 @@ export class ProfileModalComponent {
     try {
       if (this.validatorsService.passwordForm.valid) {
         let newPassword = this.validatorsService.passwordForm.value.newPassword;
-        this.selectedFormField.set('password');
+        let currentPassword = this.validatorsService.passwordForm.value.currentPassword;
 
-        let currentPassword = this.authService.authUser()?.password;
-        let email = this.authService.authUser()?.email;
+        this.selectedFormField.set('password');
 
         this.successMessage.set('');
         this.errorMessage.set('');
         this.isValidChange.set(false);
 
-        this.accountService.changePassword(currentPassword!, newPassword!, email!).subscribe({
+        this.accountService.changePassword(currentPassword!, newPassword!).subscribe({
           next: (response) => {
-            console.log('onChangePassword()_Response: ', response);
-
             if (response === null) {
               console.log('onChangePassword()_Response is null. This means that the current password is incorrect.');
               this.errorMessage.set(response);
@@ -128,7 +120,6 @@ export class ProfileModalComponent {
             const authUserData = this.authService.authUser();
             if (authUserData) {
               this.authService.authUser.set({ ...authUserData, password: newPassword! });
-              sessionStorage.setItem('userCredentials', JSON.stringify(this.authService.authUser()));
             }
             setTimeout(() => {
               this.dialogRef.close(newPassword);
@@ -137,7 +128,7 @@ export class ProfileModalComponent {
             }, 2000);
           },
           error: (e) => {
-            console.error('onChangePassword()_Error: ', e);
+            console.error('onChangePassword()_error_Error: ', e);
             this.errorMessage.set(JSON.parse(e.error).code);
             // this.errorMessage.set('An error occurred. Please try again. Error: ' + e.message);
           },
@@ -156,7 +147,6 @@ export class ProfileModalComponent {
     console.log('onChangePhoneNumber().');
 
     let phoneNumber = this.validatorsService.phoneNumberForm.controls.phoneNumber.value;
-    let email = this.accountService.currentUserProfile()?.email;
     let userProfile = this.accountService.currentUserProfile();
 
     this.successMessage.set('');
@@ -168,14 +158,14 @@ export class ProfileModalComponent {
       return;
     }
 
-    if (!email) {
+    if (!userProfile) {
       this.errorMessage.set('User profile is not loaded. Please reopen the profile page.');
       return;
     }
 
-    if (email && phoneNumber != null) {
+    if (phoneNumber != null) {
       console.log('phoneNumber', phoneNumber);
-      this.accountService.changePhoneNumber(email, phoneNumber).subscribe({
+      this.accountService.changePhoneNumber(phoneNumber).subscribe({
         next: (phoneNumber) => {
           console.log('onChangePhoneNumber()_phoneNumber: ', phoneNumber);
           this.isValidChange.set(true);

@@ -7,8 +7,8 @@ import { OrderType } from '../model/order-type';
 export class OrderService {
   http = inject(HttpClient);
 
-  getOrders(email: string) {
+  getOrders() {
     console.log('OrderService_getOrders().');
-    return this.http.get<OrderType[]>(`/api/orders/${email}`);
+    return this.http.get<OrderType[]>(`/api/orders`);
   }
 }

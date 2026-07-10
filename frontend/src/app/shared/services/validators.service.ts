@@ -1,14 +1,12 @@
 import { inject, Injectable } from '@angular/core';
 import { FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 
-import { AuthService } from '../../auth/service/auth.service';
 import { AccountService } from '../../account/service/account.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ValidatorsService {
-  authService = inject(AuthService);
   accountService = inject(AccountService);
 
   emailForm = new FormGroup({
@@ -16,10 +14,7 @@ export class ValidatorsService {
   });
 
   passwordForm = new FormGroup({
-    currentPassword: new FormControl('', [
-      ...this.getPasswordValidators(),
-      this.currentPasswordChecker.bind(this),
-    ] as ValidatorFn[]),
+    currentPassword: new FormControl('', [...this.getPasswordValidators()] as ValidatorFn[]),
 
     newPassword: new FormControl('', [
       ...this.getPasswordValidators(),
@@ -39,11 +34,7 @@ export class ValidatorsService {
   });
 
   phoneNumberForm = new FormGroup({
-    phoneNumber: new FormControl('', [
-      Validators.required,
-      Validators.minLength(3),
-      Validators.maxLength(20),
-    ]),
+    phoneNumber: new FormControl('', [Validators.required, Validators.minLength(3), Validators.maxLength(20)]),
   });
 
   public getPasswordValidators(): ValidatorFn[] {
@@ -61,24 +52,10 @@ export class ValidatorsService {
     console.log('differentFromCurrentPassword().');
 
     const newPassword = control.value;
-    const currentPassword = this.authService.authUser()?.password;
+    const currentPassword = control.parent?.get('currentPassword')?.value;
 
     if (newPassword && currentPassword && newPassword === currentPassword) {
       return { sameAsCurrentPassword: true };
-    }
-
-    return null;
-  }
-
-  currentPasswordChecker(control: FormControl): { [key: string]: boolean } | null {
-    console.log('currentPasswordChecker().');
-
-    const currentPasswordInput = control.value;
-    const currentPassword = this.authService.authUser()?.password;
-
-    // If this statement is true then the user has entered an incorrect current password. The error 'differentCurrentPassword' is added to the form control, which can be used in the template to display an error message.
-    if (currentPasswordInput !== currentPassword) {
-      return { differentCurrentPassword: true };
     }
 
     return null;

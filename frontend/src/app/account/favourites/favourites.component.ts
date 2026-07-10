@@ -30,28 +30,20 @@ export class FavouritesComponent implements OnInit {
 
   ngOnInit(): void {
     console.log('FavouritesComponent_ngOnInit().');
-
-    let userCredentials = this.locaStorageService.getUserCredentials();
-
-    if (userCredentials) {
-      this.authService.authUser.set(userCredentials);
-
-      this.accountService.getUserProfile(userCredentials.email).subscribe({
-        next: (user) => {
-          console.log('FavouritesComponent_ngOnInit()_user: ', user);
-          this.accountService.currentUserProfile.set(JSON.parse(user));
-          this.getFavouriteMenuItems();
-        },
-        error: (error) => {
-          console.error('FavouritesComponent_ngOnInit()_Error loading profile: ', error.error.message);
-          if (error.status === 0) {
-            this.networkError.set('Unable to load user profile. Please check your network connection and try again.');
-          } else {
-            this.errorMessage.set(error.statusText);
-          }
-        },
-      });
-    }
+    this.accountService.getCurrentUserProfile().subscribe({
+      next: (user) => {
+        this.accountService.currentUserProfile.set(user);
+        this.getFavouriteMenuItems();
+      },
+      error: (error) => {
+        console.error('FavouritesComponent_ngOnInit()_Error loading profile: ', error.error.message);
+        if (error.status === 0) {
+          this.networkError.set('Unable to load user profile. Please check your network connection and try again.');
+        } else {
+          this.errorMessage.set(error.statusText);
+        }
+      },
+    });
 
     this.cartService.refreshCart();
   }

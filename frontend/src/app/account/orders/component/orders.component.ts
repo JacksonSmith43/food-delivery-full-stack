@@ -3,7 +3,6 @@ import { DatePipe } from '@angular/common';
 
 import { OrderService } from '../../../shared/services/order.service';
 import { AuthService } from '../../../auth/service/auth.service';
-import { LocalStorageService } from '../../../shared/services/local-storage.service';
 import { OrderStatusType, OrderType } from '../../../shared/model/order-type';
 
 @Component({
@@ -15,29 +14,16 @@ import { OrderStatusType, OrderType } from '../../../shared/model/order-type';
 export class OrdersComponent implements OnInit {
   orderService = inject(OrderService);
   authService = inject(AuthService);
-  localStorageService = inject(LocalStorageService);
 
   orders = signal<OrderType[]>([]);
 
   ngOnInit(): void {
     console.log('OrdersComponent_ngOnInit().');
 
-    const userCredentials = this.localStorageService.getUserCredentials();
-
-    if (userCredentials) {
-      this.authService.authUser.set(userCredentials);
-    } else {
-      this.orders.set([]);
-      return;
-    }
-
-    console.log('OrdersComponent_ngOnInit()_userCredentials: ', userCredentials);
-
-    this.orderService.getOrders(userCredentials.email!).subscribe({
+    this.orderService.getOrders().subscribe({
       next: (orders: OrderType[]) => {
         console.log('OrdersComponent_ngOnInit()_orders: ', orders);
         this.orders.set(orders);
-        console.log('OrdersComponent_ngOnInit()_this.orders(): ', this.orders());
       },
       error: (error) => {
         console.error('OrdersComponent_ngOnInit()_Error: ', error?.error?.message ?? error);

@@ -23,16 +23,22 @@ import jakarta.servlet.http.HttpSession;
 @RequestMapping("/api/")
 @CrossOrigin(origins = "http://localhost:4200")
 public class OrderController {
-    @Autowired
-    private OrderService orderService;
+    private static final String AUTH_USER_EMAIL = "authUserEmail";
+
+    private final OrderService orderService;
+
+    public OrderController(OrderService orderService) {
+        this.orderService = orderService;
+    }
 
     // HttpSession comes from the server.
-    @PostMapping("cart/checkout/{email}")
-    public ResponseEntity<String> checkoutCart(@PathVariable String email,
-            @RequestBody CheckoutCartDTO checkoutCart,
+    @PostMapping("cart/checkout")
+    public ResponseEntity<String> checkoutCart(@RequestBody CheckoutCartDTO checkoutCart,
             HttpSession session) {
 
         System.out.println("CartController_checkoutCart().");
+
+        String email = (String) session.getAttribute(AUTH_USER_EMAIL);
 
         Long userId = orderService.getIdByEmail(email);
         String phoneNumber = checkoutCart.getPhoneNumber();
@@ -62,9 +68,11 @@ public class OrderController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("orders/{email}")
-    public ResponseEntity<List<OrderDTO>> getOrders(@PathVariable String email) {
+    @GetMapping("orders")
+    public ResponseEntity<List<OrderDTO>> getOrders(HttpSession session) {
         System.out.println("OrderController_getOrders().");
+
+        String email = (String) session.getAttribute(AUTH_USER_EMAIL);
 
         List<OrderDTO> orders = orderService.getOrders(email);
         return ResponseEntity.ok(orders);

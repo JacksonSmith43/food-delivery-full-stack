@@ -19,25 +19,34 @@ import com.fooddelivery.dto.UserProfileResponseDTO;
 import com.fooddelivery.entity.Address;
 import com.fooddelivery.service.AccountService;
 
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 @RestController
 @RequestMapping("/api/user/account/")
 @CrossOrigin(origins = "http://localhost:4200")
 public class AccountController {
-    @Autowired
-    AccountService accountService;
+    private static final String AUTH_USER_EMAIL = "authUserEmail";
+    private final AccountService accountService;
 
-    @GetMapping("profile/{email}")
-    ResponseEntity<UserProfileResponseDTO> getProfile(@PathVariable String email) {
+    public AccountController(AccountService accountService) {
+        this.accountService = accountService;
+    }
+
+    @GetMapping("profile/me")
+    ResponseEntity<UserProfileResponseDTO> getProfile(HttpSession session) {
         System.out.println("AccountController_getProfile().");
 
+        String email = (String) session.getAttribute(AUTH_USER_EMAIL);
         System.out.println("AccountController_getProfile()_userProfile_email: " + email);
         return ResponseEntity.ok(accountService.getUserProfile(email));
     }
 
-    @PostMapping("profile/addAddress/{email}")
-    ResponseEntity<AddressDTO> addAddress(@PathVariable String email, @RequestBody Address address) {
+    @PostMapping("profile/addAddress")
+    ResponseEntity<AddressDTO> addAddress(@RequestBody Address address, HttpSession session) {
         System.out.println("AccountController_addAddress().");
+
+        String email = (String) session.getAttribute(AUTH_USER_EMAIL);
 
         Address userAddress = accountService.addAddress(address, email);
 
@@ -47,9 +56,11 @@ public class AccountController {
         return ResponseEntity.ok(dto);
     }
 
-    @PostMapping("profile/changePhoneNumber/{email}")
-    ResponseEntity<String> changePhoneNumber(@PathVariable String email, @RequestBody String phoneNumber) {
+    @PostMapping("profile/changePhoneNumber")
+    ResponseEntity<String> changePhoneNumber(@RequestBody String phoneNumber, HttpSession session) {
         System.out.println("AccountController_changePhoneNumber().");
+
+        String email = (String) session.getAttribute(AUTH_USER_EMAIL);
 
         accountService.changePhoneNumber(phoneNumber, email);
         System.out.println("AccountController_changePhoneNumber()_Successful phone number change.");

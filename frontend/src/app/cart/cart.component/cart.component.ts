@@ -32,21 +32,16 @@ export class CartComponent implements OnInit {
     console.log('CartComponent_ngOnInit().');
     this.cartService.refreshCart();
 
-    let userCredentials = this.locaStorageService.getUserCredentials();
-
-    if (userCredentials) {
-      this.authService.authUser.set(userCredentials);
-      this.accountService.getUserProfile(userCredentials.email).subscribe({
-        next: (user) => {
-          console.log('CartComponent_ngOnInit()_next_user: ', JSON.parse(user));
-          this.accountService.currentUserProfile.set(JSON.parse(user));
-        },
-        error: (error) => {
-          console.error('CartComponent_ngOnInit()_Error: ', error.message);
-        },
-      });
-      console.log('CartComponent_ngOnInit()_End.');
-    }
+    this.accountService.getCurrentUserProfile().subscribe({
+      next: (user) => {
+        console.log('CartComponent_ngOnInit()_next_user: ', user);
+        this.accountService.currentUserProfile.set(user);
+      },
+      error: (error) => {
+        console.error('CartComponent_ngOnInit()_Error: ', error.message);
+      },
+    });
+    console.log('CartComponent_ngOnInit()_End.');
   }
 
   getCart() {

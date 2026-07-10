@@ -44,12 +44,6 @@ export class RestaurantComponent implements OnInit {
 
     console.log('Restaurant_ngOnInit()_this.filteredRestaurants().', this.filteredRestaurants());
 
-    let userCredentials = this.localStorageService.getUserCredentials();
-
-    if (userCredentials) {
-      this.authService.authUser.set(userCredentials);
-    }
-
     let restaurants: RestaurantType[] = this.localStorageService.getRestaurants('restaurants');
 
     if (restaurants && restaurants.length > 0) {

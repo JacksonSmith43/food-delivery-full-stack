@@ -18,10 +18,10 @@ export class MyAddressService {
 
   constructor(public dialog: MatDialog) {} // MatDialog opens dialogs/modals.
 
-  addAddress(address: AddressType, email: string) {
+  addAddress(address: AddressType) {
     console.log('MyAddressService_addAddress().');
 
-    return this.http.post(`/api/user/account/profile/addAddress/${email}`, address, {
+    return this.http.post(`/api/user/account/profile/addAddress`, address, {
       responseType: 'text',
     });
   }

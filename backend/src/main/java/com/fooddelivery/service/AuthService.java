@@ -76,7 +76,7 @@ public class AuthService {
         // and id) and not only gets the email address.
         User user = userRepository.getByEmail(email);
 
-        if (user == null) {
+        if (email == null) {
             System.out.println("AuthService_changePassword()_User not found.");
             throw new EmailDoesNotExistException("User not found.");
         }
@@ -110,14 +110,24 @@ public class AuthService {
         }
     }
 
-    public void comparesNewPasswordWithCurrentPassword(String email, String currentPassword) {
+    public void comparesNewPasswordWithCurrentPassword(String currentPassword, String newPassword) {
         System.out.println("comparesNewPasswordWithCurrentPassword().");
 
-        List<User> users = authRepository.findByEmail(email);
-
-        if (!users.get(0).getPassword().equals(currentPassword)) {
+        if (currentPassword.equals(newPassword)) {
             throw new SameAsCurrentPasswordException("The new password has to be different than the current one.");
         }
+    }
+
+    public User getUserByEmail(String email) {
+        System.out.println("AuthService_getUserByEmail().");
+
+        User user = userRepository.getByEmail(email);
+
+        if (user == null) {
+            throw new EmailDoesNotExistException("User does not exist.");
+        }
+
+        return user;
     }
 
 }

@@ -52,21 +52,14 @@ export class MyAddressesComponent {
   ngOnInit(): void {
     console.log('MyAddressesComponent_ngOnInit().');
 
-    let userCredentials = this.locaStorageService.getUserCredentials();
-
-    if (userCredentials) {
-      this.authService.authUser.set(userCredentials);
-
-      this.accountService.getUserProfile(userCredentials.email).subscribe({
-        next: (user) => {
-          console.log('MyAddressesComponent_ngOnInit()_user: ', user);
-          this.accountService.currentUserProfile.set(JSON.parse(user));
-        },
-        error: (error) => {
-          console.error('MyAddressesComponent_ngOnInit()_Error loading profile: ', error.error.message);
-        },
-      });
-    }
+    this.accountService.getCurrentUserProfile().subscribe({
+      next: (user) => {
+        this.accountService.currentUserProfile.set(user);
+      },
+      error: (error) => {
+        console.error('MyAddressesComponent_ngOnInit()_Error loading profile: ', error.error.message);
+      },
+    });
   }
 
   formatAddress(a: {

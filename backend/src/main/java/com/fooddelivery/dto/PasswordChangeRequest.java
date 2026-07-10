@@ -1,27 +1,16 @@
 package com.fooddelivery.dto;
 
 public class PasswordChangeRequest {
-    private String email;
     private String currentPassword;
     private String newPassword;
 
-    
     public PasswordChangeRequest() {
 
     }
 
-    public PasswordChangeRequest(String email, String currentPassword, String newPassword) {
-        this.email = email;
+    public PasswordChangeRequest(String currentPassword, String newPassword) {
         this.currentPassword = currentPassword;
         this.newPassword = newPassword;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getCurrentPassword() {
@@ -42,7 +31,7 @@ public class PasswordChangeRequest {
 
     @Override
     public String toString() {
-        return "PasswordChangeRequest [email=" + email + ", currentPassword=" + currentPassword + ", newPassword="
+        return "PasswordChangeRequest [currentPassword=" + currentPassword + ", newPassword="
                 + newPassword + "]";
     }
 

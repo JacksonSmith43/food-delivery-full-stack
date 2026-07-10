@@ -43,15 +43,11 @@ export class RestaurantDetailComponent implements OnInit {
   ngOnInit(): void {
     console.log('RestaurantDetailComponent_ngOnInit().');
 
-    let userCredentials = this.localStorageService.getUserCredentials();
-
-    if (userCredentials) {
-      this.authService.authUser.set(userCredentials);
-
-      this.accountService.getUserProfile(userCredentials.email).subscribe({
+    if (!this.accountService.currentUserProfile()) {
+      this.accountService.getCurrentUserProfile().subscribe({
         next: (user) => {
           console.log('RestaurantDetailComponent_ngOnInit()_user: ', user);
-          this.accountService.currentUserProfile.set(JSON.parse(user));
+          this.accountService.currentUserProfile.set(user);
           this.getFavouriteMenuItemIds();
         },
         error: (error) => {

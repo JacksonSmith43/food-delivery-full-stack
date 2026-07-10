@@ -5,7 +5,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { AuthService } from '../../service/auth.service';
 import { AuthType } from '../../model/auth-user-type';
-import { LocalStorageService } from '../../../shared/services/local-storage.service';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +16,8 @@ export class LoginComponent implements OnInit {
   authService = inject(AuthService);
   router = inject(Router);
   route = inject(ActivatedRoute);
-  localStorageService = inject(LocalStorageService);
+
+  isLoginSuccessful = this.authService.isLoginSuccessful;
 
   loginForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -36,6 +36,7 @@ export class LoginComponent implements OnInit {
 
     if (this.loginForm.invalid) {
       console.log('onSubmit()_Invalid submit.');
+      this.isLoginSuccessful.set(false);
       return;
     }
 
@@ -47,10 +48,10 @@ export class LoginComponent implements OnInit {
   onLogin(registerForm: AuthType) {
     console.log('onRegister().');
 
-    this.authService.loginUser(registerForm.email, registerForm.password).subscribe({
+    this.authService.loginUser({ email: registerForm.email, password: registerForm.password }).subscribe({
       next: (user) => {
         console.log('onLogin()_next_user: ', user);
-        this.localStorageService.saveUserToLocalStorage('userEmail', registerForm.email);
+        this.authService.isLoginSuccessful.set(true);
 
         // The user will either be redirected to the account page or to the page they were trying to access before being redirected to the login page.
         const returnUrl = this.route.snapshot.queryParams['returnUrl'] ?? 'account';
@@ -58,6 +59,7 @@ export class LoginComponent implements OnInit {
       },
       error: (e) => {
         console.error('onLogin()_error: ', e);
+        this.authService.isLoginSuccessful.set(false);
         this.authService.authUser.set(undefined);
         this.authService.errorMessage.set(JSON.parse(e.error).code);
       },

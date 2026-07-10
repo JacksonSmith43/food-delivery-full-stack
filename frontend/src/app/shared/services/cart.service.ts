@@ -95,10 +95,8 @@ export class CartService {
   checkoutCart(): Observable<string> {
     console.log('checkoutCart().');
     let checkoutCart = this.checkoutCartComputed();
-    let email = this.authService.authUser()?.email;
-    console.log('checkoutCart()_email: ', email);
 
     console.log('checkoutCart()_checkoutCart: ', checkoutCart);
-    return this.http.post(`/api/cart/checkout/${email}`, checkoutCart, { responseType: 'text' });
+    return this.http.post(`/api/cart/checkout`, checkoutCart, { responseType: 'text' });
   }
 }

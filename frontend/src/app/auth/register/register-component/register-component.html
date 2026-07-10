@@ -39,7 +39,7 @@
 
     <button matButton="filled" type="submit">Register</button>
 
-    @if (isValid()) {
+    @if (isRegistrationSuccessful()) {
       <p class="success-message">{{ successMessage() }}</p>
     } @else {
       <p class="error-message">{{ errorMessage() }}</p>

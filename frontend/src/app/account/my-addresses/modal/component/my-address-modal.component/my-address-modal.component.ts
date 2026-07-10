@@ -62,8 +62,6 @@ export class MyAddressModalComponent {
       let city = this.validatorsService.addressForm.value.city;
       let country = this.validatorsService.addressForm.value.country;
 
-      let currentEmail = this.accountService.currentUserProfile()?.email;
-
       console.log('addAddress()_streetName: ', streetName);
       console.log('addAddress()_label: ', label);
 
@@ -71,7 +69,7 @@ export class MyAddressModalComponent {
       this.errorMessage.set('');
       this.isValidChange.set(false);
 
-      if (!currentEmail) {
+      if (!this.accountService.currentUserProfile()) {
         this.errorMessage.set('User profile is not loaded. Please reopen the profile page.');
         return;
       }
@@ -107,7 +105,7 @@ export class MyAddressModalComponent {
       };
       console.log('addAddress()_address: ', address);
 
-      this.myAddressService.addAddress(address, currentEmail).subscribe({
+      this.myAddressService.addAddress(address).subscribe({
         next: (address) => {
           console.log('addAddress()_address: ', address);
           this.successMessage.set('Your address has successfully been added.');

@@ -29,16 +29,21 @@ export class Navbar {
   onLogout() {
     console.log('onLogout().');
 
-    this.authService.authUser.set(undefined);
-    sessionStorage.removeItem('userCredentials');
-    sessionStorage.removeItem('userEmail');
+    this.authService.logoutUser().subscribe({
+      next: () => {
+        this.successMessage.set('Logout successful.');
+        this.authService.errorMessage.set('');
 
-    this.successMessage.set('Logout successful.');
-    this.authService.errorMessage.set('');
-
-    setTimeout(() => {
-      this.successMessage.set('');
-      this.router.navigateByUrl('login');
-    }, 1000);
+        setTimeout(() => {
+          this.successMessage.set('');
+          this.authService.isLoginSuccessful.set(false);
+          this.router.navigateByUrl('login');
+        }, 1000);
+      },
+      error: (error) => {
+        console.error('Navbar_onLogout()_Error: ', error);
+        this.authService.errorMessage.set('Logout failed.');
+      },
+    });
   }
 }

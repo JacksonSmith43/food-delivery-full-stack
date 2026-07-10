@@ -29,21 +29,14 @@ export class ProfileComponent {
   ngOnInit(): void {
     console.log('AccountComponent_ngOnInit().');
 
-    let userCredentials = this.locaStorage.getUserCredentials();
-
-    if (userCredentials) {
-      this.authService.authUser.set(userCredentials);
-
-      this.accountService.getUserProfile(userCredentials.email).subscribe({
-        next: (user) => {
-          console.log('AccountComponent_ngOnInit()_user: ', user);
-          this.accountService.currentUserProfile.set(JSON.parse(user));
-        },
-        error: (error) => {
-          console.error('AccountComponent_ngOnInit()_Error loading profile: ', error.error.message);
-        },
-      });
-    }
+    this.accountService.getCurrentUserProfile().subscribe({
+      next: (user) => {
+        this.accountService.currentUserProfile.set(user);
+      },
+      error: (error) => {
+        console.error('AccountComponent_ngOnInit()_Error loading profile: ', error.error.message);
+      },
+    });
   }
 
   getPasswordLength() {
