@@ -10,7 +10,6 @@ import { AuthService } from '../../auth/service/auth.service';
 import { AuthType } from '../../auth/model/auth-user-type';
 import { UserProfileType } from '../../account/profile/modal/user-profile-type';
 import { AccountService } from '../../account/service/account.service';
-import { LocalStorageService } from '../../shared/services/local-storage.service';
 
 type CartServiceMock = {
   cart: ReturnType<typeof signal<CartType | null>>;
@@ -18,7 +17,6 @@ type CartServiceMock = {
   errorMessage: ReturnType<typeof signal<string>>;
   successMessage: ReturnType<typeof signal<string>>;
   isSuccessful: ReturnType<typeof signal<boolean>>;
-  // checkoutCartComputed
 
   getCart: ReturnType<typeof vi.fn>;
   addItemToCart: ReturnType<typeof vi.fn>;
@@ -33,7 +31,6 @@ type AuthServiceMock = {
   successMessage: ReturnType<typeof signal<string>>;
   errorMessage: ReturnType<typeof signal<string>>;
   authUser: ReturnType<typeof signal<AuthType | undefined>>;
-  isValid: ReturnType<typeof signal<boolean>>;
 
   registerUser: ReturnType<typeof vi.fn>;
   loginUser: ReturnType<typeof vi.fn>;
@@ -45,17 +42,9 @@ type AccountServiceMock = {
 
   changeEmailAddress: ReturnType<typeof vi.fn>;
   changePassword: ReturnType<typeof vi.fn>;
-  getUserProfile: ReturnType<typeof vi.fn>;
+  getCurrentUserProfile: ReturnType<typeof vi.fn>;
   changePhoneNumber: ReturnType<typeof vi.fn>;
   openDialog: ReturnType<typeof vi.fn>;
-};
-
-type LocalStorageServiceMock = {
-  getRestaurants: ReturnType<typeof vi.fn>;
-  getCurrentRestaurant: ReturnType<typeof vi.fn>;
-  getMenuItems: ReturnType<typeof vi.fn>;
-  saveToLocalStorage: ReturnType<typeof vi.fn>;
-  getUserCredentials: ReturnType<typeof vi.fn>;
 };
 
 describe('CartComponent', () => {
@@ -65,7 +54,6 @@ describe('CartComponent', () => {
   let cartService: CartServiceMock;
   let authService: AuthServiceMock;
   let accountService: AccountServiceMock;
-  let localStorageService: LocalStorageServiceMock;
 
   const createCartServiceMock = (): CartServiceMock => ({
     cart: signal<CartType | null>(null),
@@ -87,7 +75,6 @@ describe('CartComponent', () => {
     successMessage: signal(''),
     errorMessage: signal(''),
     authUser: signal<AuthType | undefined>({ email: '', password: '' }),
-    isValid: signal(false),
 
     registerUser: vi.fn(),
     loginUser: vi.fn(),
@@ -99,17 +86,11 @@ describe('CartComponent', () => {
 
     changeEmailAddress: vi.fn(),
     changePassword: vi.fn(),
-    getUserProfile: vi.fn(),
+    getCurrentUserProfile: vi
+      .fn()
+      .mockReturnValue(of({ id: 0, email: '', phoneNumber: '', address: [], defaultAddressId: 0 })),
     changePhoneNumber: vi.fn(),
     openDialog: vi.fn(),
-  });
-
-  const createLocalStorageServiceMock = (): LocalStorageServiceMock => ({
-    getRestaurants: vi.fn(),
-    getCurrentRestaurant: vi.fn(),
-    getMenuItems: vi.fn(),
-    saveToLocalStorage: vi.fn(),
-    getUserCredentials: vi.fn(),
   });
 
   const createComponent = async () => {
@@ -137,7 +118,6 @@ describe('CartComponent', () => {
         { provide: CartService, useValue: cartService },
         { provide: AuthService, useValue: authService },
         { provide: AccountService, useValue: accountService },
-        { provide: LocalStorageService, useValue: localStorageService },
       ],
     }).compileComponents();
 
@@ -152,45 +132,34 @@ describe('CartComponent', () => {
     cartService = createCartServiceMock();
     authService = createAuthServiceMock();
     accountService = createAccountServiceMock();
-    localStorageService = createLocalStorageServiceMock();
   });
 
   describe('ngOnInit', () => {
-    it('should refresh the cart and load the user profile on init when user credentials exist', async () => {
-      localStorageService.getUserCredentials.mockReturnValue({
-        email: 'test@gmx.at',
-        password: 'secret',
-      });
-
-      accountService.getUserProfile.mockReturnValue(
-        of(
-          JSON.stringify({
-            id: 1,
-            email: 'test@gmx.at',
-            phoneNumber: '01234567',
-            address: [
-              {
-                id: 1,
-                label: 'Home',
-                streetName: 'Teststreet 20',
-                postalCode: 20,
-                city: 'Vienna',
-                country: 'Austria',
-              },
-            ],
-            defaultAddressId: 1,
-          }),
-        ),
+    it('should refresh the cart and load the user profile on init', async () => {
+      accountService.getCurrentUserProfile.mockReturnValue(
+        of({
+          id: 1,
+          email: 'test@gmx.at',
+          phoneNumber: '01234567',
+          address: [
+            {
+              id: 1,
+              label: 'Home',
+              streetName: 'Teststreet 20',
+              postalCode: 20,
+              city: 'Vienna',
+              country: 'Austria',
+            },
+          ],
+          defaultAddressId: 1,
+        }),
       );
 
       await createComponent();
 
       expect(cartService.refreshCart).toHaveBeenCalled();
-      expect(authService.authUser()).toEqual({
-        email: 'test@gmx.at',
-        password: 'secret',
-      });
-      expect(accountService.getUserProfile).toHaveBeenCalledWith('test@gmx.at');
+
+      expect(accountService.getCurrentUserProfile).toHaveBeenCalled();
       expect(accountService.currentUserProfile()).toEqual({
         id: 1,
         email: 'test@gmx.at',
@@ -207,15 +176,6 @@ describe('CartComponent', () => {
         ],
         defaultAddressId: 1,
       });
-    });
-
-    it('should only refresh the cart on init when no user credentials exist', async () => {
-      localStorageService.getUserCredentials.mockReturnValue(undefined);
-
-      await createComponent();
-
-      expect(cartService.refreshCart).toHaveBeenCalled();
-      expect(accountService.getUserProfile).not.toHaveBeenCalled();
     });
   });
 

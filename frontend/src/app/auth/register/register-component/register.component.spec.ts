@@ -11,7 +11,7 @@ type AuthServiceMock = {
   registerUser: ReturnType<typeof vi.fn>;
   errorMessage: ReturnType<typeof signal<string>>;
   successMessage: ReturnType<typeof signal<string>>;
-  isValid: ReturnType<typeof signal<boolean>>;
+  isRegistrationSuccessful: ReturnType<typeof signal<boolean>>;
   authService: ReturnType<typeof signal<AuthType | undefined>>;
 };
 
@@ -25,7 +25,7 @@ describe('RegisterComponent', () => {
     registerUser: vi.fn(),
     errorMessage: signal('error'),
     successMessage: signal('success'),
-    isValid: signal(false),
+    isRegistrationSuccessful: signal(false),
     authService: signal<AuthType | undefined>(undefined),
   });
 
@@ -90,7 +90,7 @@ describe('RegisterComponent', () => {
     expect(authService.registerUser).toHaveBeenCalledWith('admin@gmx.at', 'easy123');
     expect(authService.successMessage()).toBe('Successful registration.');
     expect(authService.errorMessage()).toBe('');
-    expect(authService.isValid()).toBe(true);
+
     // Resets the form.
     expect(component.registerForm.getRawValue()).toEqual({ email: null, password: null });
   });

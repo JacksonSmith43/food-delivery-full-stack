@@ -27,6 +27,7 @@ type AuthServiceMock = {
   // `ReturnType<typeof signal<string>>` means: use the returned signal type here.
   errorMessage: ReturnType<typeof signal<string>>;
   successMessage: ReturnType<typeof signal<string>>;
+  isLoginSuccessful: ReturnType<typeof signal<boolean>>;
 
   // `AuthType | undefined` means the value can either be an AuthType object or undefined.
   authUser: ReturnType<typeof signal<AuthType | undefined>>;
@@ -55,6 +56,7 @@ describe('LoginComponent', () => {
     loginUser: vi.fn(),
     errorMessage: signal('stale error'),
     successMessage: signal('Welcome back'),
+    isLoginSuccessful: signal(false),
     authUser: signal<AuthType | undefined>(undefined),
   });
 
@@ -152,7 +154,10 @@ describe('LoginComponent', () => {
     component.onSubmit('admin@gmx.at', 'easy123');
 
     // This proves that the component tried to start the login process with the expected credentials.
-    expect(authService.loginUser).toHaveBeenCalledWith('admin@gmx.at', 'easy123');
+    expect(authService.loginUser).toHaveBeenCalledWith({
+      email: 'admin@gmx.at',
+      password: 'easy123',
+    });
 
     // This proves that the real component code reached `this.loginForm.reset()` after the valid submit.
     expect(component.loginForm.getRawValue()).toEqual({ email: null, password: null });
@@ -186,7 +191,10 @@ describe('LoginComponent', () => {
 
     // This expectation must match the same credentials we set above, because these are the values
     // the component forwards to the mocked AuthService.
-    expect(authService.loginUser).toHaveBeenCalledWith('admin@gmx.at', 'easy123');
+    expect(authService.loginUser).toHaveBeenCalledWith({
+      email: 'admin@gmx.at',
+      password: 'easy123',
+    });
 
     // When the Observable goes into the `error` branch, the component clears authUser
     // and stores the backend error code in `errorMessage`.

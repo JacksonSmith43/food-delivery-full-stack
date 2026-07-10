@@ -4,7 +4,6 @@ import { of, throwError } from 'rxjs';
 
 import { OrdersComponent } from './orders.component';
 import template from './orders.component.html?raw';
-import { LocalStorageService } from '../../../shared/services/local-storage.service';
 import { AuthService } from '../../../auth/service/auth.service';
 import { AuthType } from '../../../auth/model/auth-user-type';
 import { OrderService } from '../../../shared/services/order.service';
@@ -17,28 +16,42 @@ type AuthServiceMock = {
   authUser: ReturnType<typeof signal<AuthType | undefined>>;
 };
 
-type LocaStorageServiceMock = {
-  getUserCredentials: ReturnType<typeof vi.fn>;
-};
-
 describe('OrdersComponent', () => {
   let fixture: ComponentFixture<OrdersComponent>;
   let component: OrdersComponent;
 
   let orderService: OrderServiceMock;
   let authService: AuthServiceMock;
-  let locaStorageService: LocaStorageServiceMock;
 
   const createOrderServiceMock = (): OrderServiceMock => ({
-    getOrders: vi.fn(),
+    getOrders: vi.fn().mockReturnValue(
+      of({
+        orderId: 0,
+        totalAmount: 0,
+        totalCost: 0,
+        status: '',
+        createdAt: '',
+        paymentMethod: '',
+        paymentStatus: '',
+        deliverySnapshot: {
+          name: '',
+          userId: 1,
+          phoneNumber: '',
+          label: '',
+          streetName: '',
+          postalCode: 0,
+          city: '',
+          country: '',
+        },
+        quantity: 2,
+        price: 4,
+        menuItemNameSnapshot: '',
+      }),
+    ),
   });
 
   const createAuthServiceMock = (): AuthServiceMock => ({
     authUser: signal(undefined),
-  });
-
-  const createLocaStorageServiceMock = (): LocaStorageServiceMock => ({
-    getUserCredentials: vi.fn(),
   });
 
   const createComponent = async () => {
@@ -59,7 +72,6 @@ describe('OrdersComponent', () => {
       providers: [
         { provide: OrderService, useValue: orderService },
         { provide: AuthService, useValue: authService },
-        { provide: LocalStorageService, useValue: locaStorageService },
       ],
     }).compileComponents();
 
@@ -73,12 +85,10 @@ describe('OrdersComponent', () => {
 
     orderService = createOrderServiceMock();
     authService = createAuthServiceMock();
-    locaStorageService = createLocaStorageServiceMock();
   });
 
   describe('ngOnInit', () => {
     it('should load orders when the correct credentials are inputed', async () => {
-      locaStorageService.getUserCredentials.mockReturnValue({ email: 'admin@gmx.at', password: '1234567' });
       orderService.getOrders.mockReturnValue(
         of([
           {
@@ -108,9 +118,7 @@ describe('OrdersComponent', () => {
 
       await createComponent();
 
-      expect(locaStorageService.getUserCredentials).toHaveBeenCalled();
-      expect(authService.authUser()).toEqual({ email: 'admin@gmx.at', password: '1234567' });
-      expect(orderService.getOrders).toHaveBeenCalledWith('admin@gmx.at');
+      expect(orderService.getOrders).toHaveBeenCalled();
       expect(component.orders()).toEqual([
         {
           orderId: 1,
@@ -137,17 +145,7 @@ describe('OrdersComponent', () => {
       ]);
     });
 
-    it('should return an empty order signal when credentials are not inputed', async () => {
-      locaStorageService.getUserCredentials.mockReturnValue(null);
-
-      await createComponent();
-
-      expect(orderService.getOrders).not.toHaveBeenCalled();
-      expect(component.orders()).toEqual([]);
-    });
-
     it('should have valid credentials and fail order response', async () => {
-      locaStorageService.getUserCredentials.mockReturnValue({ email: 'admin@gmx.at', password: '01234567' });
       orderService.getOrders.mockReturnValue(
         throwError(() => ({
           error: 'Error',
@@ -156,8 +154,7 @@ describe('OrdersComponent', () => {
 
       await createComponent();
 
-      expect(authService.authUser()).toEqual({ email: 'admin@gmx.at', password: '01234567' });
-      expect(orderService.getOrders).toHaveBeenCalledWith('admin@gmx.at');
+      expect(orderService.getOrders).toHaveBeenCalled();
       expect(component.orders()).toEqual([]);
     });
   });
