@@ -5,12 +5,14 @@ import { Observable } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 
 import { MyAddressModalComponent } from '../modal/component/my-address-modal.component/my-address-modal.component';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MyAddressService {
   http = inject(HttpClient);
+  private readonly apiBaseUrl = environment.apiBaseUrl;
 
   selectedFormField = signal<'address' | undefined>(undefined);
 
@@ -21,7 +23,7 @@ export class MyAddressService {
   addAddress(address: AddressType) {
     console.log('MyAddressService_addAddress().');
 
-    return this.http.post(`/api/user/account/profile/addAddress`, address, {
+    return this.http.post(`${this.apiBaseUrl}/api/user/account/profile/addAddress`, address, {
       responseType: 'text',
     });
   }
@@ -29,12 +31,12 @@ export class MyAddressService {
   changeAddress(userId: number, newAddress: AddressType) {
     console.log('MyAddressService_changeAddress().');
 
-    return this.http.put(`/api/user/account/profile/changeAddress/${userId}`, newAddress);
+    return this.http.put(`${this.apiBaseUrl}/api/user/account/profile/changeAddress/${userId}`, newAddress);
   }
 
   deleteAddress(addressId: number): Observable<AddressType[]> {
     console.log('MyAddressService_deleteAddress().');
-    return this.http.delete<AddressType[]>(`/api/user/account/address/deleteAddress/${addressId}`);
+    return this.http.delete<AddressType[]>(`${this.apiBaseUrl}/api/user/account/address/deleteAddress/${addressId}`);
   }
 
   openDialog(formField: 'address'): void {

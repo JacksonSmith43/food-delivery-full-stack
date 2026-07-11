@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 
 import { CategoryType, MenuItemsType, RestaurantType } from '../model/restaurants-type.module';
 import { LocalStorageService } from './local-storage.service';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -11,6 +12,7 @@ import { LocalStorageService } from './local-storage.service';
 export class RestaurantsService {
   http = inject(HttpClient);
   localStorageService = inject(LocalStorageService);
+  private readonly apiBaseUrl = environment.apiBaseUrl;
 
   // This only gets used to get all images and to get filtered but not changed.
   allRestaurants = signal<RestaurantType[]>([]);
@@ -25,7 +27,7 @@ export class RestaurantsService {
 
   getAllRestaurants(): Observable<RestaurantType[]> {
     console.log('RestaurantsService_getAllRestaurants().');
-    return this.http.get<RestaurantType[]>('/api/restaurants/');
+    return this.http.get<RestaurantType[]>(`${this.apiBaseUrl}/api/restaurants/`);
   }
 
   getUniqueCategories(restaurants: RestaurantType[]): CategoryType[] {

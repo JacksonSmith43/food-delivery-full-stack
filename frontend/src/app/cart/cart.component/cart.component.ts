@@ -6,6 +6,7 @@ import { CartService } from '../../shared/services/cart.service';
 import { AuthService } from '../../auth/service/auth.service';
 import { LocalStorageService } from '../../shared/services/local-storage.service';
 import { AccountService } from '../../account/service/account.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-cart',
@@ -14,6 +15,8 @@ import { AccountService } from '../../account/service/account.service';
   styleUrl: './cart.component.css',
 })
 export class CartComponent implements OnInit {
+  private readonly imageBaseUrl = `${environment.apiBaseUrl}/images`;
+
   cartService = inject(CartService);
   authService = inject(AuthService);
   locaStorageService = inject(LocalStorageService);
@@ -52,6 +55,10 @@ export class CartComponent implements OnInit {
         return item.cartItems;
       },
     });
+  }
+
+  getMenuImageUrl(fileName: string): string {
+    return `${this.imageBaseUrl}/menus/${fileName}`;
   }
 
   onAddToCart(menuItemId: number) {

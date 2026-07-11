@@ -5,12 +5,14 @@ import { MatDialog } from '@angular/material/dialog';
 
 import { UserProfileType } from '../profile/modal/user-profile-type';
 import { ProfileModalComponent } from '../profile/component/profile-modal/profile-modal.component';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AccountService {
   http = inject(HttpClient);
+  private readonly apiBaseUrl = environment.apiBaseUrl;
 
   selectedFormField = signal<'email' | 'password' | 'phoneNumber' | undefined>(undefined);
   currentUserProfile = signal<UserProfileType | null>(null);
@@ -22,7 +24,7 @@ export class AccountService {
 
   changeEmailAddress(newEmail: string) {
     console.log('changeEmailAddress().');
-    return this.http.post(`/api/auth/emailChange`, newEmail, {
+    return this.http.post(`${this.apiBaseUrl}/api/auth/emailChange`, newEmail, {
       responseType: 'text',
     });
   }
@@ -35,19 +37,19 @@ export class AccountService {
       newPassword,
     };
 
-    return this.http.post<string>(`/api/auth/passwordChange/`, body, {
+    return this.http.post<string>(`${this.apiBaseUrl}/api/auth/passwordChange/`, body, {
       responseType: 'text' as 'json',
     });
   }
 
   getCurrentUserProfile(): Observable<UserProfileType> {
-    return this.http.get<UserProfileType>(`/api/user/account/profile/me`);
+    return this.http.get<UserProfileType>(`${this.apiBaseUrl}/api/user/account/profile/me`);
   }
 
   changePhoneNumber(phoneNumber: string) {
     console.log('changePhoneNumber().');
 
-    return this.http.post(`/api/user/account/profile/changePhoneNumber`, phoneNumber, {
+    return this.http.post(`${this.apiBaseUrl}/api/user/account/profile/changePhoneNumber`, phoneNumber, {
       responseType: 'text',
     });
   }

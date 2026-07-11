@@ -4,7 +4,7 @@
     @if (cartLength() > 0) {
       @for (cart of cart()?.cartItems; track cart.id) {
         <div class="menu-items">
-          <img [src]="'/images/menus/' + cart.menuItem.foodImage" [alt]="cart.menuItem.foodName" />
+          <img [src]="getMenuImageUrl(cart.menuItem.foodImage)" [alt]="cart.menuItem.foodName" />
 
           <p class="food-name">{{ cart.menuItem.foodName }}</p>
           <p>{{ cart.menuItem.price }} Euro</p>

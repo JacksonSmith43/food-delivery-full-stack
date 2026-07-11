@@ -6,6 +6,7 @@ import { CartType, CartSummaryType } from '../model/cart-type';
 import { AccountService } from '../../account/service/account.service';
 import { AuthService } from '../../auth/service/auth.service';
 import { LocalStorageService } from './local-storage.service';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -15,6 +16,7 @@ export class CartService {
   accountService = inject(AccountService);
   authService = inject(AuthService);
   locaStorageService = inject(LocalStorageService);
+  private readonly apiBaseUrl = environment.apiBaseUrl;
 
   cart = signal<CartType | null>(null);
   cartSummary = signal<CartSummaryType>({ totalQuantity: 0, totalCost: 0, itemCount: 0 });
@@ -45,23 +47,23 @@ export class CartService {
 
   getCart(): Observable<CartType> {
     console.log('getCart().');
-    return this.http.get<CartType>('/api/cart');
+    return this.http.get<CartType>(`${this.apiBaseUrl}/api/cart`);
   }
 
   addItemToCart(menuItemId: number, quantity: number): Observable<CartType> {
     console.log('addItemToCart().');
-    return this.http.post<CartType>('/api/cart/add', { menuItemId, quantity });
+    return this.http.post<CartType>(`${this.apiBaseUrl}/api/cart/add`, { menuItemId, quantity });
   }
 
   // Decrease quantity.
   removeItemFromCart(menuItemId: number, quantity: number): Observable<CartType> {
     console.log('removeItemFromCart().');
-    return this.http.post<CartType>('/api/cart/remove', { menuItemId, quantity });
+    return this.http.post<CartType>(`${this.apiBaseUrl}/api/cart/remove`, { menuItemId, quantity });
   }
 
   getCartSummary(): Observable<CartSummaryType> {
     console.log('CartService_getCartSummary().');
-    return this.http.get<CartSummaryType>('/api/cart/summary');
+    return this.http.get<CartSummaryType>(`${this.apiBaseUrl}/api/cart/summary`);
   }
 
   refreshCart(): void {
@@ -97,6 +99,6 @@ export class CartService {
     let checkoutCart = this.checkoutCartComputed();
 
     console.log('checkoutCart()_checkoutCart: ', checkoutCart);
-    return this.http.post(`/api/cart/checkout`, checkoutCart, { responseType: 'text' });
+    return this.http.post(`${this.apiBaseUrl}/api/cart/checkout`, checkoutCart, { responseType: 'text' });
   }
 }

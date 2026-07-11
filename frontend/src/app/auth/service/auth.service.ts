@@ -4,12 +4,14 @@ import { Observable, of, tap } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { AuthType } from '../model/auth-user-type';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   http = inject(HttpClient);
+  private readonly apiBaseUrl = environment.apiBaseUrl;
 
   successMessage = signal<string>('');
   errorMessage = signal<string>('');
@@ -19,13 +21,13 @@ export class AuthService {
 
   registerUser(email: string, password: string) {
     console.log('registerUser().');
-    return this.http.post(`/api/auth/registration/${email}`, password, { responseType: 'text' });
+    return this.http.post(`${this.apiBaseUrl}/api/auth/registration/${email}`, password, { responseType: 'text' });
   }
 
   loginUser(credentials: { email: string; password: string }) {
     console.log('AuthService_loginUser().');
 
-    return this.http.post<AuthType>('/api/auth/login', credentials).pipe(
+    return this.http.post<AuthType>(`${this.apiBaseUrl}/api/auth/login`, credentials).pipe(
       tap((user) => {
         this.authUser.set({ email: user.email, password: credentials.password });
       }),
@@ -35,7 +37,7 @@ export class AuthService {
   getCurrentUser(): Observable<AuthType | undefined> {
     console.log('AuthService_getCurrentUser().');
 
-    return this.http.get<AuthType>('/api/auth/me').pipe(
+    return this.http.get<AuthType>(`${this.apiBaseUrl}/api/auth/me`).pipe(
       tap((user) => {
         this.authUser.set({ email: user.email, password: '' });
       }),
@@ -49,7 +51,7 @@ export class AuthService {
   logoutUser(): Observable<void> {
     console.log('AuthService_logoutUser().');
 
-    return this.http.post<void>('/api/auth/logout', {}).pipe(
+    return this.http.post<void>(`${this.apiBaseUrl}/api/auth/logout`, {}).pipe(
       tap(() => {
         this.authUser.set(undefined);
       }),

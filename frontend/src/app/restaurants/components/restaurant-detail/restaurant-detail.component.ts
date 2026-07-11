@@ -11,6 +11,7 @@ import { AuthService } from '../../../auth/service/auth.service';
 import { FavouritesService } from '../../../shared/services/favourites.service';
 import { AccountService } from '../../../account/service/account.service';
 import { MenuItemsType } from '../../../shared/model/restaurants-type.module';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-restaurant-detail',
@@ -20,6 +21,8 @@ import { MenuItemsType } from '../../../shared/model/restaurants-type.module';
   styleUrl: './restaurant-detail.component.css',
 })
 export class RestaurantDetailComponent implements OnInit {
+  private readonly imageBaseUrl = `${environment.apiBaseUrl}/images`;
+
   restaurantService = inject(RestaurantsService);
   localStorageService = inject(LocalStorageService);
   cartService = inject(CartService);
@@ -76,6 +79,15 @@ export class RestaurantDetailComponent implements OnInit {
 
   getCurrentRestaurantImage(): string[] {
     return this.allRestaurants().map((r) => r.imageName);
+  }
+
+  getCurrentRestaurantImageUrl(): string {
+    const imageName = this.allRestaurants()[0]?.imageName;
+    return imageName ? `${this.imageBaseUrl}/restaurants/${imageName}` : '';
+  }
+
+  getMenuImageUrl(fileName: string): string {
+    return `${this.imageBaseUrl}/menus/${fileName}`;
   }
 
   getCurrentCategory() {

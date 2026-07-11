@@ -21,7 +21,7 @@
   @for (i of categories(); track i.id) {
     <button class="categories-container" [attr.aria-label]="'Select ' + i.categorie + ' category.'" (click)="onCategoryClick(i)">
       <figure>
-        <img [src]="'/images/categories/' + i.categorieImage" [alt]="i.categorieImage" />
+        <img [src]="getCategoryImageUrl(i.categorieImage)" [alt]="i.categorieImage" />
         <figcaption>{{ i.categorie }}</figcaption>
       </figure>
     </button>
@@ -33,7 +33,7 @@
     <button class="restaurant-container" [attr.aria-label]="'Select ' + i.restaurantName + ' restaurant.'" (click)="onRestaurantClick(i)">
       <figure>
         <!-- With the img, link and script tag one can implicitly make a request to the server. -->
-        <img [src]="'/images/restaurants/' + i.imageName" [alt]="i.imageName" />
+        <img [src]="getRestaurantImageUrl(i.imageName)" [alt]="i.imageName" />
         <figcaption>{{ i.restaurantName }}</figcaption>
       </figure>
     </button>

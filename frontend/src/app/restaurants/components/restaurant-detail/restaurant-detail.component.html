@@ -1,7 +1,7 @@
 <div class="restaurants-detail-container">
   <div class="restaurant-details">
     <div class="restaurant-details-image">
-      <img [src]="'/images/restaurants/' + getCurrentRestaurantImage()" [alt]="getCurrentRestaurantImage()" />
+      <img [src]="getCurrentRestaurantImageUrl()" [alt]="getCurrentRestaurantImage()" />
     </div>
     <div class="restaurant-details-information">
       <p>{{ getCurrentCategory() }}</p>
@@ -37,7 +37,7 @@
             <p>Price: {{ m.price }} Euro</p>
           </div>
           <div class="menu-item-image">
-            <img [src]="'/images/menus/' + m.foodImage" [alt]="m.foodName" />
+            <img [src]="getMenuImageUrl(m.foodImage)" [alt]="m.foodName" />
           </div>
           <div class="menu-item-favourite">
             @if (menuItemsIdsComputed().includes(m.id)) {

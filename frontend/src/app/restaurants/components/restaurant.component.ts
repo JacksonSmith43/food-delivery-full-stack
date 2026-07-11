@@ -8,6 +8,7 @@ import { LocalStorageService } from '../../shared/services/local-storage.service
 import { CategoryType, RestaurantType } from '../../shared/model/restaurants-type.module';
 import { NavBarService } from '../../navbar/service/navbar.service';
 import { AuthService } from '../../auth/service/auth.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-restaurants',
@@ -17,6 +18,8 @@ import { AuthService } from '../../auth/service/auth.service';
   styleUrl: './restaurants.component.css',
 })
 export class RestaurantComponent implements OnInit {
+  private readonly imageBaseUrl = `${environment.apiBaseUrl}/images`;
+
   private restaurantsService = inject(RestaurantsService);
   localStorageService = inject(LocalStorageService);
   navbarService = inject(NavBarService);
@@ -81,6 +84,14 @@ export class RestaurantComponent implements OnInit {
 
     this.restaurantsService.filterByRestaurantMenuItems(selectedRestaurant);
     this.router.navigate(['/restaurant/' + selectedRestaurant.restaurantName]);
+  }
+
+  getCategoryImageUrl(fileName: string): string {
+    return `${this.imageBaseUrl}/categories/${fileName}`;
+  }
+
+  getRestaurantImageUrl(fileName: string): string {
+    return `${this.imageBaseUrl}/restaurants/${fileName}`;
   }
 
   onFilterDietaryChange(event: MatChipListboxChange): RestaurantType[] {
