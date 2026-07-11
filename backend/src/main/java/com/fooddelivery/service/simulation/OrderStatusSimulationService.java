@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -24,8 +23,11 @@ import jakarta.transaction.Transactional;
 @EnableScheduling
 public class OrderStatusSimulationService {
 
-    @Autowired
     private OrderRepository orderRepository;
+
+    public OrderStatusSimulationService(OrderRepository orderRepository) {
+        this.orderRepository = orderRepository;
+    }
 
     // For the methods this starts a database transaction, so that all the database
     // operations within the method are executed in a single transaction.
@@ -37,8 +39,7 @@ public class OrderStatusSimulationService {
     // application is up. But it shares the same database and the same application
     // context, so it can read and update the same orders as the rest of the
     // application.
-    // TODO: For the delivery schedule to work, this needs to be uncommented.
-    // @Scheduled(fixedDelay = 2000, timeUnit = TimeUnit.MILLISECONDS)
+    @Scheduled(fixedDelay = 2000, timeUnit = TimeUnit.MILLISECONDS)
     public void advanceOpenOrderStatuses() {
         System.out.println("OrderStatusSimulationService_advanceOpenOrderStatuses().");
 
