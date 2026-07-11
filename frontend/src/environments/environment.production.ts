@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiBaseUrl: 'https://api.deinedomain.de',
+  apiBaseUrl: 'https://heroic-gingersnap-2339a7.netlify.app/',
 };
