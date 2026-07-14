@@ -7,6 +7,7 @@ import { AuthService } from '../../auth/service/auth.service';
 import { AccountService } from '../service/account.service';
 import { FavouriteMenuItemsType } from '../../shared/model/favourite-menu-items-type';
 import { CartService } from '../../shared/services/cart.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-favourites',
@@ -23,6 +24,8 @@ export class FavouritesComponent implements OnInit {
 
   networkError = signal<string>('');
   errorMessage = signal<string>('');
+
+  readonly imageBaseUrl = `${environment.apiBaseUrl}/images`;
 
   favouriteMenuItems = this.favouritesService.favouriteMenuItems;
 
@@ -147,5 +150,9 @@ export class FavouritesComponent implements OnInit {
   getItemQuantity(menuItemId: number): number {
     console.log('getItemQuantity().');
     return this.cartService.getItemQuantity(menuItemId);
+  }
+
+  getMenuImageUrl(fileName: string): string {
+    return `${this.imageBaseUrl}/menus/${fileName}`;
   }
 }
